@@ -1,0 +1,10 @@
+name: TellRawAutoMessage
+main: de.inventivegames.TellRawAutoMessage.TRAM
+version: 1.9
+website: http://www.inventivegames.de
+author: inventivetalent
+description: >
+            TellRawAutoMessage Plugin - Copyright inventivetalent 2013!
+            
+commands:
+  tram:

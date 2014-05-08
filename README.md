@@ -3,7 +3,7 @@ SourceCode
 
 SourceCode of almost every Plugin/Program i made.
 
-Please don't use any of my code in your Plugins or Programs!
+Please add credits to me if you use any of this Code in your Plugins!
 
 ==========
 

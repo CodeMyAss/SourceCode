@@ -1,0 +1,4 @@
+checkForUpdates: true
+Interval: 10
+#You can change the Messages in "messages.txt"
+MinPlayers: 1
