@@ -1,0 +1,22 @@
+name: LetterAPICommands
+main: de.inventivegames.LetterAPICommands.Commands
+version: 3.5
+website: http://www.inventivegames.de
+author: inventivetalent
+description: >
+            LetterAPICommands for LetterAPI Copyright inventivetalent 2013
+
+
+loadbefore: [LetterAPI]
+depend: [LetterAPI]
+
+
+commands:
+  LetterAPI:
+    description: LetterAPI Command
+  LetterAPIParticles:
+    description: LetterAPIParticle Command
+  LetterAPIPlayer:
+    description: LetterAPIPlayers Command
+  LetterAPIReset:
+    description: LetterAPIReset Command

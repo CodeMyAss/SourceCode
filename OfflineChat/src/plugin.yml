@@ -1,0 +1,11 @@
+name: OfflineChat
+main: de.inventivegames.offlinechat.OfflineChat
+version: 1.0
+website: http://www.inventivegames.de
+author: inventivetalent
+description: >
+            OfflineChat Plugin - Copyright inventivetalent 2014!
+
+commands:
+  offlinechat:
+    description: OfflineChat Command

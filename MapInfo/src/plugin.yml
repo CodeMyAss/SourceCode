@@ -1,0 +1,15 @@
+name: MapInfo
+main: de.inventivegames.MapInfo.MapInfo
+version: 1.0
+website: http://www.inventivegames.de
+author: inventivetalent
+description: >
+            MapInfo Plugin Copyright inventivetalent 2013
+           
+commands:
+  addworld:
+    description: Adds world to config
+    usage: /addworld [world]
+  reloadmap:
+    description: Reloads the Config
+    usage: /reloadmap

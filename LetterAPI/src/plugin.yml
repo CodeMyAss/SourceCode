@@ -1,0 +1,7 @@
+name: LetterAPI
+main: de.inventivegames.LetterAPI.LetterAPI
+version: 3.6
+website: http://www.inventivegames.de
+author: inventivetalent
+description: >
+            LetterAPI Plugin Copyright inventivetalent 2013
