@@ -35,7 +35,9 @@ public class Corpses {
 				zombie.removePotionEffect(effect.getType());
 			}
 			zombie.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 2147000, 255));
+			zombie.damage(999999999);
 			zombie.setFireTicks(10);
+			zombie.remove();
 			Murder.zombieMap.remove(p);
 		}
 	}

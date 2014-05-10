@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -98,6 +99,10 @@ public class Players implements Listener {
 		if (cantPickup.contains(p.getName())) {
 			e.setCancelled(true);
 		}
+		if (Murder.playersInSpectate.contains(p.getName())) {
+			e.setCancelled(true);
+			p.getInventory().clear();
+		}
 		if ((Murder.playersInGame.contains(p.getName())) || (Murder.playersInLobby.contains(p.getName())) || (Murder.playersInSpectate.contains(p.getName()))) {
 			if (Murder.Bystanders.contains(p.getName())) {
 				if (item.getItemStack().getType().equals(Material.DIAMOND_HOE)) {
@@ -169,9 +174,16 @@ public class Players implements Listener {
 		if (ent instanceof Player) {
 			Player p = (Player) ent;
 			if (Murder.playersInGame.contains(p.getName())) {
-				if ((e.getCause() != DamageCause.PROJECTILE) || (e.getCause() == DamageCause.ENTITY_ATTACK)) {
+				if ((e.getCause() == DamageCause.FALL) || (e.getCause() == DamageCause.FIRE_TICK)) {
 					e.setCancelled(true);
 				}
+			}
+		}
+		if (e.getEntityType().equals(EntityType.ZOMBIE)) {
+			if (Murder.zombieMap.containsValue(ent)) {
+				ent.setFireTicks(0);
+				e.setDamage(0);
+				e.setCancelled(true);
 			}
 		}
 	}
@@ -183,13 +195,15 @@ public class Players implements Listener {
 		if (e.getEntity() instanceof Player) {
 			if (e.getEntity().getKiller() instanceof Player) {
 				if (Murder.playersInGame.contains(e.getEntity().getName())) {
-
+					Player p = (Player) e.getEntity();
+					
+					Murder.playersInSpectate.add(p.getName());
+					
 					e.setDeathMessage(null);
 
-					Player p = (Player) e.getEntity();
 					final Player killer = (Player) e.getEntity().getKiller();
 
-					Murder.playersInSpectate.add(p.getName());
+					
 					p.setHealth(20);
 					e.getDrops().clear();
 					p.setAllowFlight(true);
@@ -448,6 +462,30 @@ public class Players implements Listener {
 				}
 			}
 		}
+	}
+	
+	
+	@SuppressWarnings("deprecation")
+	@EventHandler
+	public void footSteps(PlayerMoveEvent e) {
+		Player p = e.getPlayer();
+		Location loc = p.getLocation();
+		ParticleEffects effect = ParticleEffects.FOOTSTEP;
+		if ((Murder.playersInGame.contains(p.getName())) && (Murder.inGame.contains("" + Murder.getArena(p)))) {
+			if(p.isOnGround()) {
+				try {
+					float x = (float) 0;
+					float y = (float) 0;
+					float z = (float) 0;
+					float speed = 0;
+					int count = 1;
+					effect.sendToPlayer(Murder.getMurderer(Murder.getArena(p)), loc.add(0, 0.1, 0), x, y, z, speed, count);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+		
 	}
 
 	@EventHandler
