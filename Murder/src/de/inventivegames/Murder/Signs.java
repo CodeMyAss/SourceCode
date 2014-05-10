@@ -32,6 +32,8 @@ public class Signs implements Listener {
 			e.getPlayer().sendMessage(Murder.prefix + "§2" + Messages.getMessage("createdSign"));
 		}
 	}
+	
+	
 
 	@EventHandler
 	public void onInteract(PlayerInteractEvent e) {

@@ -122,7 +122,7 @@ public class Murder extends JavaPlugin implements Listener {
 
 		setupMetrics();
 
-		serverVersion = instance.getServer().getBukkitVersion().toString().substring(0, 5);
+		serverVersion = instance.getServer().getBukkitVersion().toString();
 
 		console = Bukkit.getServer().getConsoleSender();
 
@@ -131,6 +131,7 @@ public class Murder extends JavaPlugin implements Listener {
 			Game.MurdererSelected[i] = false;
 			Game.rolesSelected[i] = false;
 		}
+		
 
 	}
 
@@ -169,6 +170,7 @@ public class Murder extends JavaPlugin implements Listener {
 
 	}
 
+	
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
 		System.out.println("0");
 		if (sender instanceof Player) {

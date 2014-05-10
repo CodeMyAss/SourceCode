@@ -90,13 +90,14 @@ public class Commands implements Listener, CommandExecutor {
 							if (args.length == 1) {
 								int arena = Murder.getArena(p);
 								Game.startGame(arena, p);
-								Murder.instance.getServer().getScheduler().cancelTask(Game.countdownLobby);
-								Murder.instance.getServer().getScheduler().cancelTask(Game.delayedStart);
+								Murder.instance.getServer().getScheduler().cancelTask(Game.countdownLobby[arena]);
+								Murder.instance.getServer().getScheduler().cancelTask(Game.delayedStart[arena]);
 								return true;
 							} else if (args.length == 2) {
 								Game.startGame(args[1], p);
-								Murder.instance.getServer().getScheduler().cancelTask(Game.countdownLobby);
-								Murder.instance.getServer().getScheduler().cancelTask(Game.delayedStart);
+								int arena = Integer.parseInt(args[1]);
+								Murder.instance.getServer().getScheduler().cancelTask(Game.countdownLobby[arena]);
+								Murder.instance.getServer().getScheduler().cancelTask(Game.delayedStart[arena]);
 								return true;
 							} else
 								p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));

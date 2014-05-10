@@ -13,11 +13,13 @@ public class Corpses {
 		loc.getWorld().setDifficulty(Difficulty.EASY);
 
 		Zombie zombie = loc.getWorld().spawn(loc, Zombie.class);
-		zombie.setCustomName(Murder.nameTag.get(p));
-		zombie.setCustomNameVisible(true);
-		if (zombie.getCustomName().equalsIgnoreCase(null) || zombie.getCustomName().equalsIgnoreCase("Zombie")) {
+		if (Murder.nameTag.get(p) == null) {
 			zombie.setCustomName("");
+		} else {
+			zombie.setCustomName(Murder.nameTag.get(p));
 		}
+		zombie.setCustomNameVisible(true);
+
 		zombie.setCanPickupItems(false);
 		zombie.setMaxHealth(999999999D);
 		zombie.setHealth(999999999D);

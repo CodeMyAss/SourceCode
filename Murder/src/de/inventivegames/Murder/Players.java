@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -42,8 +41,8 @@ public class Players implements Listener {
 
 	private static File					playerFile;
 
-	static int							reloadTimer					= -1;
-	static int							knifeTimer					= -1;
+	static int[]						reloadTimer					= new int[29];
+	static int[]						knifeTimer					= new int[29];
 
 	private static ArrayList<String>	cantPickup					= new ArrayList<String>();
 
@@ -93,18 +92,24 @@ public class Players implements Listener {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
-	public void pickupItem(PlayerPickupItemEvent e) {
+	public void pickupItem(PlayerPickupItemEvent e) {	
 		Player p = e.getPlayer();
 		Item item = e.getItem();
 		if (cantPickup.contains(p.getName())) {
+			p.getInventory().remove(Murder.Gun());
+			p.updateInventory();
 			e.setCancelled(true);
+			return;
 		}
 		if (Murder.playersInSpectate.contains(p.getName())) {
 			p.getInventory().clear();
+			p.updateInventory();
 			e.setCancelled(true);
+			return;
 		}
-		if ((Murder.playersInGame.contains(p.getName())) || (Murder.playersInLobby.contains(p.getName())) || (Murder.playersInSpectate.contains(p.getName()))) {
+		if ((Murder.playersInGame.contains(p.getName())) || (Murder.playersInLobby.contains(p.getName()))) {
 			if (Murder.Bystanders.contains(p.getName())) {
 				if (item.getItemStack().getType().equals(Material.DIAMOND_HOE)) {
 					if (!cantPickup.contains(p.getName())) {
@@ -158,6 +163,7 @@ public class Players implements Listener {
 			}
 
 		}
+		
 		if (e.getEntityType().equals(EntityType.ZOMBIE)) {
 			if (Murder.zombieMap.containsValue(ent)) {
 				ent.setFireTicks(0);
@@ -176,7 +182,7 @@ public class Players implements Listener {
 	}
 
 	@EventHandler
-	public void onFallDamage(EntityDamageEvent e) {
+	public void onOtherDamage(EntityDamageEvent e) {
 		Entity ent = e.getEntity();
 		if (ent instanceof Player) {
 			Player p = (Player) ent;
@@ -184,6 +190,10 @@ public class Players implements Listener {
 				if ((e.getCause() == DamageCause.FALL) || (e.getCause() == DamageCause.FIRE_TICK)) {
 					e.setCancelled(true);
 				}
+			}
+			if (Murder.playersInSpectate.contains(p.getName())) {
+				e.setDamage(0D);
+				e.setCancelled(true);
 			}
 		}
 		if (e.getEntityType().equals(EntityType.ZOMBIE)) {
@@ -221,11 +231,6 @@ public class Players implements Listener {
 						online.hidePlayer(p);
 					}
 
-					if (Murder.Bystanders.contains(p.getName())) {
-						Item item = p.getWorld().dropItemNaturally(p.getLocation(), Murder.Gun());
-						Murder.Items[Murder.getArena(p)][Murder.ItemAmount[Murder.getArena(p)]] = item;
-						Murder.ItemAmount[Murder.getArena(p)]++;
-					}
 
 					if (Murder.isMurderer(killer)) {
 
@@ -243,8 +248,7 @@ public class Players implements Listener {
 
 						if (Murder.bystanderAmount[Murder.getArena(p)] == 0) {
 							Murder.sendArenaMessage(Murder.prefix + "§c" + Messages.getMessage("murdererWin1"), Murder.getArena(p));
-
-							Murder.sendArenaMessage(Murder.prefix + "§2" + Messages.getMessage("murdererWin2").replace("%1$s", Murder.getNameTag(killer)).replace("%2$s", killer.getName()), Murder.getArena(p));
+							Murder.sendArenaMessage(Murder.prefix + "§2" + Messages.getMessage("murdererWin2").replace("%1$s", Murder.getNameTag(killer)).replace("%2$s", killer.getName()), Murder.getArena(killer));
 
 							Game.stopGameDelayed(Murder.getArena(p), 10 * 20);
 
@@ -261,10 +265,25 @@ public class Players implements Listener {
 
 							cantPickup.add(killer.getName());
 
-							killer.getInventory().getItemInHand().setType(Material.AIR);
-							killer.getInventory().getItemInHand().setAmount(0);
-							killer.updateInventory();
+							final ItemStack nameTag = killer.getInventory().getItem(0);
+							
+							Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
+								@Override
+								public void run() {
+									killer.getInventory().clear();
+									killer.getInventory().remove(Material.DIAMOND_HOE);
+									killer.getInventory().remove(Murder.Gun());
+									killer.getInventory().setItem(4, null);
+									killer.getItemInHand().setType(Material.AIR);
+									killer.getInventory().getItemInHand().setType(Material.AIR);
+									killer.getInventory().getItemInHand().setAmount(0);
+									killer.updateInventory();
+									
+									killer.getInventory().setItem(0, nameTag);
+								}
+							}, 1);
+							
 							Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
 								@Override
@@ -272,17 +291,12 @@ public class Players implements Listener {
 									Item gun = killer.getWorld().dropItemNaturally(killer.getLocation(), Murder.Gun());
 									Murder.Items[Murder.getArena(killer)][Murder.ItemAmount[Murder.getArena(killer)]] = gun;
 									Murder.ItemAmount[Murder.getArena(killer)]++;
-
-									killer.getInventory().remove(Material.DIAMOND_HOE);
-									killer.getInventory().removeItem(Murder.Gun());
-									killer.getInventory().setItem(4, null);
-									killer.getItemInHand().setType(Material.AIR);
-									killer.getInventory().getItemInHand().setType(Material.AIR);
-									killer.getInventory().getItemInHand().setAmount(0);
-									killer.updateInventory();
 								}
-							}, 1);
+							}, 2);
 
+							killer.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 2147000, 1));
+							killer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 2147000, 1));
+							
 							Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
 								@Override
@@ -380,22 +394,16 @@ public class Players implements Listener {
 
 						p.playSound(p.getEyeLocation(), Sound.SHOOT_ARROW, 10, 1);
 
-						reloadTimer = Murder.instance.getServer().getScheduler().scheduleSyncRepeatingTask(Murder.instance, new Runnable() {
+
+						reloadTimer[Murder.getArena(p)] = Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
 							@Override
 							public void run() {
-								p.getInventory().setItem(4, null);
-								p.getInventory().setItem(4, Murder.Gun());
-							}
-						}, 1, 1);
-
-						Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
-
-							@Override
-							public void run() {
-								Murder.instance.getServer().getScheduler().cancelTask(reloadTimer);
-								p.getInventory().setItem(8, Murder.Bullet());
-								p.getInventory().setItem(4, Murder.Gun());
+								Murder.instance.getServer().getScheduler().cancelTask(reloadTimer[Murder.getArena(p)]);
+								if(p.getInventory().contains(Murder.Gun())) {
+									p.getInventory().setItem(8, Murder.Bullet());
+									p.getInventory().setItem(4, Murder.Gun());
+								}
 							}
 
 						}, 20 * 4L);
@@ -435,7 +443,7 @@ public class Players implements Listener {
 						@Override
 						public void run() {
 							p.getInventory().remove(Material.IRON_SWORD);
-							p.getInventory().removeItem(Murder.Knife());
+							p.getInventory().remove(Murder.Knife());
 							p.getInventory().setItem(4, null);
 							p.getItemInHand().setType(Material.AIR);
 							p.getInventory().getItemInHand().setType(Material.AIR);
@@ -460,7 +468,7 @@ public class Players implements Listener {
 						}
 					}, 10);
 
-					Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+					knifeTimer[Murder.getArena(p)] = Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
 						@Override
 						public void run() {

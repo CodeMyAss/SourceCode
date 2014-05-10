@@ -22,10 +22,10 @@ public class Game {
 
 	private static int		m					= 0;
 
-	static int				countdown			= -1;
-	static int				countdownLobby		= -1;
-	static int				loot				= -1;
-	static int				delayedStart		= -1;
+	static int[]			countdown			= new int[29];
+	static int[]			countdownLobby		= new int[29];
+	static int[]			loot				= new int[29];
+	static int[]			delayedStart		= new int[29];
 
 	public static boolean[]	BystanderSelected	= new boolean[24];
 	public static boolean[]	MurdererSelected	= new boolean[24];
@@ -146,7 +146,7 @@ public class Game {
 		Murder.Murderers.remove(p.getName());
 		Murder.Bystanders.remove(p.getName());
 
-		Murder.instance.getServer().getScheduler().cancelTask(loot);
+		Murder.instance.getServer().getScheduler().cancelTask(loot[arena]);
 
 		if (Murder.prevGamemode.get(p.getName()) != GameMode.CREATIVE) {
 			p.setAllowFlight(false);
@@ -177,8 +177,8 @@ public class Game {
 		}
 
 		if (((Murder.playersAmount[arena] < Murder.minPlayers) || (Murder.playersAmount[arena] == 1)) && (Murder.playersAmount[arena] != 0)) {
-			Murder.instance.getServer().getScheduler().cancelTask(countdownLobby);
-			Murder.instance.getServer().getScheduler().cancelTask(countdown);
+			Murder.instance.getServer().getScheduler().cancelTask(countdownLobby[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(countdown[arena]);
 
 			Murder.sendArenaMessage(Murder.prefix + "§cNot enough Players!", arena);
 			Murder.sendArenaMessage(Murder.prefix + "§cStopping...!", arena);
@@ -186,8 +186,8 @@ public class Game {
 			removeEffects(arena);
 		}
 		if (Murder.playersAmount[arena] == 0) {
-			Murder.instance.getServer().getScheduler().cancelTask(countdownLobby);
-			Murder.instance.getServer().getScheduler().cancelTask(countdown);
+			Murder.instance.getServer().getScheduler().cancelTask(countdownLobby[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(countdown[arena]);
 
 			Murder.console.sendMessage(Murder.prefix + "§cCancelled Arena §2#" + arena);
 
@@ -200,7 +200,7 @@ public class Game {
 
 	public static void startDelayed(final int arena) {
 		broadcastLobbyCountdown(arena);
-		delayedStart = Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+		delayedStart[arena] = Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
 			@Override
 			public void run() {
@@ -240,9 +240,9 @@ public class Game {
 					removeEffects(arena);
 					teleportStart(arena);
 
-					Murder.instance.getServer().getScheduler().cancelTask(countdown);
-					Murder.instance.getServer().getScheduler().cancelTask(countdownLobby);
-					Murder.instance.getServer().getScheduler().cancelTask(delayedStart);
+					Murder.instance.getServer().getScheduler().cancelTask(countdown[arena]);
+					Murder.instance.getServer().getScheduler().cancelTask(countdownLobby[arena]);
+					Murder.instance.getServer().getScheduler().cancelTask(delayedStart[arena]);
 				}
 
 			}, 600L);
@@ -251,9 +251,9 @@ public class Game {
 
 				@Override
 				public void run() {
-					Murder.instance.getServer().getScheduler().cancelTask(countdown);
-					Murder.instance.getServer().getScheduler().cancelTask(countdownLobby);
-					Murder.instance.getServer().getScheduler().cancelTask(delayedStart);
+					Murder.instance.getServer().getScheduler().cancelTask(countdown[arena]);
+					Murder.instance.getServer().getScheduler().cancelTask(countdownLobby[arena]);
+					Murder.instance.getServer().getScheduler().cancelTask(delayedStart[arena]);
 				}
 
 			}, 650L);
@@ -264,9 +264,9 @@ public class Game {
 				public void run() {
 					spawnLoot(arena);
 
-					Murder.instance.getServer().getScheduler().cancelTask(countdown);
-					Murder.instance.getServer().getScheduler().cancelTask(countdownLobby);
-					Murder.instance.getServer().getScheduler().cancelTask(delayedStart);
+					Murder.instance.getServer().getScheduler().cancelTask(countdown[arena]);
+					Murder.instance.getServer().getScheduler().cancelTask(countdownLobby[arena]);
+					Murder.instance.getServer().getScheduler().cancelTask(delayedStart[arena]);
 				}
 
 			}, 1000L);
@@ -284,7 +284,7 @@ public class Game {
 	}
 
 	public static void broadcastCountdown(final int arena) {
-		countdown = Murder.instance.getServer().getScheduler().scheduleSyncRepeatingTask(Murder.instance, new Runnable() {
+		countdown[arena] = Murder.instance.getServer().getScheduler().scheduleSyncRepeatingTask(Murder.instance, new Runnable() {
 			int	time	= 30;
 
 			@Override
@@ -302,7 +302,7 @@ public class Game {
 					Murder.sendArenaMessage(Murder.prefix + "§2" + Messages.getMessage("gameCountdown").replace("%1$s", "" + time), arena);
 				}
 				if (time < 1) {
-					Murder.instance.getServer().getScheduler().cancelTask(countdown);
+					Murder.instance.getServer().getScheduler().cancelTask(countdown[arena]);
 				}
 				time--;
 			}
@@ -312,7 +312,7 @@ public class Game {
 	}
 
 	public static void broadcastLobbyCountdown(final int arena) {
-		countdownLobby = Murder.instance.getServer().getScheduler().scheduleSyncRepeatingTask(Murder.instance, new Runnable() {
+		countdownLobby[arena] = Murder.instance.getServer().getScheduler().scheduleSyncRepeatingTask(Murder.instance, new Runnable() {
 			int	time	= 30;
 
 			@Override
@@ -330,7 +330,7 @@ public class Game {
 					Murder.sendArenaMessage(Murder.prefix + "§2" + Messages.getMessage("lobbyCountdown").replace("%1$s", "" + time), arena);
 				}
 				if (time < 1) {
-					Murder.instance.getServer().getScheduler().cancelTask(countdownLobby);
+					Murder.instance.getServer().getScheduler().cancelTask(countdownLobby[arena]);
 				}
 				time--;
 
@@ -588,6 +588,8 @@ public class Game {
 				p.getInventory().setArmorContents(Murder.InventoryArmorContent.get(p.getName()));
 				p.teleport(Murder.prevLocation.get(p.getName()));
 				p.setGameMode(Murder.prevGamemode.get(p.getName()));
+				p.setLevel(Murder.prevLevel.get(p.getName()));
+				p.setExp(Murder.prevExp.get(p.getName()));
 				Murder.playersInLobby.remove(p.getName());
 				Murder.playerInLobby.remove(p.getName());
 				Murder.playersInGame.remove(p.getName());
@@ -595,7 +597,7 @@ public class Game {
 				Murder.Murderers.remove(p.getName());
 				Murder.Bystanders.remove(p.getName());
 
-				Murder.instance.getServer().getScheduler().cancelTask(loot);
+				Murder.instance.getServer().getScheduler().cancelTask(loot[arena]);
 
 				if (Murder.prevGamemode.get(p.getName()) != GameMode.CREATIVE) {
 					p.setAllowFlight(false);
@@ -755,7 +757,7 @@ public class Game {
 
 		final double randomTime = Math.random() * (60 - 10);
 
-		loot = Murder.instance.getServer().getScheduler().scheduleSyncRepeatingTask(Murder.instance, new Runnable() {
+		loot[arena] = Murder.instance.getServer().getScheduler().scheduleSyncRepeatingTask(Murder.instance, new Runnable() {
 
 			int		Number	= 1;
 			double	X		= 0;
@@ -781,7 +783,7 @@ public class Game {
 	}
 
 	public static void despawnLoot(int arena) {
-		Murder.instance.getServer().getScheduler().cancelTask(loot);
+		Murder.instance.getServer().getScheduler().cancelTask(loot[arena]);
 		for (int i = 0; i < 50; i++) {
 			try {
 				Murder.Loot[arena][i].remove();
@@ -847,6 +849,7 @@ public class Game {
 	public static void clearInv(Player p) {
 		p.getInventory().clear();
 		p.updateInventory();
+		p.getInventory().clear();
 	}
 
 }
