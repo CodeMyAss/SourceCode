@@ -8,6 +8,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -31,6 +32,7 @@ public class Game {
 	public static boolean[]	rolesSelected		= new boolean[24];
 
 	public static void joinArena(int arena, Player p) {
+		Damageable dp = (Damageable) p;
 		if (Murder.ArenaExists(arena)) {
 			if (Murder.playersAmount[arena] < Murder.maxPlayers) {
 				arenaFile = new File("plugins/Murder/Arenas/" + arena + "/arena.yml");
@@ -48,8 +50,8 @@ public class Game {
 					p.setLevel(0);
 					Murder.prevExp.put(p.getName(), p.getExp());
 					p.setExp(0);
-					Murder.prevHealth.put(p.getName(), p.getHealth());
-					p.setHealth(20);
+					Murder.prevHealth.put(p.getName(), dp.getHealth());
+					dp.setHealth(20D);
 					Murder.prevFood.put(p.getName(), p.getFoodLevel());
 					p.setFoodLevel(20);
 
@@ -798,7 +800,7 @@ public class Game {
 		}
 	}
 
-	@SuppressWarnings("null")
+	@SuppressWarnings({ "null" })
 	public static void forceMurderer(int arena, String string, Player sender) {
 		Player p = Murder.instance.getServer().getPlayerExact(string);
 		if (p != null) {
@@ -816,7 +818,7 @@ public class Game {
 		}
 	}
 
-	@SuppressWarnings("null")
+	@SuppressWarnings({ "null" })
 	public static void forceWeapon(int arena, String string, Player sender) {
 		Player p = Murder.instance.getServer().getPlayerExact(string);
 		if (p != null) {

@@ -19,8 +19,8 @@ public class Corpses {
 			zombie.setCustomName("");
 		}
 		zombie.setCanPickupItems(false);
-		zombie.setMaxHealth(999999999);
-		zombie.setHealth(999999999);
+		zombie.setMaxHealth(999999999D);
+		zombie.setHealth(999999999D);
 		zombie.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 2147000, 255));
 		zombie.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 2147000, 255));
 		zombie.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 2147000, 255));
@@ -30,12 +30,12 @@ public class Corpses {
 	public static void despawnCorpse(Player p) throws Exception {
 		Zombie zombie = Murder.zombieMap.get(p);
 		if (zombie != null) {
-			zombie.damage(999999999);
+			zombie.damage(999999999D);
 			for (PotionEffect effect : zombie.getActivePotionEffects()) {
 				zombie.removePotionEffect(effect.getType());
 			}
 			zombie.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 2147000, 255));
-			zombie.damage(999999999);
+			zombie.damage(999999999D);
 			zombie.setFireTicks(10);
 			zombie.remove();
 			Murder.zombieMap.remove(p);

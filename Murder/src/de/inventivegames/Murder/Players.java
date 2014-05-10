@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -100,8 +101,8 @@ public class Players implements Listener {
 			e.setCancelled(true);
 		}
 		if (Murder.playersInSpectate.contains(p.getName())) {
-			e.setCancelled(true);
 			p.getInventory().clear();
+			e.setCancelled(true);
 		}
 		if ((Murder.playersInGame.contains(p.getName())) || (Murder.playersInLobby.contains(p.getName())) || (Murder.playersInSpectate.contains(p.getName()))) {
 			if (Murder.Bystanders.contains(p.getName())) {
@@ -124,9 +125,7 @@ public class Players implements Listener {
 					p.getInventory().setItem(4, Murder.Knife());
 					e.getItem().remove();
 					e.setCancelled(true);
-				} else if (item.getItemStack().getType().equals(Material.DIAMOND_HOE)) {
-					e.setCancelled(true);
-				} else
+				} else 
 					e.setCancelled(true);
 			}
 			if ((Murder.Bystanders.contains(p.getName())) || (Murder.Murderers.contains(p.getName()))) {
@@ -162,7 +161,15 @@ public class Players implements Listener {
 		if (e.getEntityType().equals(EntityType.ZOMBIE)) {
 			if (Murder.zombieMap.containsValue(ent)) {
 				ent.setFireTicks(0);
-				e.setDamage(0);
+				e.setDamage(0D);
+				e.setCancelled(true);
+			}
+		}
+		
+		if (e.getDamager().getType().equals(EntityType.ZOMBIE)) {
+			if (Murder.zombieMap.containsValue(e.getDamager())) {
+				ent.setFireTicks(0);
+				e.setDamage(0D);
 				e.setCancelled(true);
 			}
 		}
@@ -182,7 +189,7 @@ public class Players implements Listener {
 		if (e.getEntityType().equals(EntityType.ZOMBIE)) {
 			if (Murder.zombieMap.containsValue(ent)) {
 				ent.setFireTicks(0);
-				e.setDamage(0);
+				e.setDamage(0D);
 				e.setCancelled(true);
 			}
 		}
@@ -203,12 +210,12 @@ public class Players implements Listener {
 
 					final Player killer = (Player) e.getEntity().getKiller();
 
-					
+					//p.setGameMode(GameMode.SPECTATOR);
 					p.setHealth(20);
 					e.getDrops().clear();
 					p.setAllowFlight(true);
 					p.setFlying(true);
-					p.teleport(e.getEntity().getLocation());
+
 
 					for (Player online : Murder.instance.getServer().getOnlinePlayers()) {
 						online.hidePlayer(p);
@@ -338,6 +345,8 @@ public class Players implements Listener {
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
+					
+					p.teleport(e.getEntity().getLocation());
 
 				}
 			}
@@ -471,7 +480,7 @@ public class Players implements Listener {
 		Player p = e.getPlayer();
 		Location loc = p.getLocation();
 		ParticleEffects effect = ParticleEffects.FOOTSTEP;
-		if ((Murder.playersInGame.contains(p.getName())) && (Murder.inGame.contains("" + Murder.getArena(p)))) {
+		if ((Murder.playersInGame.contains(p.getName())) && (Murder.inGame.contains("" + Murder.getArena(p))) &&(p != null)) {
 			if(p.isOnGround()) {
 				try {
 					float x = (float) 0;
@@ -479,7 +488,10 @@ public class Players implements Listener {
 					float z = (float) 0;
 					float speed = 0;
 					int count = 1;
-					effect.sendToPlayer(Murder.getMurderer(Murder.getArena(p)), loc.add(0, 0.1, 0), x, y, z, speed, count);
+					Player murderer = Murder.getMurderer(Murder.getArena(p));
+					if(murderer != null) {
+						effect.sendToPlayer(murderer, loc.add(0, 0.1, 0), x, y, z, speed, count);
+					}
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
