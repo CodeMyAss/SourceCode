@@ -25,9 +25,10 @@ public class TabCompletionHelper {
 			String[] foundString = possibilitiesOfCompletion;
 
 			try {
-				if (foundString[i].regionMatches(true, 0, argumentToFindCompletionFor, 0, argumentToFindCompletionFor.length())) {
-					if (foundString[i] != null) {
-						listOfPossibleCompletions.add(foundString[i]);
+				if (foundString[i] != null) {
+					if (foundString[i].regionMatches(true, 0, argumentToFindCompletionFor, 0, argumentToFindCompletionFor.length())) {
+					
+					listOfPossibleCompletions.add(foundString[i]);
 					}
 				}
 			} catch (Exception e) {
@@ -62,9 +63,9 @@ public class TabCompletionHelper {
 	}
 
 	public static String[] getAllIntegers() {
-		String[] ints = new String[50];
+		String[] ints = new String[25];
 
-		for (int i = 0; i < 50; i++) {
+		for (int i = 1; i < 25; i++) {
 			ints[i] = "" + i;
 		}
 		return ints;

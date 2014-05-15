@@ -89,6 +89,9 @@ public class Murder extends JavaPlugin implements Listener {
 	public static int							minPlayers				= -1;
 	public static int							maxPlayers				= -1;
 
+	public static int							lobbyCountdown			= -1;
+	public static int							countdown				= -1;
+
 	private static File							arenaFile;
 
 	public void onEnable() {
@@ -110,6 +113,9 @@ public class Murder extends JavaPlugin implements Listener {
 		Murder.minPlayers = instance.getConfig().getInt("MinPlayers");
 		Murder.maxPlayers = instance.getConfig().getInt("MaxPlayers");
 
+		Murder.lobbyCountdown = instance.getConfig().getInt("lobbyCountdown");
+		Murder.countdown = instance.getConfig().getInt("countdown");
+
 		Bukkit.getServer().getPluginManager().registerEvents(instance, instance);
 		instance.getCommand("murder").setExecutor(new Commands());
 
@@ -121,6 +127,7 @@ public class Murder extends JavaPlugin implements Listener {
 		Murder.zombieMap = new HashMap<Player, Zombie>();
 
 		setupMetrics();
+		
 
 		serverVersion = instance.getServer().getBukkitVersion().toString();
 
@@ -131,7 +138,6 @@ public class Murder extends JavaPlugin implements Listener {
 			Game.MurdererSelected[i] = false;
 			Game.rolesSelected[i] = false;
 		}
-		
 
 	}
 
@@ -170,57 +176,7 @@ public class Murder extends JavaPlugin implements Listener {
 
 	}
 
-	
-	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-		System.out.println("0");
-		if (sender instanceof Player) {
-			System.out.println("1");
-			Player p = (Player) sender;
-			if (cmd.getName().equalsIgnoreCase("murder")) {
-				System.out.println("2");
-				if ((p.hasPermission("murder.admin")) || (p.isOp())) {
-					System.out.println("3");
-					if (args.length == 0 || args.length == 1) {
-						return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, new String[] { "join", "leave", "help", "start", "stop", "addarena", "removearena", "addspawn" });
-					}
-					if (args.length == 1 || args.length == 2) {
-						if (args[0].equalsIgnoreCase("join")) {
-							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
-						}
-						if (args[0].equalsIgnoreCase("leave")) {
-							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
-						}
-						if (args[0].equalsIgnoreCase("start")) {
-							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
-						}
-						if (args[0].equalsIgnoreCase("stop")) {
-							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
-						}
-						if (args[0].equalsIgnoreCase("addarena")) {
-							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
-						}
-						if (args[0].equalsIgnoreCase("removearena")) {
-							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
-						}
-						if (args[0].equalsIgnoreCase("addspawn")) {
-							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
-						}
-					}
-					if (args.length == 2 || args.length == 3) {
-						if (args[1].equalsIgnoreCase("addspawn")) {
-							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, new String[] { "lobby", "players", "loot" });
-						}
-					}
-					if (args.length == 3 || args.length == 4) {
-						if (args[1].equalsIgnoreCase("addspawn")) {
-							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
-						}
-					}
-				}
-			}
-		}
-		return null;
-	}
+
 
 	public static void sendArenaMessage(String message, int arena) {
 		for (int i = 0; i < maxPlayers; i++) {
@@ -371,7 +327,7 @@ public class Murder extends JavaPlugin implements Listener {
 	public static ItemStack NameInfo(Player p) {
 		ItemStack Loot = new ItemStack(Material.NAME_TAG);
 		ItemMeta lootMeta = Loot.getItemMeta();
-		lootMeta.setDisplayName("§l" + nameTag.get(p));
+		lootMeta.setDisplayName("§l" + (nameTag.get(p) != null ? nameTag.get(p) : "§r§cUnable to get NameTag!"));
 		lootMeta.addEnchant(Enchantment.DURABILITY, 1, true);
 		Loot.setItemMeta(lootMeta);
 

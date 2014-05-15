@@ -1,13 +1,72 @@
 package de.inventivegames.Murder;
 
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
-public class Commands implements Listener, CommandExecutor {
+public class Commands implements Listener, CommandExecutor, TabCompleter {
 
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
+		if (sender instanceof Player) {
+			Player p = (Player) sender;
+			if (cmd.getName().equalsIgnoreCase("murder")) {
+				if ((p.hasPermission("murder.player")) || (p.isOp())) {
+
+					if (args.length == 0 || args.length == 1) {
+						return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, new String[] { "join", "leave", "help" });
+					}
+					if (args.length == 1 || args.length == 2) {
+						if (args[0].equalsIgnoreCase("join")) {
+							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
+						}
+						if (args[0].equalsIgnoreCase("leave")) {
+							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
+						}
+					} 
+				}
+				if ((p.hasPermission("murder.admin")) || (p.isOp())) {
+					if (args.length == 0 || args.length == 1) {
+						return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, new String[] { "join", "leave", "help", "start", "stop", "addarena", "removearena", "addspawn" });
+					}
+					if (args.length == 1 || args.length == 2) {
+						if (args[0].equalsIgnoreCase("start")) {
+							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
+						}
+						if (args[0].equalsIgnoreCase("stop")) {
+							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
+						}
+						if (args[0].equalsIgnoreCase("addarena")) {
+							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
+						}
+						if (args[0].equalsIgnoreCase("removearena")) {
+							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
+						}
+						if (args[0].equalsIgnoreCase("addspawn")) {
+							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
+						}
+					}
+				
+				if (args.length == 2 || args.length == 3) {
+					if (args[0].equalsIgnoreCase("addspawn")) {
+						return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, new String[] { "lobby", "players", "loot" });
+					}
+				}
+				if (args.length == 3 || args.length == 4) {
+					if (args[0].equalsIgnoreCase("addspawn")) {
+						return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
+					}
+				}
+			}
+			}
+		}
+		return null;
+	}
+	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (sender instanceof Player) {
 			Player p = (Player) sender;

@@ -14,12 +14,14 @@ public class Corpses {
 
 		Zombie zombie = loc.getWorld().spawn(loc, Zombie.class);
 		if (Murder.nameTag.get(p) == null) {
-			zombie.setCustomName("");
+			zombie.setCustomName("----");
 		} else {
 			zombie.setCustomName(Murder.nameTag.get(p));
 		}
 		zombie.setCustomNameVisible(true);
 
+		zombie.setCanPickupItems(false);
+		
 		zombie.setCanPickupItems(false);
 		zombie.setMaxHealth(999999999D);
 		zombie.setHealth(999999999D);

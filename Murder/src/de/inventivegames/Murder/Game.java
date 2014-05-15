@@ -76,6 +76,8 @@ public class Game {
 					if (Murder.playersAmount[arena] == Murder.minPlayers) {
 						startDelayed(arena);
 					}
+
+					Signs.updateSigns(arena);
 				} else
 					p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("lobbySpawnNotExisting"));
 			} else
@@ -146,7 +148,7 @@ public class Game {
 		Murder.Murderers.remove(p.getName());
 		Murder.Bystanders.remove(p.getName());
 
-		Murder.instance.getServer().getScheduler().cancelTask(loot[arena]);
+		
 
 		if (Murder.prevGamemode.get(p.getName()) != GameMode.CREATIVE) {
 			p.setAllowFlight(false);
@@ -161,11 +163,13 @@ public class Game {
 		YamlConfiguration PlayerFile = YamlConfiguration.loadConfiguration(playerFile);
 		if ((PlayerFile.getInt("type") == 2)) {
 			Murder.sendArenaMessage(Murder.prefix + "§cThe Murderer left the Arena!", arena);
+			Murder.sendArenaMessage(Murder.prefix + "§cStopping...", arena);
 			Murder.console.sendMessage(Murder.prefix + "§cCancelled Arena §2#" + arena + "§c The Murderer left the Arena");
 			Game.stopGameDelayed(arena, 100);
 		}
 		if ((PlayerFile.getInt("type") == 1)) {
 			Murder.sendArenaMessage(Murder.prefix + "§cThe Bystander with the Secret weapon left the Arena!", arena);
+			Murder.sendArenaMessage(Murder.prefix + "§cStopping...", arena);
 			Murder.console.sendMessage(Murder.prefix + "§cCancelled Arena §2#" + arena + "§c The Weapon Bystander left the Arena");
 			Game.stopGameDelayed(arena, 100);
 		}
@@ -181,7 +185,6 @@ public class Game {
 			Murder.instance.getServer().getScheduler().cancelTask(countdown[arena]);
 
 			Murder.sendArenaMessage(Murder.prefix + "§cNot enough Players!", arena);
-			Murder.sendArenaMessage(Murder.prefix + "§cStopping...!", arena);
 
 			removeEffects(arena);
 		}
@@ -194,6 +197,8 @@ public class Game {
 			removeEffects(arena);
 			stopGame(arena);
 		}
+
+		Signs.updateSigns(arena);
 
 		Murder.sendArenaMessage(Murder.prefix + "§1" + Messages.getMessage("leaveArena").replace("%1$s", p.getName()), arena);
 	}
@@ -208,7 +213,7 @@ public class Game {
 
 			}
 
-		}, 20 * 30);
+		}, 20 * Murder.lobbyCountdown);
 	}
 
 	public static void startGame(final int arena) {
@@ -245,7 +250,7 @@ public class Game {
 					Murder.instance.getServer().getScheduler().cancelTask(delayedStart[arena]);
 				}
 
-			}, 600L);
+			}, 20 * Murder.countdown);
 
 			Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
@@ -256,7 +261,7 @@ public class Game {
 					Murder.instance.getServer().getScheduler().cancelTask(delayedStart[arena]);
 				}
 
-			}, 650L);
+			}, (20 * Murder.countdown) + 50);
 
 			Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
@@ -271,6 +276,8 @@ public class Game {
 
 			}, 1000L);
 		}
+
+		Signs.updateSigns(arena);
 	}
 
 	public static void startGame(final int arena, Player p) {
@@ -285,7 +292,7 @@ public class Game {
 
 	public static void broadcastCountdown(final int arena) {
 		countdown[arena] = Murder.instance.getServer().getScheduler().scheduleSyncRepeatingTask(Murder.instance, new Runnable() {
-			int	time	= 30;
+			int	time	= Murder.countdown;
 
 			@Override
 			public void run() {
@@ -313,7 +320,7 @@ public class Game {
 
 	public static void broadcastLobbyCountdown(final int arena) {
 		countdownLobby[arena] = Murder.instance.getServer().getScheduler().scheduleSyncRepeatingTask(Murder.instance, new Runnable() {
-			int	time	= 30;
+			int	time	= Murder.lobbyCountdown;
 
 			@Override
 			public void run() {
@@ -540,7 +547,7 @@ public class Game {
 			}
 
 		}
-
+		Signs.updateSigns(arena);
 	}
 
 	public static void stopGame(int arena) {
@@ -550,6 +557,8 @@ public class Game {
 
 				p.getInventory().clear();
 
+				unHideTags(arena);
+				
 				Murder.nameTag.remove(p);
 				Murder.invisibleTags.remove(p);
 
@@ -640,6 +649,8 @@ public class Game {
 			Murder.weaponBystanders[arena][m] = null;
 		}
 
+		Signs.updateSigns(arena);
+
 	}
 
 	public static void printScoreboard(int arena) {
@@ -675,7 +686,8 @@ public class Game {
 
 		printScoreboard(arena);
 
-		unHideTags(arena);
+		Murder.instance.getServer().getScheduler().cancelTask(loot[arena]);
+
 		Murder.getBukkit().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
 			@Override
