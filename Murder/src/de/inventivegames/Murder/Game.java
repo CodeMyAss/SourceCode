@@ -6,10 +6,12 @@ import java.io.IOException;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.kitteh.tag.TagAPI;
@@ -26,6 +28,14 @@ public class Game {
 	static int[]			countdownLobby		= new int[29];
 	static int[]			loot				= new int[29];
 	static int[]			delayedStart		= new int[29];
+	static int[]			smokeDelay			= new int[29];
+
+	
+
+	static int[]			cd0					= new int[29];
+	static int[]			cd1					= new int[29];
+	static int[]			cd2					= new int[29];
+	static int[]			cd3					= new int[29];
 
 	public static boolean[]	BystanderSelected	= new boolean[24];
 	public static boolean[]	MurdererSelected	= new boolean[24];
@@ -39,28 +49,28 @@ public class Game {
 				YamlConfiguration ArenaFile = YamlConfiguration.loadConfiguration(arenaFile);
 				if (ArenaFile.get("SpawnPoints.lobby.1") != null) {
 
-					Murder.InventoryContent.put(p.getName(), p.getInventory().getContents());
+					Murder.InventoryContent.put(p, p.getInventory().getContents());
 					p.getInventory().clear();
-					Murder.InventoryArmorContent.put(p.getName(), p.getInventory().getArmorContents());
+					Murder.InventoryArmorContent.put(p, p.getInventory().getArmorContents());
 					p.getInventory().setArmorContents(null);
-					Murder.prevLocation.put(p.getName(), p.getLocation());
-					Murder.prevGamemode.put(p.getName(), p.getGameMode());
+					Murder.prevLocation.put(p, p.getLocation());
+					Murder.prevGamemode.put(p, p.getGameMode());
 					p.setGameMode(GameMode.ADVENTURE);
-					Murder.prevLevel.put(p.getName(), p.getLevel());
+					Murder.prevLevel.put(p, p.getLevel());
 					p.setLevel(0);
-					Murder.prevExp.put(p.getName(), p.getExp());
+					Murder.prevExp.put(p, p.getExp());
 					p.setExp(0);
-					Murder.prevHealth.put(p.getName(), dp.getHealth());
+					Murder.prevHealth.put(p, dp.getHealth());
 					dp.setHealth(20D);
-					Murder.prevFood.put(p.getName(), p.getFoodLevel());
+					Murder.prevFood.put(p, p.getFoodLevel());
 					p.setFoodLevel(20);
 
 					clearInv(p);
 
 					ResourcePack.setResourcePack(p, Murder.serverVersion);
 
-					Murder.playersInGame.add(p.getName());
-					Murder.playerInLobby.put(p.getName(), arena);
+					Murder.playersInGame.add(p);
+					Murder.playerInLobby.put(p, arena);
 
 					Murder.playersAmount[arena] += 1;
 
@@ -89,24 +99,24 @@ public class Game {
 	}
 
 	public static void leaveArena(int arena, Player p) {
-		p.getInventory().setContents(Murder.InventoryContent.get(p.getName()));
-		p.getInventory().setArmorContents(Murder.InventoryArmorContent.get(p.getName()));
-		p.teleport(Murder.prevLocation.get(p.getName()));
-		p.setGameMode(Murder.prevGamemode.get(p.getName()));
-		p.setLevel(Murder.prevLevel.get(p.getName()));
-		p.setExp(Murder.prevExp.get(p.getName()));
-		p.setHealth(Murder.prevHealth.get(p.getName()));
-		p.setFoodLevel(Murder.prevFood.get(p.getName()));
+		p.getInventory().setContents(Murder.InventoryContent.get(p));
+		p.getInventory().setArmorContents(Murder.InventoryArmorContent.get(p));
+		p.teleport(Murder.prevLocation.get(p));
+		p.setGameMode(Murder.prevGamemode.get(p));
+		p.setLevel(Murder.prevLevel.get(p));
+		p.setExp(Murder.prevExp.get(p));
+		p.setHealth(Murder.prevHealth.get(p));
+		p.setFoodLevel(Murder.prevFood.get(p));
 
-		Murder.playersInLobby.remove(p.getName());
-		Murder.playerInLobby.remove(p.getName());
-		Murder.playersInGame.remove(p.getName());
-		Murder.playersInSpectate.remove(p.getName());
+		Murder.playersInLobby.remove(p);
+		Murder.playerInLobby.remove(p);
+		Murder.playersInGame.remove(p);
+		Murder.playersInSpectate.remove(p);
 
 		removeEffects(arena);
 		ResourcePack.resetResourcePack(p);
 
-		if (Murder.prevGamemode.get(p.getName()) != GameMode.CREATIVE) {
+		if (Murder.prevGamemode.get(p) != GameMode.CREATIVE) {
 			p.setAllowFlight(false);
 			p.setFlying(false);
 		}
@@ -125,32 +135,30 @@ public class Game {
 		ResourcePack.resetResourcePack(p);
 		despawnLoot(arena);
 
-		p.getInventory().setContents(Murder.InventoryContent.get(p.getName()));
-		p.getInventory().setArmorContents(Murder.InventoryArmorContent.get(p.getName()));
-		p.teleport(Murder.prevLocation.get(p.getName()));
-		p.setGameMode(Murder.prevGamemode.get(p.getName()));
-		Murder.playersInLobby.remove(p.getName());
-		Murder.playerInLobby.remove(p.getName());
-		Murder.playersInGame.remove(p.getName());
-		Murder.playersInSpectate.remove(p.getName());
-		Murder.Murderers.remove(p.getName());
-		Murder.Bystanders.remove(p.getName());
+		p.getInventory().setContents(Murder.InventoryContent.get(p));
+		p.getInventory().setArmorContents(Murder.InventoryArmorContent.get(p));
+		p.teleport(Murder.prevLocation.get(p));
+		p.setGameMode(Murder.prevGamemode.get(p));
+		Murder.playersInLobby.remove(p);
+		Murder.playerInLobby.remove(p);
+		Murder.playersInGame.remove(p);
+		Murder.playersInSpectate.remove(p);
+		Murder.Murderers.remove(p);
+		Murder.Bystanders.remove(p);
 
 		p.getInventory().clear();
-		p.getInventory().setContents(Murder.InventoryContent.get(p.getName()));
-		p.getInventory().setArmorContents(Murder.InventoryArmorContent.get(p.getName()));
-		p.teleport(Murder.prevLocation.get(p.getName()));
-		p.setGameMode(Murder.prevGamemode.get(p.getName()));
-		Murder.playersInLobby.remove(p.getName());
-		Murder.playerInLobby.remove(p.getName());
-		Murder.playersInGame.remove(p.getName());
-		Murder.playersInSpectate.remove(p.getName());
-		Murder.Murderers.remove(p.getName());
-		Murder.Bystanders.remove(p.getName());
+		p.getInventory().setContents(Murder.InventoryContent.get(p));
+		p.getInventory().setArmorContents(Murder.InventoryArmorContent.get(p));
+		p.teleport(Murder.prevLocation.get(p));
+		p.setGameMode(Murder.prevGamemode.get(p));
+		Murder.playersInLobby.remove(p);
+		Murder.playerInLobby.remove(p);
+		Murder.playersInGame.remove(p);
+		Murder.playersInSpectate.remove(p);
+		Murder.Murderers.remove(p);
+		Murder.Bystanders.remove(p);
 
-		
-
-		if (Murder.prevGamemode.get(p.getName()) != GameMode.CREATIVE) {
+		if (Murder.prevGamemode.get(p) != GameMode.CREATIVE) {
 			p.setAllowFlight(false);
 			p.setFlying(false);
 		}
@@ -223,7 +231,7 @@ public class Game {
 			for (int i = 0; i < Murder.maxPlayers; i++) {
 				if (Murder.players[arena][i] != null) {
 					Murder.players[arena][i].getWorld().setDifficulty(Difficulty.PEACEFUL);
-					Murder.playersInGame.add(Murder.players[arena][i].getName());
+					Murder.playersInGame.add(Murder.players[arena][i]);
 					Murder.playersInLobby.remove(Murder.players[arena][i]);
 				}
 			}
@@ -237,13 +245,24 @@ public class Game {
 			addEffects(arena);
 			broadcastCountdown(arena);
 			checkRoles(arena);
-			Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+
+			cd0[arena] = Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+
+				@Override
+				public void run() {
+					teleportStart(arena);
+
+				}
+			}, 20 * (Murder.countdown / 2));
+
+			cd1[arena] = Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
 				@Override
 				public void run() {
 					assign(arena);
 					removeEffects(arena);
-					teleportStart(arena);
+					
+					startSmoke(arena);
 
 					Murder.instance.getServer().getScheduler().cancelTask(countdown[arena]);
 					Murder.instance.getServer().getScheduler().cancelTask(countdownLobby[arena]);
@@ -252,7 +271,7 @@ public class Game {
 
 			}, 20 * Murder.countdown);
 
-			Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+			cd2[arena] = Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
 				@Override
 				public void run() {
@@ -263,7 +282,7 @@ public class Game {
 
 			}, (20 * Murder.countdown) + 50);
 
-			Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+			cd3[arena] = Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
 				@Override
 				public void run() {
@@ -274,7 +293,7 @@ public class Game {
 					Murder.instance.getServer().getScheduler().cancelTask(delayedStart[arena]);
 				}
 
-			}, 1000L);
+			}, (20 * Murder.countdown) + 100);
 		}
 
 		Signs.updateSigns(arena);
@@ -362,6 +381,7 @@ public class Game {
 				Murder.players[arena][i].teleport(loc);
 			}
 		}
+
 	}
 
 	public static void preAssign(int arena) {
@@ -388,7 +408,7 @@ public class Game {
 					Murder.console.sendMessage(Murder.prefix + "§3Arena §2#" + arena + "§3 - Assigning Murderer: " + Murder.getPlayerName(arena, m));
 					PlayerFile.set("type", 2);
 					Murder.murderers[arena][m] = Murder.getPlayerName(arena, m);
-					Murder.Murderers.add(Murder.getPlayerName(arena, m).getName());
+					Murder.Murderers.add(Murder.getPlayerName(arena, m));
 					try {
 						PlayerFile.save(playerFile);
 					} catch (IOException e) {
@@ -435,7 +455,7 @@ public class Game {
 					Murder.console.sendMessage(Murder.prefix + "§3Arena §2#" + arena + "§3 - Assigning WeaponBystander: " + Murder.getPlayerName(arena, m));
 					PlayerFile1.set("type", 1);
 					Murder.weaponBystanders[arena][m] = Murder.getPlayerName(arena, m);
-					Murder.Bystanders.add(Murder.getPlayerName(arena, m).getName());
+					Murder.Bystanders.add(Murder.getPlayerName(arena, m));
 					try {
 						PlayerFile1.save(playerFile2);
 					} catch (IOException e) {
@@ -475,7 +495,7 @@ public class Game {
 		arenaFile = new File("plugins/Murder/Arenas/" + arena + "/arena.yml");
 		for (int m = 0; m < Murder.maxPlayers; m++) {
 			if (Murder.players[arena][m] != null) {
-				String pn = Murder.players[arena][m].getName();
+				Player pn = Murder.players[arena][m];
 
 				playerFile = new File("plugins/Murder/Players/" + Murder.players[arena][m].getName() + ".yml");
 				YamlConfiguration PlayerFile = YamlConfiguration.loadConfiguration(playerFile);
@@ -548,9 +568,12 @@ public class Game {
 
 		}
 		Signs.updateSigns(arena);
+
+		// Titles.showStartTitles(arena);
 	}
 
 	public static void stopGame(int arena) {
+		Corpses.despawnCorpse(arena);
 		for (int m = 0; m < Murder.maxPlayers; m++) {
 			if (Murder.players[arena][m] != null) {
 				Player p = Murder.players[arena][m];
@@ -558,7 +581,7 @@ public class Game {
 				p.getInventory().clear();
 
 				unHideTags(arena);
-				
+
 				Murder.nameTag.remove(p);
 				Murder.invisibleTags.remove(p);
 
@@ -569,22 +592,22 @@ public class Game {
 				ResourcePack.resetResourcePack(p);
 				despawnLoot(arena);
 
-				p.getInventory().setContents(Murder.InventoryContent.get(p.getName()));
-				p.getInventory().setArmorContents(Murder.InventoryArmorContent.get(p.getName()));
-				p.teleport(Murder.prevLocation.get(p.getName()));
-				p.setGameMode(Murder.prevGamemode.get(p.getName()));
-				Murder.playersInLobby.remove(p.getName());
-				Murder.playerInLobby.remove(p.getName());
-				Murder.playersInGame.remove(p.getName());
-				Murder.playersInSpectate.remove(p.getName());
-				Murder.Murderers.remove(p.getName());
-				Murder.Bystanders.remove(p.getName());
-
-				try {
-					Corpses.despawnCorpse(p);
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
+				p.getInventory().setContents(Murder.InventoryContent.get(p));
+				p.getInventory().setArmorContents(Murder.InventoryArmorContent.get(p));
+				p.teleport(Murder.prevLocation.get(p));
+				p.setGameMode(Murder.prevGamemode.get(p));
+				Murder.playersInLobby.remove(p);
+				Murder.playerInLobby.remove(p);
+				Murder.playersInGame.remove(p);
+				Murder.playersInSpectate.remove(p);
+				Murder.Murderers.remove(p);
+				Murder.Bystanders.remove(p);
+				//
+				// try {
+				// Corpses.despawnCorpse(p);
+				// } catch (Exception e1) {
+				// e1.printStackTrace();
+				// }
 
 				for (int l = 0; l < Murder.Items.length; l++) {
 					if (Murder.Items[arena][l] != null) {
@@ -593,22 +616,29 @@ public class Game {
 				}
 
 				p.getInventory().clear();
-				p.getInventory().setContents(Murder.InventoryContent.get(p.getName()));
-				p.getInventory().setArmorContents(Murder.InventoryArmorContent.get(p.getName()));
-				p.teleport(Murder.prevLocation.get(p.getName()));
-				p.setGameMode(Murder.prevGamemode.get(p.getName()));
-				p.setLevel(Murder.prevLevel.get(p.getName()));
-				p.setExp(Murder.prevExp.get(p.getName()));
-				Murder.playersInLobby.remove(p.getName());
-				Murder.playerInLobby.remove(p.getName());
-				Murder.playersInGame.remove(p.getName());
-				Murder.playersInSpectate.remove(p.getName());
-				Murder.Murderers.remove(p.getName());
-				Murder.Bystanders.remove(p.getName());
+				p.getInventory().setContents(Murder.InventoryContent.get(p));
+				p.getInventory().setArmorContents(Murder.InventoryArmorContent.get(p));
+				p.teleport(Murder.prevLocation.get(p));
+				p.setGameMode(Murder.prevGamemode.get(p));
+				p.setLevel(Murder.prevLevel.get(p));
+				p.setExp(Murder.prevExp.get(p));
+				Murder.playersInLobby.remove(p);
+				Murder.playerInLobby.remove(p);
+				Murder.playersInGame.remove(p);
+				Murder.playersInSpectate.remove(p);
+				Murder.Murderers.remove(p);
+				Murder.Bystanders.remove(p);
 
 				Murder.instance.getServer().getScheduler().cancelTask(loot[arena]);
 
-				if (Murder.prevGamemode.get(p.getName()) != GameMode.CREATIVE) {
+				Murder.instance.getServer().getScheduler().cancelTask(cd0[arena]);
+				Murder.instance.getServer().getScheduler().cancelTask(cd1[arena]);
+				Murder.instance.getServer().getScheduler().cancelTask(cd2[arena]);
+				Murder.instance.getServer().getScheduler().cancelTask(cd3[arena]);
+				
+				Murder.instance.getServer().getScheduler().cancelTask(smokeDelay[arena]);
+
+				if (Murder.prevGamemode.get(p) != GameMode.CREATIVE) {
 					p.setAllowFlight(false);
 					p.setFlying(false);
 				}
@@ -681,14 +711,16 @@ public class Game {
 		}
 	}
 
-	public static void stopGameDelayed(int a, long delay) {
+	public static void stopGameDelayed(int a, long d) {
 		final int arena = a;
+
+		final long delay = d;
 
 		printScoreboard(arena);
 
 		Murder.instance.getServer().getScheduler().cancelTask(loot[arena]);
 
-		Murder.getBukkit().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+		Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
 			@Override
 			public void run() {
@@ -696,6 +728,10 @@ public class Game {
 			}
 
 		}, delay);
+	}
+
+	public static void murdererSmoke(int arena) {
+
 	}
 
 	public static void addEffects(int arena) {
@@ -707,6 +743,8 @@ public class Game {
 				pl.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 2147000, 128));
 				pl.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 2147000, 255));
 				pl.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 2147000, 255));
+				
+				pl.getInventory().setHelmet(new ItemStack(Material.PUMPKIN));
 			}
 		}
 	}
@@ -721,6 +759,7 @@ public class Game {
 				for (Player online : Murder.instance.getServer().getOnlinePlayers()) {
 					online.showPlayer(Murder.players[arena][m]);
 				}
+				pl.getInventory().setHelmet(new ItemStack(Material.AIR));
 			}
 
 		}
@@ -763,11 +802,13 @@ public class Game {
 		}
 	}
 
+	private static double	randomTime	= Murder.rd.nextInt(90 - (30 - 1)) + 30;
+
 	public static void spawnLoot(final int arena) {
 		arenaFile = new File("plugins/Murder/Arenas/" + arena + "/arena.yml");
 		final YamlConfiguration ArenaFile = YamlConfiguration.loadConfiguration(arenaFile);
-
-		final double randomTime = Math.random() * (60 - 10);
+		//
+		// double randomTime = Murder.rd.nextInt(90 - (30 - 1)) + 30;
 
 		loot[arena] = Murder.instance.getServer().getScheduler().scheduleSyncRepeatingTask(Murder.instance, new Runnable() {
 
@@ -789,6 +830,9 @@ public class Game {
 					Number++;
 				} else
 					Number = 1;
+
+				randomTime = Murder.rd.nextInt(90 - (30 - 1)) + 30;
+
 			}
 
 		}, (int) randomTime * 20, (int) randomTime * 20);
@@ -804,6 +848,21 @@ public class Game {
 			}
 		}
 	}
+	
+	
+	public static void startSmoke(final int arena) {
+		if(Murder.smokeTimer != -1) {
+			smokeDelay[arena] = Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+				
+				@Override
+				public void run() {
+					Players.smoke[arena] = true;	
+					Murder.getMurderer(arena).sendMessage(Murder.prefix + "§aOther Players can now recognize you as the Murderer.");
+				}
+			}, 20 * Murder.smokeTimer);
+		}
+	}
+	
 
 	public static void forceMurderer(int arena, Player p) {
 		arenaFile = new File("plugins/Murder/Arenas/" + arena + "/arena.yml");

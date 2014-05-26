@@ -1,6 +1,7 @@
 package de.inventivegames.Murder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -27,14 +28,16 @@ public class TabCompletionHelper {
 			try {
 				if (foundString[i] != null) {
 					if (foundString[i].regionMatches(true, 0, argumentToFindCompletionFor, 0, argumentToFindCompletionFor.length())) {
-					
-					listOfPossibleCompletions.add(foundString[i]);
+
+						listOfPossibleCompletions.add(foundString[i]);
 					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+
+		Collections.sort(listOfPossibleCompletions);
 
 		return listOfPossibleCompletions;
 	}

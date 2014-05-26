@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Set;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -23,7 +24,7 @@ public class Signs implements Listener {
 
 	@EventHandler
 	public void onSignChange(SignChangeEvent e) {
-		if ((e.getLine(0).equalsIgnoreCase("[Murder]")) && ((e.getPlayer().hasPermission("murder.admin.createsign")) || (e.getPlayer().isOp()))) {
+		if ((e.getLine(0).equalsIgnoreCase("[Murder]")) && (e.getLine(1) != null) && ((e.getPlayer().hasPermission("murder.admin.createsign")) || (e.getPlayer().isOp()))) {
 			for (int i = 0; i <= 3; i++) {
 				String line = e.getLine(i);
 
@@ -32,18 +33,22 @@ public class Signs implements Listener {
 				e.setLine(i, line);
 			}
 			e.setLine(0, "§1[§cMurder§1]");
-			if (e.getLine(1).equalsIgnoreCase("join")) {
+			if (e.getLine(1).equalsIgnoreCase("join") && (e.getLine(2) != null)) {
 				e.setLine(1, "§2Join");
 				e.setLine(3, Murder.getStatus(Integer.valueOf(e.getLine(2))));
 			} else if (e.getLine(1).equalsIgnoreCase("leave")) {
 				e.setLine(1, "§cLeave");
 			}
 
-			createSignFile(Integer.parseInt(e.getLine(2)));
+			if (e.getLine(2) != null) {
+				createSignFile(Integer.parseInt(e.getLine(2)));
 
-			addSignToFile(Integer.parseInt(e.getLine(2)), (Sign) e.getBlock().getState());
+				addSignToFile(Integer.parseInt(e.getLine(2)), (Sign) e.getBlock().getState());
 
-			e.getPlayer().sendMessage(Murder.prefix + "§2" + Messages.getMessage("createdSign"));
+			}
+			if (e.getLine(1) != null) {
+				e.getPlayer().sendMessage(Murder.prefix + "§2" + Messages.getMessage("createdSign"));
+			}
 		}
 	}
 
@@ -108,30 +113,42 @@ public class Signs implements Listener {
 		signFile = new File("plugins/Murder/Arenas/" + arena + "/signs.yml");
 		YamlConfiguration SignFile = YamlConfiguration.loadConfiguration(signFile);
 
-		Set<String> IDs = SignFile.getConfigurationSection("Signs").getKeys(false);
-		Object[] ids = IDs.toArray();
-		String ID;
-		int id;
-		if (IDs.size() != 0) {
-			ID = ids[IDs.size() - 1].toString();
-			id = Integer.parseInt(ID) + 1;
-		} else {
-			id = 1;
-		}
-
-		for (int i = 0; i < id; i++) {
-			if (SignFile.get("Signs." + i) != null) {
-				World world = Murder.instance.getServer().getWorld(SignFile.getString("Signs." + i + ".World"));
-				double X = SignFile.getDouble("Signs." + i + ".X");
-				double Y = SignFile.getDouble("Signs." + i + ".Y");
-				double Z = SignFile.getDouble("Signs." + i + ".Z");
-
-				Location loc = new Location(world, X, Y, Z);
-
-				Sign sign = (Sign) loc.getBlock().getState();
-
-				sign.setLine(3, Murder.getStatus(arena));
-				sign.update();
+		if(SignFile.get("Signs") != null) {
+			Set<String> IDs = SignFile.getConfigurationSection("Signs").getKeys(false);
+			Object[] ids = IDs.toArray();
+			String ID;
+			int id;
+			if (IDs.size() != 0) {
+				ID = ids[IDs.size() - 1].toString();
+				id = Integer.parseInt(ID) + 1;
+			} else {
+				id = 1;
+			}
+	
+			for (int i = 0; i < id; i++) {
+				if (SignFile.get("Signs." + i) != null) {
+					World world = Murder.instance.getServer().getWorld(SignFile.getString("Signs." + i + ".World"));
+					double X = SignFile.getDouble("Signs." + i + ".X");
+					double Y = SignFile.getDouble("Signs." + i + ".Y");
+					double Z = SignFile.getDouble("Signs." + i + ".Z");
+	
+					Location loc = new Location(world, X, Y, Z);
+	
+					if ((loc.getBlock().getType() == Material.SIGN) || (loc.getBlock().getType() == Material.WALL_SIGN)) {
+						Sign sign = (Sign) loc.getBlock().getState();
+	
+						sign.setLine(3, Murder.getStatus(arena));
+						sign.update();
+					} else {
+						SignFile.set("Signs." + i + "", null);
+						try {
+							SignFile.save(signFile);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
 			}
 		}
 
@@ -141,7 +158,7 @@ public class Signs implements Listener {
 	public void onInteract(PlayerInteractEvent e) {
 		if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			Block b = e.getClickedBlock();
-			Player p = e.getPlayer();
+			final Player p = e.getPlayer();
 			BlockState state = b.getState();
 
 			if (state instanceof Sign) {
@@ -149,29 +166,35 @@ public class Signs implements Listener {
 
 				if (sign.getLine(0).equals("§1[§cMurder§1]")) {
 					if ((sign.getLine(1).equals("§2Join")) && (p.hasPermission("murder.player.join"))) {
-						if (!(Murder.playersInGame.contains(p.getName()))) {
+						if (!(Murder.playersInGame.contains(p))) {
 							if (!(Murder.inGame.contains("" + sign.getLine(2)))) {
-								Game.joinArena(sign.getLine(2), p);
+								if (p.getItemInHand().getType() == Material.AIR) {
+									Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+										public void run() {
+											Game.joinArena(sign.getLine(2), p);
 
-								Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+											Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
-									@Override
-									public void run() {
-										sign.setLine(3, Murder.getStatus(Integer.valueOf(sign.getLine(2))));
-										sign.update();
-									}
-								}, 10);
+												@Override
+												public void run() {
+													sign.setLine(3, Murder.getStatus(Integer.valueOf(sign.getLine(2))));
+													sign.update();
+												}
+											}, 10);
 
-								Murder.instance.getServer().getScheduler().scheduleSyncRepeatingTask(Murder.instance, new Runnable() {
+											Murder.instance.getServer().getScheduler().scheduleSyncRepeatingTask(Murder.instance, new Runnable() {
 
-									@Override
-									public void run() {
-										sign.setLine(3, Murder.getStatus(Integer.valueOf(sign.getLine(2))));
-										sign.update();
-									}
-								}, 0, 20 * 10);
+												@Override
+												public void run() {
+													sign.setLine(3, Murder.getStatus(Integer.valueOf(sign.getLine(2))));
+													sign.update();
+												}
+											}, 0, 20 * 10);
 
-								return;
+											return;
+										}
+									}, 1L);
+								}
 							} else
 								p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("arenaIngame"));
 							return;
@@ -179,7 +202,7 @@ public class Signs implements Listener {
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("playerIngame"));
 						return;
 					} else if ((sign.getLine(1).equals("§cLeave")) && (p.hasPermission("murder.player.leave"))) {
-						if (Murder.playersInGame.contains(p.getName())) {
+						if (Murder.playersInGame.contains(p)) {
 							int arena = Murder.getArena(p);
 							Game.leaveArena(arena, p);
 							return;

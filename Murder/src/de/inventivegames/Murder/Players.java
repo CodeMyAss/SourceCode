@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import net.minecraft.server.v1_7_R3.EntityAIBodyControl;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,6 +25,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -34,6 +33,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerToggleSprintEvent;
+import org.bukkit.event.vehicle.VehicleEntityCollisionEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -48,9 +49,11 @@ public class Players implements Listener {
 	static int[]						reloadTimer					= new int[29];
 	static int[]						knifeTimer					= new int[29];
 
-	private static ArrayList<String>	cantPickup					= new ArrayList<String>();
+	private static ArrayList<Player>	cantPickup					= new ArrayList<Player>();
 
 	private static ArrayList<Player>	murderDisguiseNoticeDelay	= new ArrayList<Player>();
+
+	public static boolean[]				smoke						= new boolean[29];
 
 	public static String[]				murdererDisguiseTag			= new String[25];
 
@@ -59,7 +62,7 @@ public class Players implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
-		Murder.playersInGame.remove(p.getName());
+		Murder.playersInGame.remove(p);
 		playerFile = new File("plugins/Murder/Players/" + p.getName() + ".yml");
 		YamlConfiguration PlayerFile = YamlConfiguration.loadConfiguration(playerFile);
 		try {
@@ -83,7 +86,7 @@ public class Players implements Listener {
 	@EventHandler
 	public void onQuit(PlayerQuitEvent e) {
 		Player p = e.getPlayer();
-		if (Murder.playersInGame.contains(p.getName())) {
+		if (Murder.playersInGame.contains(p)) {
 			Game.leaveArena(Murder.getArena(p), p);
 		}
 	}
@@ -91,32 +94,41 @@ public class Players implements Listener {
 	@EventHandler
 	public void ItemDrop(PlayerDropItemEvent e) {
 		Player p = e.getPlayer();
-		if (Murder.playersInGame.contains(p.getName())) {
+		if (Murder.playersInGame.contains(p)) {
 			e.setCancelled(true);
 		}
 	}
 
+	@EventHandler
+	public static void onInventoryClick(InventoryClickEvent e) {
+		Player p = (Player) e.getWhoClicked();
+		if(Murder.playersInGame.contains(p)) {
+			e.setCancelled(true);
+			p.closeInventory();
+		}
+	}
+	
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void pickupItem(PlayerPickupItemEvent e) {
 		Player p = e.getPlayer();
 		Item item = e.getItem();
-		if (cantPickup.contains(p.getName())) {
+		if (cantPickup.contains(p)) {
 			p.getInventory().remove(Murder.Gun());
 			p.updateInventory();
 			e.setCancelled(true);
 			return;
 		}
-		if (Murder.playersInSpectate.contains(p.getName())) {
+		if (Murder.playersInSpectate.contains(p)) {
 			p.getInventory().clear();
 			p.updateInventory();
 			e.setCancelled(true);
 			return;
 		}
-		if ((Murder.playersInGame.contains(p.getName())) || (Murder.playersInLobby.contains(p.getName()))) {
-			if (Murder.Bystanders.contains(p.getName())) {
+		if ((Murder.playersInGame.contains(p)) || (Murder.playersInLobby.contains(p))) {
+			if (Murder.Bystanders.contains(p)) {
 				if (item.getItemStack().getType().equals(Material.DIAMOND_HOE)) {
-					if (!cantPickup.contains(p.getName())) {
+					if (!cantPickup.contains(p)) {
 						p.getInventory().setItem(4, null);
 						p.getInventory().setItem(4, Murder.Gun());
 						if (!(p.getInventory().contains(Material.ARROW))) {
@@ -128,7 +140,7 @@ public class Players implements Listener {
 						e.setCancelled(true);
 				} else
 					e.setCancelled(true);
-			} else if (Murder.Murderers.contains(p.getName())) {
+			} else if (Murder.Murderers.contains(p)) {
 				if (item.getItemStack().getType().equals(Material.IRON_SWORD)) {
 					p.getInventory().setItem(4, null);
 					p.getInventory().setItem(4, Murder.Knife());
@@ -137,12 +149,12 @@ public class Players implements Listener {
 				} else
 					e.setCancelled(true);
 			}
-			if ((Murder.Bystanders.contains(p.getName())) || (Murder.Murderers.contains(p.getName()))) {
+			if ((Murder.Bystanders.contains(p)) || (Murder.Murderers.contains(p))) {
 				if (item.getItemStack().getType().equals(Material.DIAMOND)) {
 					item.remove();
 					p.setLevel(p.getLevel() + 1);
 					p.sendMessage(Murder.prefix + "§2" + Messages.getMessage("lootCollected").replace("%1$s", "1"));
-					if ((p.getLevel() == 5) && (!(Murder.Murderers.contains(p.getName())))) {
+					if ((p.getLevel() == 5) && (!(Murder.Murderers.contains(p)))) {
 						p.getInventory().setItem(4, Murder.Gun());
 						p.getInventory().setItem(8, Murder.Bullet());
 					}
@@ -157,7 +169,7 @@ public class Players implements Listener {
 		Entity ent = e.getEntity();
 		if ((ent instanceof Player) && (e.getDamager() instanceof Player)) {
 			Player p = (Player) e.getDamager();
-			if ((Murder.playersInGame.contains(p.getName())) || (Murder.playerInLobby.containsKey(p.getName()))) {
+			if ((Murder.playersInGame.contains(p)) || (Murder.playerInLobby.containsKey(p))) {
 				if (!((p.getItemInHand().getType().equals(Material.IRON_SWORD)) || (p.getItemInHand().getType().equals(Material.BOW)))) {
 					e.setCancelled(true);
 				}
@@ -190,12 +202,12 @@ public class Players implements Listener {
 		Entity ent = e.getEntity();
 		if (ent instanceof Player) {
 			Player p = (Player) ent;
-			if (Murder.playersInGame.contains(p.getName())) {
+			if (Murder.playersInGame.contains(p)) {
 				if ((e.getCause() == DamageCause.FALL) || (e.getCause() == DamageCause.FIRE_TICK)) {
 					e.setCancelled(true);
 				}
 			}
-			if (Murder.playersInSpectate.contains(p.getName())) {
+			if (Murder.playersInSpectate.contains(p)) {
 				e.setDamage(0D);
 				e.setCancelled(true);
 			}
@@ -215,10 +227,10 @@ public class Players implements Listener {
 
 		if (e.getEntity() instanceof Player) {
 			if (e.getEntity().getKiller() instanceof Player) {
-				if (Murder.playersInGame.contains(e.getEntity().getName())) {
-					Player p = (Player) e.getEntity();
+				if (Murder.playersInGame.contains(e.getEntity())) {
+					final Player p = (Player) e.getEntity();
 
-					Murder.playersInSpectate.add(p.getName());
+					Murder.playersInSpectate.add(p);
 					p.sendMessage(Murder.prefix + "§aYou are now a Spectator.");
 
 					e.setDeathMessage(null);
@@ -230,6 +242,8 @@ public class Players implements Listener {
 					e.getDrops().clear();
 					p.setAllowFlight(true);
 					p.setFlying(true);
+
+					p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 25, 255));
 
 					for (Player online : Murder.instance.getServer().getOnlinePlayers()) {
 						online.hidePlayer(p);
@@ -257,8 +271,20 @@ public class Players implements Listener {
 
 						}
 
+						if (p.getInventory().contains(Murder.Gun())) {
+							Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+
+								@Override
+								public void run() {
+									Item gun = p.getWorld().dropItemNaturally(p.getLocation(), Murder.Gun());
+									Murder.Items[Murder.getArena(p)][Murder.ItemAmount[Murder.getArena(p)]] = gun;
+									Murder.ItemAmount[Murder.getArena(p)]++;
+								}
+							}, 2);
+						}
+
 					} else if (killer.getItemInHand().getType().equals(Material.DIAMOND_HOE)) {
-						if (Murder.Bystanders.contains(p.getName())) {
+						if (Murder.Bystanders.contains(p)) {
 
 							Murder.bystanderAmount[Murder.getArena(p)] -= 1;
 
@@ -266,7 +292,7 @@ public class Players implements Listener {
 							killer.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 2147000, 1));
 							killer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 2147000, 1));
 
-							cantPickup.add(killer.getName());
+							cantPickup.add(killer);
 
 							final ItemStack nameTag = killer.getInventory().getItem(0);
 
@@ -315,7 +341,7 @@ public class Players implements Listener {
 
 								@Override
 								public void run() {
-									cantPickup.remove(killer.getName());
+									cantPickup.remove(killer);
 								}
 
 							}, 20 * 30);
@@ -332,7 +358,7 @@ public class Players implements Listener {
 								Game.stopGameDelayed(Murder.getArena(p), 10 * 20);
 
 							}
-						} else if (Murder.Murderers.contains(p.getName())) {
+						} else if (Murder.Murderers.contains(p)) {
 							Murder.sendArenaMessage(Murder.prefix + "§1" + Messages.getMessage("killedMurderer").replace("%1$s", killer.getName()), Murder.getArena(p));
 							Murder.sendArenaMessage(Murder.prefix + "§1" + Messages.getMessage("bystanderWin1"), Murder.getArena(p));
 							Murder.sendArenaMessage(Murder.prefix + "§2" + Messages.getMessage("bystanderWin2").replace("%1$s", Murder.getNameTag(killer)).replace("%2$s", killer.getName()), Murder.getArena(p));
@@ -369,34 +395,146 @@ public class Players implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onTarget(EntityTargetEvent e) {
-		if(e.getEntity() instanceof Zombie) {
-			if(e.getTarget() instanceof Player) {
+		if (e.getEntity() instanceof Zombie) {
+			if (Murder.zombieMap.containsValue(e.getEntity())) {
+				if (e.getTarget() instanceof Player) {
+					e.setCancelled(true);
+				}
+			}
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@EventHandler
+	public void onArrowBlock(EntityDamageByEntityEvent event) {
+		Entity entityDamager = event.getDamager();
+		Entity entityDamaged = event.getEntity();
+
+		if (entityDamager instanceof Arrow) {
+			if (entityDamaged instanceof Player && ((Arrow) entityDamager).getShooter() instanceof Player) {
+				Arrow arrow = (Arrow) entityDamager;
+
+				Vector velocity = arrow.getVelocity();
+
+				final Player shooter = (Player) arrow.getShooter();
+				Player damaged = (Player) entityDamaged;
+
+				if (Murder.isSpectator(damaged)) {
+					damaged.teleport(entityDamaged.getLocation().add(0, 5, 0));
+					damaged.setFlying(true);
+
+					final Arrow newArrow = shooter.launchProjectile(Arrow.class);
+					newArrow.setShooter(shooter);
+					newArrow.setVelocity(velocity);
+					newArrow.setBounce(false);
+
+					event.setCancelled(true);
+					arrow.remove();
+
+					if (Murder.isMurderer(shooter)) {
+						Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+
+							@Override
+							public void run() {
+								Item item = newArrow.getLocation().getWorld().dropItemNaturally(newArrow.getLocation().add(0, 1, 0), Murder.Knife());
+								item.setVelocity(Utils.calculateKnifeItemVelocity(shooter, item));
+
+								Murder.Items[Murder.getArena(shooter)][Murder.ItemAmount[Murder.getArena(shooter)]] = item;
+								Murder.ItemAmount[Murder.getArena(shooter)]++;
+
+								if (newArrow.isOnGround()) {
+									newArrow.remove();
+								}
+							}
+						}, 10);
+					}
+				}
+			}
+		}
+	}
+
+	@EventHandler
+	public void onVehicleEntityCollision(VehicleEntityCollisionEvent e) {
+		if (e.getEntity() instanceof Player) {
+			if (Murder.playersInSpectate.contains((Player) e.getEntity())) {
 				e.setCancelled(true);
 			}
 		}
 	}
-	
+
+	@EventHandler
+	public void onEntityMove(PlayerMoveEvent e) {
+		Player p = e.getPlayer();
+		for (Entity ent : p.getNearbyEntities(0.75, 0.75, 0.75)) {
+			if (ent instanceof Zombie) {
+				Zombie z = (Zombie) ent;
+
+				if (Murder.zombieMap.containsValue(z)) {
+					if (Murder.isSpectator(p)) {
+						p.setVelocity(calculateVelocity(p, z));
+					}
+				}
+			}
+		}
+	}
+
+	public Vector calculateVelocity(Player p, Entity e) {
+		Location ploc = p.getLocation();
+		Location eloc = e.getLocation();
+
+		double px = ploc.getX();
+		double py = ploc.getY();
+		double pz = ploc.getZ();
+		double ex = eloc.getX();
+		double ey = eloc.getY();
+		double ez = eloc.getZ();
+
+		double x = 0;
+		double y = 0;
+		double z = 0;
+
+		if (px > ex) {
+			x = 0.5;
+		} else if (px < ex) {
+			x = -0.5;
+		}
+
+		if (py > ey) {
+			y = 0.25;
+		} else if (py < ey) {
+			y = -0.25;
+		}
+
+		if (pz > ez) {
+			z = 0.5;
+		} else if (pz < ez) {
+			z = -0.5;
+		}
+
+		return new Vector(x, y, z);
+	}
+
 	@EventHandler
 	public void onHunger(FoodLevelChangeEvent e) {
-		if(e.getEntity() instanceof Player) {
+		if (e.getEntity() instanceof Player) {
 			Player p = (Player) e.getEntity();
-			if (Murder.playersInGame.contains(p.getName())) {
+			if (Murder.playersInGame.contains(p)) {
 				e.setFoodLevel(20);
 				e.setCancelled(true);
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onGunUse(PlayerInteractEvent e) {
 		final Player p = e.getPlayer();
 		Action a = e.getAction();
 		ItemStack is = p.getInventory().getItemInHand();
-		if (Murder.playersInGame.contains(p.getName())) {
+		if (Murder.playersInGame.contains(p)) {
 			if (a == Action.RIGHT_CLICK_AIR) {
 				if (is.getType().equals(Material.DIAMOND_HOE)) {
 					if (p.getInventory().contains(Material.ARROW)) {
@@ -444,7 +582,7 @@ public class Players implements Listener {
 		final Player p = e.getPlayer();
 		Action a = e.getAction();
 		ItemStack is = p.getInventory().getItemInHand();
-		if (Murder.playersInGame.contains(p.getName())) {
+		if (Murder.playersInGame.contains(p)) {
 			if (a == Action.RIGHT_CLICK_AIR) {
 				if (is.getType().equals(Material.IRON_SWORD)) {
 
@@ -509,8 +647,8 @@ public class Players implements Listener {
 		Player p = e.getPlayer();
 		Location loc = p.getLocation();
 		ParticleEffects effect = ParticleEffects.FOOTSTEP;
-		if ((Murder.playersInGame.contains(p.getName())) && (Murder.inGame.contains("" + Murder.getArena(p))) && (p != null)) {
-			if (p.isOnGround()) {
+		if ((Murder.playersInGame.contains(p)) && (Murder.inGame.contains("" + Murder.getArena(p))) && (p != null)) {
+			if ((p.isOnGround()) && (!(Murder.isSpectator(p)))) {
 				try {
 					float x = (float) 0;
 					float y = (float) 0;
@@ -530,68 +668,50 @@ public class Players implements Listener {
 	}
 
 	@EventHandler
-	public void onMove(PlayerMoveEvent e) {
-		final Player p = e.getPlayer();
-		if (Murder.playersInGame.contains(p.getName())) {
-			if (Murder.Murderers.contains(p.getName())) {
-				for (Entity ent : p.getNearbyEntities(2, 2, 2)) {
-					if (ent instanceof Zombie) {
-						Zombie z = (Zombie) ent;
-						if ((z.getCustomName() != null) || (z.getCustomName() != "Zombie")) {
-							if (!(murderDisguiseNoticeDelay.contains(p))) {
-								murderDisguiseNoticeDelay.add(p);
-								p.sendMessage(Murder.prefix + "§2" + Messages.getMessage("disguiseNotification"));
-
-								Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
-
-									@Override
-									public void run() {
-										murdererDisguise.remove(p);
-
-									}
-
-								}, 10L);
-							}
-						}
-					}
+	public static void onSprint(PlayerToggleSprintEvent e) {
+		Player p = e.getPlayer();
+		if (Murder.playersInGame.contains(p)) {
+			if(e.isSprinting()) {
+				if ((Murder.isBystander(p) || Murder.isWeaponBystander(p)) && (Murder.inGame.contains("" + Murder.getArena(p)))) {
+					p.setFoodLevel(6);
+					e.setCancelled(true);
 				}
 			}
 		}
 	}
 
 	@EventHandler
-	public void onMurderDisguise(PlayerInteractEntityEvent e) {
-		final Player p = e.getPlayer();
-		Entity ent = e.getRightClicked();
-		if (Murder.playersInGame.contains(p.getName())) {
-			if (Murder.Murderers.contains(p.getName())) {
-				if (ent instanceof Zombie) {
-					final Zombie z = (Zombie) ent;
-					if ((z.getCustomName() != null) || (z.getCustomName() != "Zombie")) {
-						disguiseMurderer(p, z);
+	public static void smokeTrail(PlayerMoveEvent e) {
+		Player p = e.getPlayer();
+		int arena = Murder.getArena(p);
+		if (Murder.playersInGame.contains(p)) {
+			if ((Murder.isMurderer(p)) && (!(Murder.isSpectator(p)))) {
+				if(smoke[arena]) {
+					Location loc = p.getLocation();
+					ParticleEffects effect = ParticleEffects.LARGE_SMOKE;
+					try {
+						float x = (float) 0;
+						float y = (float) 0.5;
+						float z = (float) 0;
+						float speed = 0;
+						int count = 1;
+						for(Player receiver : Murder.instance.getServer().getOnlinePlayers()) {
+							effect.sendToPlayer(receiver, loc, x, y, z, speed, count);
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
 					}
 				}
 			}
 		}
 	}
 
-	private void disguiseMurderer(final Player p, Zombie zombie) {
+	public static void disguiseMurderer(final Player p, String name) {
 		murdererDisguise.add(p);
-		murdererDisguiseTag[Murder.getArena(p)] = zombie.getCustomName();
+		murdererDisguiseTag[Murder.getArena(p)] = name;
 		TagAPI.refreshPlayer(p);
 
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
-
-			@Override
-			public void run() {
-				TagAPI.refreshPlayer(p);
-			}
-		}, 2);
-
-		murdererDisguiseTag[Murder.getArena(p)] = zombie.getCustomName();
-		TagAPI.refreshPlayer(p);
-
-		p.sendMessage(Murder.prefix + "§2You Disguised as " + zombie.getCustomName());
+		p.sendMessage(Murder.prefix + "§2You Disguised as " + name);
 
 	}
 
@@ -599,7 +719,7 @@ public class Players implements Listener {
 	public void onTagMurderChange(final AsyncPlayerReceiveNameTagEvent event) {
 		Player player = event.getNamedPlayer();
 
-		if ((Murder.murderers[Murder.getArena(player)][Murder.getPlayerNumber(player, Murder.getArena(player))] == player) && (murdererDisguise.contains(player))) {
+		if ((Murder.isMurderer(player)) && (murdererDisguise.contains(player))) {
 			final String tag = murdererDisguiseTag[Murder.getArena(player)];
 			event.setTag(tag);
 			Murder.console.sendMessage(Murder.prefix + "§2Disguising Murderer §a" + player + "§2: §r" + tag);

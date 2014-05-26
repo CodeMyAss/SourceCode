@@ -15,20 +15,6 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 		if (sender instanceof Player) {
 			Player p = (Player) sender;
 			if (cmd.getName().equalsIgnoreCase("murder")) {
-				if ((p.hasPermission("murder.player")) || (p.isOp())) {
-
-					if (args.length == 0 || args.length == 1) {
-						return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, new String[] { "join", "leave", "help" });
-					}
-					if (args.length == 1 || args.length == 2) {
-						if (args[0].equalsIgnoreCase("join")) {
-							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
-						}
-						if (args[0].equalsIgnoreCase("leave")) {
-							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
-						}
-					} 
-				}
 				if ((p.hasPermission("murder.admin")) || (p.isOp())) {
 					if (args.length == 0 || args.length == 1) {
 						return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, new String[] { "join", "leave", "help", "start", "stop", "addarena", "removearena", "addspawn" });
@@ -50,32 +36,45 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
 						}
 					}
-				
-				if (args.length == 2 || args.length == 3) {
-					if (args[0].equalsIgnoreCase("addspawn")) {
-						return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, new String[] { "lobby", "players", "loot" });
+
+					if (args.length == 2 || args.length == 3) {
+						if (args[0].equalsIgnoreCase("addspawn")) {
+							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, new String[] { "lobby", "players", "loot" });
+						}
+					}
+					if (args.length == 3 || args.length == 4) {
+						if (args[0].equalsIgnoreCase("addspawn")) {
+							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
+						}
 					}
 				}
-				if (args.length == 3 || args.length == 4) {
-					if (args[0].equalsIgnoreCase("addspawn")) {
-						return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
+				if ((p.hasPermission("murder.player")) || (p.isOp())) {
+
+					if (args.length == 0 || args.length == 1) {
+						return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, new String[] { "join", "leave", "help" });
+					}
+					if (args.length == 1 || args.length == 2) {
+						if (args[0].equalsIgnoreCase("join")) {
+							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
+						}
+						if (args[0].equalsIgnoreCase("leave")) {
+							return TabCompletionHelper.getPossibleCompletionsForGivenArgs(args, TabCompletionHelper.getAllIntegers());
+						}
 					}
 				}
-			}
 			}
 		}
 		return null;
 	}
-	
+
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (sender instanceof Player) {
 			Player p = (Player) sender;
-			if (Murder.playersInGame.contains(p.getName())) {
+			if (Murder.playersInGame.contains(p)) {
 				if (!(cmd.getLabel().equalsIgnoreCase("murder"))) {
 					if (!(Murder.instance.getConfig().getList("allowedCommands").contains(cmd.getLabel()))) {
 						p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("cantUseCommand"));
 						return true;
-
 					}
 				}
 			}
@@ -88,7 +87,7 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 				if (args.length > 0) {
 					if (args[0].equalsIgnoreCase("help")) {
 						if (args.length == 1) {
-							p.sendMessage("§2== Murder MiniGame by inventivetalent ==");
+							p.sendMessage("§2==== Murder MiniGame by inventivetalent  ====");
 							p.sendMessage("§2=============== Commands ===============");
 							p.sendMessage("§2/murder help");
 							p.sendMessage("§2/murder join <ArenaNumber>");
@@ -102,14 +101,14 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 								p.sendMessage("§2/murder addspawn <ArenaNumber> loot <SpawnNumber>");
 							}
 							p.sendMessage("§2=============== Enjoy! =================");
-							p.sendMessage("§2======== www.InventiveGames.de =========");
+							p.sendMessage("§2========= www.InventiveGames.de ==========");
 						} else
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));
 						return true;
 					} else if ((args[0].equalsIgnoreCase("join"))) {
 						if ((p.hasPermission("murder.player.join"))) {
 							if (args.length == 2) {
-								if (!(Murder.playersInGame.contains(p.getName()))) {
+								if (!(Murder.playersInGame.contains(p))) {
 									if (!(Murder.inGame.contains("" + args[1]))) {
 										Game.joinArena(args[1], p);
 										return true;
@@ -126,7 +125,7 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("noPermission"));
 					} else if (args[0].equalsIgnoreCase("leave")) {
 						if (p.hasPermission("murder.player.leave")) {
-							if (Murder.playersInGame.contains(p.getName())) {
+							if (Murder.playersInGame.contains(p)) {
 								if (args.length == 1) {
 									int arena = Murder.getArena(p);
 									Game.leaveArena(arena, p);
@@ -202,15 +201,15 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("noPermission"));
 					} else if (args[0].equalsIgnoreCase("addspawn")) {
 						if (p.hasPermission("murder.admin.spawns")) {
-							if (args.length == 3) {
+							if ((args.length == 3) && (args[2].equalsIgnoreCase("lobby"))) {
 								Arenas.addSpawnPoint(args[1], args[2], 1, p);
 								return true;
-							} else if (args.length == 4) {
+							} else if ((args.length == 4)  && (!args[2].equalsIgnoreCase("lobby"))) {
 								Arenas.addSpawnPoint(args[1], args[2], args[3], p);
 								return true;
 							} else
 								p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));
-							return true;
+								return true;
 						} else
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("noPermission"));
 					} else if (args[0].equalsIgnoreCase("forcemurderer")) {
@@ -239,6 +238,15 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 							return true;
 						} else
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));
+					} else if (args[0].equalsIgnoreCase("arenaInfo")) {
+						if (p.hasPermission("murder.admin.DEBUG.arena")) {
+							if (args.length == 2) {
+								Arenas.printArenaInfo(p, Integer.valueOf(args[1]));
+							} else
+								p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));
+							return true;
+						} else
+							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("noPermission"));
 					} else {
 						p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));
 						return true;

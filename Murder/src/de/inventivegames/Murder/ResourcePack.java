@@ -14,7 +14,7 @@ public class ResourcePack {
 			public void run() {
 				try {
 					p.sendMessage(Murder.prefix + "§6Downloading Custom Resources...");
-					p.setResourcePack("https://dl.dropboxusercontent.com/s/3lwpcrtdffr29at/MurderResourcePack%20256x%20%28V2.0%29.zip?dl=1");
+					p.setResourcePack("https://dl.dropboxusercontent.com/s/sbqllqe98huhrv1/MurderResourcePack%20256x%20%28V2.1%29.zip?dl=1");
 					p.sendMessage("§6If the ResourcePack isn't downloading,");
 
 					try {
@@ -33,7 +33,7 @@ public class ResourcePack {
 
 			}
 
-		}, 5L);
+		}, 10L);
 	}
 
 	public static void resetResourcePack(Player p) {
