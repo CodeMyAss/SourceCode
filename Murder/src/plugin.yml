@@ -1,6 +1,6 @@
 name: Murder
 main: de.inventivegames.Murder.Murder
-version: 1.8.1
+version: 1.8.2
 website: http://www.inventivegames.de
 author: inventivetalent
 description: >
@@ -10,4 +10,3 @@ softdepend: [TagAPI, ProtocolLib]
     
 commands:
   Murder:
-    description: Murder Command

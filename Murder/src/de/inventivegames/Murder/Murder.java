@@ -155,7 +155,11 @@ public class Murder extends JavaPlugin implements Listener {
 
 		serverVersion = instance.getServer().getBukkitVersion().toString();
 
-		console = Bukkit.getServer().getConsoleSender();
+			if((serverVersion != null) && (serverVersion.contains("1.7.9"))) {
+				Corpses.oldSpawns = true;
+				console.sendMessage(Murder.prefix + "§cIncompatible Server Version (" + serverVersion + ")! Using old Corpse spawns...");
+			}
+
 
 		for (int i = 0; i < 24; i++) {
 			Game.BystanderSelected[i] = false;

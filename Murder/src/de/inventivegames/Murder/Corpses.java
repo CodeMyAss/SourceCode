@@ -5,25 +5,22 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.Difficulty;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.comphenix.packetwrapper.WrapperPlayServerBed;
 import com.comphenix.packetwrapper.WrapperPlayServerEntityDestroy;
 import com.comphenix.packetwrapper.WrapperPlayServerEntityTeleport;
 import com.comphenix.packetwrapper.WrapperPlayServerNamedEntitySpawn;
-import com.comphenix.protocol.Packets;
 import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.ConnectionSide;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 
 @SuppressWarnings("deprecation")
@@ -34,62 +31,70 @@ public class Corpses implements Listener {
 	public static HashMap<Player, Integer>		fakePlayerMap	= new HashMap<Player, Integer>();
 	public static ProtocolManager				manager;
 
+	public static boolean						oldSpawns		= false;
+
 	public static void spawnCorpse(Location loc, Player p) throws Exception {
 
-		try {
-			createFakePlayer(loc, p);
-		} catch(Exception ex) {
-			ex.printStackTrace();
+		if (!oldSpawns) {
+			try {
+				createFakePlayer(loc, p);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		} else {
+			loc.getWorld().setDifficulty(Difficulty.EASY);
+
+			Zombie zombie = loc.getWorld().spawn(loc, Zombie.class);
+			if (Murder.nameTag.get(p) == null) {
+				zombie.setCustomName("----");
+			} else {
+				zombie.setCustomName(Murder.nameTag.get(p));
+			}
+			zombie.setCustomNameVisible(true);
+
+			zombie.setCanPickupItems(false);
+
+			zombie.setCanPickupItems(false);
+			zombie.setMaxHealth(999999999D);
+			zombie.setHealth(999999999D);
+			zombie.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 2147000, 255));
+			zombie.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 2147000, 255));
+			zombie.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 2147000, 255));
+			Murder.zombieMap.put(p, zombie);
 		}
-		
-		// loc.getWorld().setDifficulty(Difficulty.EASY);
-		//
-		// Zombie zombie = loc.getWorld().spawn(loc, Zombie.class);
-		// if (Murder.nameTag.get(p) == null) {
-		// zombie.setCustomName("----");
-		// } else {
-		// zombie.setCustomName(Murder.nameTag.get(p));
-		// }
-		// zombie.setCustomNameVisible(true);
-		//
-		// zombie.setCanPickupItems(false);
-		//
-		// zombie.setCanPickupItems(false);
-		// zombie.setMaxHealth(999999999D);
-		// zombie.setHealth(999999999D);
-		// zombie.addPotionEffect(new PotionEffect(PotionEffectType.SLOW,
-		// 2147000, 255));
-		// zombie.addPotionEffect(new
-		// PotionEffect(PotionEffectType.HEALTH_BOOST, 2147000, 255));
-		// zombie.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,
-		// 2147000, 255));
-		// Murder.zombieMap.put(p, zombie);
 	}
 
 	public static void despawnCorpse(int arena) {
 
-		try {
-			removeFakePlayers(arena);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		if (!oldSpawns) {
+			try {
+				removeFakePlayers(arena);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			for (int i = 0; i < Murder.maxPlayers + 1; i++) {
+				if (Murder.players[arena][i] != null) {
+					Player p = Murder.players[arena][i];
 
-		// Zombie zombie = Murder.zombieMap.get(p);
-		// if (zombie != null) {
-		// zombie.damage(999999999D);
-		// for (PotionEffect effect : zombie.getActivePotionEffects()) {
-		// zombie.removePotionEffect(effect.getType());
-		// }
-		// zombie.addPotionEffect(new PotionEffect(PotionEffectType.POISON,
-		// 2147000, 255));
-		// zombie.damage(999999999D);
-		// zombie.setFireTicks(10);
-		// zombie.remove();
-		// Murder.zombieMap.remove(p);
-		// }
+					Zombie zombie = Murder.zombieMap.get(p);
+					if (zombie != null) {
+						zombie.damage(999999999D);
+						for (PotionEffect effect : zombie.getActivePotionEffects()) {
+							zombie.removePotionEffect(effect.getType());
+						}
+						zombie.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 2147000, 255));
+						zombie.damage(999999999D);
+						zombie.setFireTicks(10);
+						zombie.remove();
+						Murder.zombieMap.remove(p);
+					}
+				}
+			}
+		}
 	}
 
-	public static void createFakePlayer(Location loc, Player p) throws Exception  {
+	public static void createFakePlayer(Location loc, Player p) throws Exception {
 		String name = Murder.nameTag.get(p);
 
 		if (name == null) {

@@ -102,9 +102,10 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 							}
 							p.sendMessage("§2=============== Enjoy! =================");
 							p.sendMessage("§2========= www.InventiveGames.de ==========");
-						} else
+						} else {
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));
-						return true;
+							return true;
+						}
 					} else if ((args[0].equalsIgnoreCase("join"))) {
 						if ((p.hasPermission("murder.player.join"))) {
 							if (args.length == 2) {
@@ -118,9 +119,10 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 								} else
 									p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("playerIngame"));
 								return true;
-							} else
+							} else {
 								p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));
-							return true;
+								return true;
+							}
 						} else
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("noPermission"));
 					} else if (args[0].equalsIgnoreCase("leave")) {
@@ -133,12 +135,14 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 								} else if (args.length == 2) {
 									Game.leaveArena(args[1], p);
 									return true;
-								} else
+								} else {
 									p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));
-								return true;
-							} else
+									return true;
+								}
+							} else {
 								p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("playerNotIngame"));
-							return true;
+								return true;
+							}
 						} else
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("noPermission"));
 					} else
@@ -157,9 +161,10 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 								Murder.instance.getServer().getScheduler().cancelTask(Game.countdownLobby[arena]);
 								Murder.instance.getServer().getScheduler().cancelTask(Game.delayedStart[arena]);
 								return true;
-							} else
+							} else {
 								p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));
-							return true;
+								return true;
+							}
 						} else
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("noPermission"));
 					}
@@ -173,9 +178,10 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 							if (args.length == 2) {
 								Game.stopGame(Integer.valueOf(args[1]));
 								return true;
-							} else
+							} else {
 								p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));
-							return true;
+								return true;
+							}
 						} else
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("noPermission"));
 					} else if (args[0].equalsIgnoreCase("addarena")) {
@@ -194,9 +200,10 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 							if (args.length == 2) {
 								Arenas.removeArenaFile(args[1], p);
 								return true;
-							} else
+							} else {
 								p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));
-							return true;
+								return true;
+							}
 						} else
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("noPermission"));
 					} else if (args[0].equalsIgnoreCase("addspawn")) {
@@ -204,12 +211,13 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 							if ((args.length == 3) && (args[2].equalsIgnoreCase("lobby"))) {
 								Arenas.addSpawnPoint(args[1], args[2], 1, p);
 								return true;
-							} else if ((args.length == 4)  && (!args[2].equalsIgnoreCase("lobby"))) {
+							} else if ((args.length == 4) && (!args[2].equalsIgnoreCase("lobby"))) {
 								Arenas.addSpawnPoint(args[1], args[2], args[3], p);
 								return true;
-							} else
+							} else {
 								p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));
 								return true;
+							}
 						} else
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("noPermission"));
 					} else if (args[0].equalsIgnoreCase("forcemurderer")) {
@@ -220,9 +228,10 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 							} else if (args.length == 3) {
 								Game.forceMurderer(Murder.getArena(p), args[1], p);
 								return true;
-							} else
+							} else {
 								p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));
-							return true;
+								return true;
+							}
 						} else
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("noPermission"));
 					} else if (args[0].equalsIgnoreCase("forceweapon")) {
@@ -233,9 +242,10 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 							} else if (args.length == 3) {
 								Game.forceWeapon(Murder.getArena(p), args[1], p);
 								return true;
-							} else
+							} else {
 								p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));
-							return true;
+								return true;
+							}
 						} else
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));
 					} else if (args[0].equalsIgnoreCase("arenaInfo")) {
