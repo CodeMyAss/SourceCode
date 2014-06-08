@@ -1,9 +1,16 @@
 SourceCode
 ==========
 
-SourceCode of almost every Plugin/Program i made.
+Source Code of my Bukkit Plugins
+©Copyright 2013-2014 inventivetalent
 
-Please add credits to me if you use any of this Code in your Plugins!
+You can:
+* modify parts of the Code
+* use parts of the Code in your own projets
+
+You must NOT:
+* claim the Code as your own
+* remove any notice that the Code/Plugin is by me (Including Text in Resource Packs)
 
 ==========
 
@@ -11,5 +18,5 @@ Website:
   http://www.InventiveGames.de
   
 BukkitDev:
-  http://dev.bukkit.org/profiles/inventivetalent/bukkit-plugins/
+  http://www.InventiveGames.de/BukkitDev
   
