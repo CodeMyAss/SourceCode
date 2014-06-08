@@ -24,35 +24,33 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedStatistic;
 
 public class WrapperPlayServerStatistics extends AbstractPacket {
-	public static final PacketType	TYPE	= PacketType.Play.Server.STATISTICS;
-
-	public WrapperPlayServerStatistics() {
-		super(new PacketContainer(TYPE), TYPE);
-		handle.getModifier().writeDefaults();
-	}
-
-	public WrapperPlayServerStatistics(PacketContainer packet) {
-		super(packet, TYPE);
-	}
-
-	/**
-	 * Retrieve a map of every statistic in this packet.
-	 * <p>
-	 * Note that you must write back the map to save any changes.
-	 * 
-	 * @return Map of every statistics sent to the player.
-	 */
-	public Map<WrappedStatistic, Integer> getStatistics() {
-		return handle.getStatisticMaps().read(0);
-	}
-
-	/**
-	 * Set every statistic and associated integer value to send to the player.
-	 * 
-	 * @param changes
-	 *            - the changed map of statistics and data.
-	 */
-	public void setStatistics(Map<WrappedStatistic, Integer> changes) {
-		handle.getStatisticMaps().write(0, changes);
-	}
+    public static final PacketType TYPE = PacketType.Play.Server.STATISTICS;
+    
+    public WrapperPlayServerStatistics() {
+        super(new PacketContainer(TYPE), TYPE);
+        handle.getModifier().writeDefaults();
+    }
+    
+    public WrapperPlayServerStatistics(PacketContainer packet) {
+        super(packet, TYPE);
+    }
+    
+    /**
+     * Retrieve a map of every statistic in this packet.
+     * <p>
+     * Note that you must write back the map to save any changes.
+     * @return Map of every statistics sent to the player.
+    */
+    public Map<WrappedStatistic, Integer> getStatistics() {
+        return handle.getStatisticMaps().read(0);
+    }
+    
+    /**
+     * Set every statistic and associated integer value to send to the player.
+     * @param changes - the changed map of statistics and data.
+     */
+    public void setStatistics(Map<WrappedStatistic, Integer> changes) {
+        handle.getStatisticMaps().write(0, changes);
+    }
 }
+

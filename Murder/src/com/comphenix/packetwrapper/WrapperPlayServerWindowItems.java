@@ -23,56 +23,50 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 
 public class WrapperPlayServerWindowItems extends AbstractPacket {
-	public static final PacketType	TYPE	= PacketType.Play.Server.WINDOW_ITEMS;
-
-	public WrapperPlayServerWindowItems() {
-		super(new PacketContainer(TYPE), TYPE);
-		handle.getModifier().writeDefaults();
-	}
-
-	public WrapperPlayServerWindowItems(PacketContainer packet) {
-		super(packet, TYPE);
-	}
-
-	/**
-	 * Retrieve the ID of the window which is being updated.
-	 * <p>
-	 * Use 0 for the player inventory.
-	 * 
-	 * @return The current Window id
-	 */
-	public byte getWindowId() {
-		return handle.getIntegers().read(0).byteValue();
-	}
-
-	/**
-	 * Set the ID of the window which is being updated.
-	 * <p>
-	 * Use 0 for the player inventory.
-	 * 
-	 * @param value
-	 *            - new value.
-	 */
-	public void setWindowId(byte value) {
-		handle.getIntegers().write(0, (int) value);
-	}
-
-	/**
-	 * Retrieve the items in the inventory indexed by slot index.
-	 * 
-	 * @return The items that will fill the inventory.
-	 */
-	public ItemStack[] getItems() {
-		return handle.getItemArrayModifier().read(0);
-	}
-
-	/**
-	 * Set the items in the inventory indexed by slot index.
-	 * 
-	 * @param value
-	 *            - new value.
-	 */
-	public void setItems(ItemStack[] value) {
-		handle.getItemArrayModifier().write(0, value);
-	}
+    public static final PacketType TYPE = PacketType.Play.Server.WINDOW_ITEMS;
+    
+    public WrapperPlayServerWindowItems() {
+        super(new PacketContainer(TYPE), TYPE);
+        handle.getModifier().writeDefaults();
+    }
+    
+    public WrapperPlayServerWindowItems(PacketContainer packet) {
+        super(packet, TYPE);
+    }
+    
+    /**
+     * Retrieve the ID of the window which is being updated. 
+     * <p>
+     * Use 0 for the player inventory.
+     * @return The current Window id
+    */
+    public byte getWindowId() {
+        return handle.getIntegers().read(0).byteValue();
+    }
+    
+    /**
+     * Set the ID of the window which is being updated. 
+     * <p>
+     * Use 0 for the player inventory.
+     * @param value - new value.
+    */
+    public void setWindowId(byte value) {
+        handle.getIntegers().write(0, (int) value);
+    }
+    
+    /**
+     * Retrieve the items in the inventory indexed by slot index.
+     * @return The items that will fill the inventory.
+    */
+    public ItemStack[] getItems() {
+        return handle.getItemArrayModifier().read(0);
+    }
+    
+    /**
+     * Set the items in the inventory indexed by slot index.
+     * @param value - new value.
+    */
+    public void setItems(ItemStack[] value) {
+        handle.getItemArrayModifier().write(0, value);
+    }
 }

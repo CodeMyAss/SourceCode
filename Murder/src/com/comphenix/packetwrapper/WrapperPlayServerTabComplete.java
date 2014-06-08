@@ -21,29 +21,27 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 
 public class WrapperPlayServerTabComplete extends AbstractPacket {
-	public static final PacketType	TYPE	= PacketType.Play.Server.TAB_COMPLETE;
-
-	public WrapperPlayServerTabComplete() {
-		super(new PacketContainer(TYPE), TYPE);
-		handle.getModifier().writeDefaults();
-	}
-
-	/**
-	 * Retrieve the tab-completed text alternatives.
-	 * 
-	 * @return The current Text
-	 */
-	public String[] getText() {
-		return handle.getStringArrays().read(0);
-	}
-
-	/**
-	 * Set the tab-completed text alternatives.
-	 * 
-	 * @param value
-	 *            - new values.
-	 */
-	public void setText(String[] value) {
-		handle.getStringArrays().write(0, value);
-	}
+    public static final PacketType TYPE = PacketType.Play.Server.TAB_COMPLETE;
+    
+    public WrapperPlayServerTabComplete() {
+        super(new PacketContainer(TYPE), TYPE);
+        handle.getModifier().writeDefaults();
+    }
+    
+    /**
+     * Retrieve the tab-completed text alternatives.
+     * @return The current Text
+    */
+    public String[] getText() {
+        return handle.getStringArrays().read(0);
+    }
+    
+    /**
+     * Set the tab-completed text alternatives.
+     * @param value - new values.
+    */
+    public void setText(String[] value) {
+        handle.getStringArrays().write(0, value);
+    }
 }
+

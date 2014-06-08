@@ -16,6 +16,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.kitteh.tag.TagAPI;
 
+import de.inventivegames.Murder.BungeeCord.BungeeListener;
+
 public class Game {
 
 	private static File		arenaFile;
@@ -158,6 +160,13 @@ public class Game {
 		Murder.Murderers.remove(p);
 		Murder.Bystanders.remove(p);
 
+		Murder.prevExp.remove(p);
+		Murder.prevFood.remove(p);
+		Murder.prevGamemode.remove(p);
+		Murder.prevHealth.remove(p);
+		Murder.prevLevel.remove(p);
+		Murder.prevLocation.remove(p);
+		
 		if (Murder.prevGamemode.get(p) != GameMode.CREATIVE) {
 			p.setAllowFlight(false);
 			p.setFlying(false);
@@ -173,12 +182,26 @@ public class Game {
 			Murder.sendArenaMessage(Murder.prefix + "§cThe Murderer left the Arena!", arena);
 			Murder.sendArenaMessage(Murder.prefix + "§cStopping...", arena);
 			Murder.console.sendMessage(Murder.prefix + "§cCancelled Arena §2#" + arena + "§c The Murderer left the Arena");
+			Murder.instance.getServer().getScheduler().cancelTask(cd0[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(cd1[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(cd2[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(cd3[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(countdown[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(countdownLobby[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(delayedStart[arena]);
 			Game.stopGameDelayed(arena, 100);
 		}
 		if ((PlayerFile.getInt("type") == 1)) {
 			Murder.sendArenaMessage(Murder.prefix + "§cThe Bystander with the Secret weapon left the Arena!", arena);
 			Murder.sendArenaMessage(Murder.prefix + "§cStopping...", arena);
 			Murder.console.sendMessage(Murder.prefix + "§cCancelled Arena §2#" + arena + "§c The Weapon Bystander left the Arena");
+			Murder.instance.getServer().getScheduler().cancelTask(cd0[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(cd1[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(cd2[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(cd3[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(countdown[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(countdownLobby[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(delayedStart[arena]);
 			Game.stopGameDelayed(arena, 100);
 		}
 		PlayerFile.set("type", 0);
@@ -631,10 +654,7 @@ public class Game {
 
 				Murder.instance.getServer().getScheduler().cancelTask(loot[arena]);
 
-				Murder.instance.getServer().getScheduler().cancelTask(cd0[arena]);
-				Murder.instance.getServer().getScheduler().cancelTask(cd1[arena]);
-				Murder.instance.getServer().getScheduler().cancelTask(cd2[arena]);
-				Murder.instance.getServer().getScheduler().cancelTask(cd3[arena]);
+
 				
 				Murder.instance.getServer().getScheduler().cancelTask(smokeDelay[arena]);
 
@@ -680,6 +700,11 @@ public class Game {
 		}
 
 		Signs.updateSigns(arena);
+		
+		
+		if(Murder.instance.getConfig().getBoolean("useBungeeCord")) {
+			BungeeListener.restartServer();
+		}
 
 	}
 

@@ -23,52 +23,46 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 
 public class WrapperPlayClientSetCreativeSlot extends AbstractPacket {
-	public static final PacketType	TYPE	= PacketType.Play.Client.SET_CREATIVE_SLOT;
-
-	public WrapperPlayClientSetCreativeSlot() {
-		super(new PacketContainer(TYPE), TYPE);
-		handle.getModifier().writeDefaults();
-	}
-
-	public WrapperPlayClientSetCreativeSlot(PacketContainer packet) {
-		super(packet, TYPE);
-	}
-
-	/**
-	 * Retrieve the inventory slot index.
-	 * 
-	 * @return The current Slot
-	 */
-	public short getSlot() {
-		return handle.getIntegers().read(0).shortValue();
-	}
-
-	/**
-	 * Set the inventory slot index.
-	 * 
-	 * @param value
-	 *            - new value.
-	 */
-	public void setSlot(short value) {
-		handle.getIntegers().write(0, (int) value);
-	}
-
-	/**
-	 * Retrieve the clicked item stack.
-	 * 
-	 * @return The current Clicked item
-	 */
-	public ItemStack getClickedItem() {
-		return handle.getItemModifier().read(0);
-	}
-
-	/**
-	 * Set the clicked item stack.
-	 * 
-	 * @param value
-	 *            - new value.
-	 */
-	public void setClickedItem(ItemStack value) {
-		handle.getItemModifier().write(0, value);
-	}
+    public static final PacketType TYPE = PacketType.Play.Client.SET_CREATIVE_SLOT;
+    
+    public WrapperPlayClientSetCreativeSlot() {
+        super(new PacketContainer(TYPE), TYPE);
+        handle.getModifier().writeDefaults();
+    }
+    
+    public WrapperPlayClientSetCreativeSlot(PacketContainer packet) {
+        super(packet, TYPE);
+    }
+    
+    /**
+     * Retrieve the inventory slot index.
+     * @return The current Slot
+    */
+    public short getSlot() {
+        return handle.getIntegers().read(0).shortValue();
+    }
+    
+    /**
+     * Set the inventory slot index.
+     * @param value - new value.
+    */
+    public void setSlot(short value) {
+        handle.getIntegers().write(0, (int) value);
+    }
+    
+    /**
+     * Retrieve the clicked item stack.
+     * @return The current Clicked item
+    */
+    public ItemStack getClickedItem() {
+        return handle.getItemModifier().read(0);
+    }
+    
+    /**
+     * Set the clicked item stack.
+     * @param value - new value.
+    */
+    public void setClickedItem(ItemStack value) {
+        handle.getItemModifier().write(0, value);
+    }
 }

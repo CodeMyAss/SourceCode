@@ -358,7 +358,7 @@ public class Players implements Listener {
 								Game.stopGameDelayed(Murder.getArena(p), 10 * 20);
 
 							}
-						} else if (Murder.Murderers.contains(p)) {
+						} else if (Murder.isMurderer(p)) {
 							Murder.sendArenaMessage(Murder.prefix + "§1" + Messages.getMessage("killedMurderer").replace("%1$s", killer.getName()), Murder.getArena(p));
 							Murder.sendArenaMessage(Murder.prefix + "§1" + Messages.getMessage("bystanderWin1"), Murder.getArena(p));
 							Murder.sendArenaMessage(Murder.prefix + "§2" + Messages.getMessage("bystanderWin2").replace("%1$s", Murder.getNameTag(killer)).replace("%2$s", killer.getName()), Murder.getArena(p));

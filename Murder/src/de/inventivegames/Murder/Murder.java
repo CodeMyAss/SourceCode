@@ -28,6 +28,7 @@ import org.mcstats.MetricsLite;
 import com.comphenix.protocol.ProtocolLibrary;
 
 import de.inventivegames.Murder.Updater.UpdateResult;
+import de.inventivegames.Murder.BungeeCord.BungeeListener;
 
 public class Murder extends JavaPlugin implements Listener {
 
@@ -148,6 +149,10 @@ public class Murder extends JavaPlugin implements Listener {
 		registerEvents(this, new Commands());
 		registerEvents(this, new Chat());
 		registerEvents(this, new Corpses());
+		
+		if(instance.getConfig().getBoolean("useBungeeCord")) {
+			registerEvents(this, new BungeeListener());
+		}
 
 		Murder.zombieMap = new HashMap<Player, Zombie>();
 

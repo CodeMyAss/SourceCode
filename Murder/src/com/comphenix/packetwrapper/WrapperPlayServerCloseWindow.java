@@ -20,33 +20,31 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.PacketContainer;
 
 public class WrapperPlayServerCloseWindow extends AbstractPacket {
-	public static final PacketType	TYPE	= PacketType.Play.Server.CLOSE_WINDOW;
-
-	public WrapperPlayServerCloseWindow() {
-		super(new PacketContainer(TYPE), TYPE);
-		handle.getModifier().writeDefaults();
-	}
-
-	public WrapperPlayServerCloseWindow(PacketContainer packet) {
-		super(packet, TYPE);
-	}
-
-	/**
-	 * Retrieve this is the id of the window that was or should be closed.
-	 * 
-	 * @return The current Window id
-	 */
-	public byte getWindowId() {
-		return handle.getIntegers().read(0).byteValue();
-	}
-
-	/**
-	 * Set this is the id of the window that was or should be closed.
-	 * 
-	 * @param value
-	 *            - new value.
-	 */
-	public void setWindowId(byte value) {
-		handle.getIntegers().write(0, (int) value);
-	}
+    public static final PacketType TYPE = PacketType.Play.Server.CLOSE_WINDOW;
+    
+    public WrapperPlayServerCloseWindow() {
+        super(new PacketContainer(TYPE), TYPE);
+        handle.getModifier().writeDefaults();
+    }
+    
+    public WrapperPlayServerCloseWindow(PacketContainer packet) {
+        super(packet, TYPE);
+    }
+    
+    /**
+     * Retrieve this is the id of the window that was or should be closed.
+     * @return The current Window id
+    */
+    public byte getWindowId() {
+        return handle.getIntegers().read(0).byteValue();
+    }
+    
+    /**
+     * Set this is the id of the window that was or should be closed. 
+     * @param value - new value.
+    */
+    public void setWindowId(byte value) {
+        handle.getIntegers().write(0, (int) value);
+    }
 }
+
