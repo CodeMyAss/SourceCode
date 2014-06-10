@@ -1,0 +1,10 @@
+name: RealtimeChatTranslation
+main: de.inventivegames.RealtimeTranslation.RealtimeTranslation
+version: 1.7
+website: http://www.inventivegames.de
+author: inventivetalent
+description: >
+            RealtimeChatTranslation Plugin - Copyright inventivetalent 2014!
+   
+commands:
+  RCT:
