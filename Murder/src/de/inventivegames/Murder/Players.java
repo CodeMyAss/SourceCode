@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -27,7 +26,6 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -102,12 +100,12 @@ public class Players implements Listener {
 	@EventHandler
 	public static void onInventoryClick(InventoryClickEvent e) {
 		Player p = (Player) e.getWhoClicked();
-		if(Murder.playersInGame.contains(p)) {
+		if (Murder.playersInGame.contains(p)) {
 			e.setCancelled(true);
 			p.closeInventory();
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void pickupItem(PlayerPickupItemEvent e) {
@@ -136,18 +134,21 @@ public class Players implements Listener {
 						}
 						e.getItem().remove();
 						e.setCancelled(true);
-					} else
+					} else {
 						e.setCancelled(true);
-				} else
+					}
+				} else {
 					e.setCancelled(true);
+				}
 			} else if (Murder.Murderers.contains(p)) {
 				if (item.getItemStack().getType().equals(Material.IRON_SWORD)) {
 					p.getInventory().setItem(4, null);
 					p.getInventory().setItem(4, Murder.Knife());
 					e.getItem().remove();
 					e.setCancelled(true);
-				} else
+				} else {
 					e.setCancelled(true);
+				}
 			}
 			if ((Murder.Bystanders.contains(p)) || (Murder.Murderers.contains(p))) {
 				if (item.getItemStack().getType().equals(Material.DIAMOND)) {
@@ -263,12 +264,16 @@ public class Players implements Listener {
 							Murder.bystanders[Murder.getArena(p)][Murder.getPlayerNumber(p, Murder.getArena(p))] = null;
 						}
 
-						if (Murder.bystanderAmount[Murder.getArena(p)] == 0) {
+						System.out.println("BystandersAmount = " + Murder.bystanderAmount[Murder.getArena(p)]);
+						System.out.println("BystandersAmount = " + Murder.bystanderAmount[Murder.getArena(killer)]);
+
+						if (Murder.bystanderAmount[Murder.getArena(p)] <= 0) {
 							Murder.sendArenaMessage(Murder.prefix + "§c" + Messages.getMessage("murdererWin1"), Murder.getArena(p));
 							Murder.sendArenaMessage(Murder.prefix + "§2" + Messages.getMessage("murdererWin2").replace("%1$s", Murder.getNameTag(killer)).replace("%2$s", killer.getName()), Murder.getArena(killer));
 
 							Game.stopGameDelayed(Murder.getArena(p), 10 * 20);
 
+							Rewards.addMoney(killer, Murder.deposit);
 						}
 
 						if (p.getInventory().contains(Murder.Gun())) {
@@ -283,7 +288,7 @@ public class Players implements Listener {
 							}, 2);
 						}
 
-					} else if (killer.getItemInHand().getType().equals(Material.DIAMOND_HOE)) {
+					} else if (!Murder.isMurderer(killer)) {
 						if (Murder.Bystanders.contains(p)) {
 
 							Murder.bystanderAmount[Murder.getArena(p)] -= 1;
@@ -291,6 +296,8 @@ public class Players implements Listener {
 							Murder.sendArenaMessage(Murder.prefix + "§1" + Messages.getMessage("killedInnocent").replace("%1$s", killer.getName()), Murder.getArena(p));
 							killer.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 2147000, 1));
 							killer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 2147000, 1));
+
+							Rewards.removeMoney(killer, Murder.withdraw);
 
 							cantPickup.add(killer);
 
@@ -331,8 +338,9 @@ public class Players implements Listener {
 								@Override
 								public void run() {
 									Player pl = killer;
-									for (PotionEffect effect : pl.getActivePotionEffects())
+									for (PotionEffect effect : pl.getActivePotionEffects()) {
 										pl.removePotionEffect(effect.getType());
+									}
 								}
 
 							}, 20 * 10);
@@ -352,10 +360,12 @@ public class Players implements Listener {
 								Murder.bystanders[Murder.getArena(p)][Murder.getPlayerNumber(p, Murder.getArena(p))] = null;
 							}
 
-							if (Murder.bystanderAmount[Murder.getArena(p)] == 0) {
+							if (Murder.bystanderAmount[Murder.getArena(p)] <= 0) {
 								Murder.sendArenaMessage(Murder.prefix + "§c" + Messages.getMessage("murdererWin1"), Murder.getArena(p));
 								Murder.sendArenaMessage(Murder.prefix + "§2" + Messages.getMessage("murdererWin2").replace("%1$s", Murder.getNameTag(killer)).replace("%2$s", killer.getName()), Murder.getArena(p));
 								Game.stopGameDelayed(Murder.getArena(p), 10 * 20);
+
+								Rewards.addMoney(killer, Murder.deposit);
 
 							}
 						} else if (Murder.isMurderer(p)) {
@@ -363,11 +373,10 @@ public class Players implements Listener {
 							Murder.sendArenaMessage(Murder.prefix + "§1" + Messages.getMessage("bystanderWin1"), Murder.getArena(p));
 							Murder.sendArenaMessage(Murder.prefix + "§2" + Messages.getMessage("bystanderWin2").replace("%1$s", Murder.getNameTag(killer)).replace("%2$s", killer.getName()), Murder.getArena(p));
 
-							if (Murder.murderers[Murder.getArena(p)][Murder.getPlayerNumber(p, Murder.getArena(p))] == p) {
-								Murder.murderers[Murder.getArena(p)][Murder.getPlayerNumber(p, Murder.getArena(p))] = null;
+							Rewards.addMoney(killer, Murder.deposit);
 
-								Game.stopGameDelayed(Murder.getArena(p), 10 * 20);
-							}
+							Game.stopGameDelayed(Murder.getArena(p), 10 * 20);
+
 						}
 
 					}
@@ -546,9 +555,20 @@ public class Players implements Listener {
 						double vX = p.getLocation().getDirection().getX() * 5;
 						double vY = p.getLocation().getDirection().getY() * 5;
 						double vZ = p.getLocation().getDirection().getZ() * 5;
-						Arrow arrow = p.launchProjectile(Arrow.class, new Vector(vX, vY, vZ));
-						Snowball snowball = p.launchProjectile(Snowball.class, new Vector(vX, vY, vZ));
-						arrow.setCritical(true);
+
+						Arrow arrow;
+						Snowball snowball;
+
+						if (Murder.serverVersion.contains("1.7.2")) {
+							arrow = p.launchProjectile(Arrow.class);
+							arrow.setVelocity(new Vector(vX, vY, vZ));
+							snowball = p.launchProjectile(Snowball.class);
+							snowball.setVelocity(new Vector(vX, vY, vZ));
+						} else {
+							arrow = p.launchProjectile(Arrow.class, new Vector(vX, vY, vZ));
+							snowball = p.launchProjectile(Snowball.class, new Vector(vX, vY, vZ));
+							arrow.setCritical(true);
+						}
 						arrow.setVelocity(new Vector(vX * 5, vY * 5, vZ * 5));
 						snowball.setVelocity(new Vector(vX * 5, vY * 5, vZ * 5));
 						arrow.setShooter(p);
@@ -560,9 +580,11 @@ public class Players implements Listener {
 							@Override
 							public void run() {
 								Murder.instance.getServer().getScheduler().cancelTask(reloadTimer[Murder.getArena(p)]);
-								if (p.getInventory().contains(Murder.Gun())) {
-									p.getInventory().setItem(8, Murder.Bullet());
-									p.getInventory().setItem(4, Murder.Gun());
+								if (Murder.isPlaying(p)) {
+									if (p.getInventory().contains(Murder.Gun())) {
+										p.getInventory().setItem(8, Murder.Bullet());
+										p.getInventory().setItem(4, Murder.Gun());
+									}
 								}
 							}
 
@@ -589,9 +611,21 @@ public class Players implements Listener {
 					double vX = p.getLocation().getDirection().getX() * 5;
 					double vY = p.getLocation().getDirection().getY() * 5;
 					double vZ = p.getLocation().getDirection().getZ() * 5;
-					final Arrow arrow = p.launchProjectile(Arrow.class, new Vector(vX, vY, vZ));
-					Snowball snowball = p.launchProjectile(Snowball.class, new Vector(vX, vY, vZ));
-					arrow.setCritical(true);
+
+					Arrow arrow;
+					Snowball snowball;
+
+					if (Murder.serverVersion.contains("1.7.2")) {
+						arrow = p.launchProjectile(Arrow.class);
+						arrow.setVelocity(new Vector(vX, vY, vZ));
+						snowball = p.launchProjectile(Snowball.class);
+						snowball.setVelocity(new Vector(vX, vY, vZ));
+					} else {
+						arrow = p.launchProjectile(Arrow.class, new Vector(vX, vY, vZ));
+						snowball = p.launchProjectile(Snowball.class, new Vector(vX, vY, vZ));
+						arrow.setCritical(true);
+					}
+
 					arrow.setVelocity(new Vector(vX * 5, vY * 5, vZ * 5));
 					snowball.setVelocity(new Vector(vX * 5, vY * 5, vZ * 5));
 					arrow.setShooter(p);
@@ -632,7 +666,9 @@ public class Players implements Listener {
 
 						@Override
 						public void run() {
-							p.getInventory().setItem(4, Murder.Knife());
+							if (Murder.isPlaying(p)) {
+								p.getInventory().setItem(4, Murder.Knife());
+							}
 						}
 
 					}, 20 * 60L);
@@ -649,18 +685,20 @@ public class Players implements Listener {
 		ParticleEffects effect = ParticleEffects.FOOTSTEP;
 		if ((Murder.playersInGame.contains(p)) && (Murder.inGame.contains("" + Murder.getArena(p))) && (p != null)) {
 			if ((p.isOnGround()) && (!(Murder.isSpectator(p)))) {
-				try {
-					float x = (float) 0;
-					float y = (float) 0;
-					float z = (float) 0;
-					float speed = 0;
-					int count = 1;
-					Player murderer = Murder.getMurderer(Murder.getArena(p));
-					if (murderer != null) {
-						effect.sendToPlayer(murderer, loc.add(0, 0.1, 0), x, y, z, speed, count);
+				if (Murder.utils.getLocationUtils().moved(e.getFrom(), e.getTo())) {
+					try {
+						float x = (float) 0;
+						float y = (float) 0;
+						float z = (float) 0;
+						float speed = 0;
+						int count = 1;
+						Player murderer = Murder.getMurderer(Murder.getArena(p));
+						if (murderer != null) {
+							effect.sendToPlayer(murderer, loc.add(0, 0.1, 0), x, y, z, speed, count);
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
 					}
-				} catch (Exception ex) {
-					ex.printStackTrace();
 				}
 			}
 		}
@@ -671,7 +709,7 @@ public class Players implements Listener {
 	public static void onSprint(PlayerToggleSprintEvent e) {
 		Player p = e.getPlayer();
 		if (Murder.playersInGame.contains(p)) {
-			if(e.isSprinting()) {
+			if (e.isSprinting()) {
 				if ((Murder.isBystander(p) || Murder.isWeaponBystander(p)) && (Murder.inGame.contains("" + Murder.getArena(p)))) {
 					p.setFoodLevel(6);
 					e.setCancelled(true);
@@ -686,7 +724,7 @@ public class Players implements Listener {
 		int arena = Murder.getArena(p);
 		if (Murder.playersInGame.contains(p)) {
 			if ((Murder.isMurderer(p)) && (!(Murder.isSpectator(p)))) {
-				if(smoke[arena]) {
+				if (smoke[arena]) {
 					Location loc = p.getLocation();
 					ParticleEffects effect = ParticleEffects.LARGE_SMOKE;
 					try {
@@ -695,7 +733,7 @@ public class Players implements Listener {
 						float z = (float) 0;
 						float speed = 0;
 						int count = 1;
-						for(Player receiver : Murder.instance.getServer().getOnlinePlayers()) {
+						for (Player receiver : Murder.instance.getServer().getOnlinePlayers()) {
 							effect.sendToPlayer(receiver, loc, x, y, z, speed, count);
 						}
 					} catch (Exception ex) {

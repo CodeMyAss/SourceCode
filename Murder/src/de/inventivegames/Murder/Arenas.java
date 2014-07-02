@@ -43,8 +43,9 @@ public class Arenas {
 				Murder.console.sendMessage(Murder.prefix + "§cCould not create Arena File for Arena §2#" + arena);
 				e.printStackTrace();
 			}
-		} else
+		} else {
 			p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("arenaExists").replace("%1$s", "#" + arena));
+		}
 
 	}
 
@@ -53,8 +54,9 @@ public class Arenas {
 		if (arenaFile.exists()) {
 			arenaFile.delete();
 			p.sendMessage(Murder.prefix + "§2" + Messages.getMessage("removedArena").replace("%1$s", "#" + arena));
-		} else
+		} else {
 			p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("arenaNotExisting"));
+		}
 
 	}
 
@@ -80,11 +82,13 @@ public class Arenas {
 					e.printStackTrace();
 				}
 				p.sendMessage(Murder.prefix + "§2" + Messages.getMessage("addedSpawn").replace("%1$s", type).replace("%2$s", "#" + number).replace("%3$s", "#" + arena));
-			} else
+			} else {
 				p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("unknownSpawn"));
+			}
 			p.sendMessage(Murder.prefix + "§2" + Messages.getMessage("availableSpawns") + ": §alobby §2| §aplayers §2| §aloot");
-		} else
+		} else {
 			p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("arenaNotExisting"));
+		}
 
 	}
 
@@ -138,7 +142,6 @@ public class Arenas {
 
 		p.sendMessage("§9├ Player Spawnpoints:");
 
-		
 		Set<String> IDs1 = ArenaFile.getConfigurationSection("SpawnPoints.players").getKeys(false);
 		Object[] ids1 = IDs1.toArray();
 		String ID1;
@@ -160,7 +163,6 @@ public class Arenas {
 
 		p.sendMessage("§9└ Loot Spawnpoints:");
 
-		
 		Set<String> IDs2 = ArenaFile.getConfigurationSection("SpawnPoints.loot").getKeys(false);
 		Object[] ids2 = IDs2.toArray();
 		String ID2;

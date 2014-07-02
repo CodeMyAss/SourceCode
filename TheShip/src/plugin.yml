@@ -1,0 +1,10 @@
+name: TheShip
+main: de.inventivegames.theShip.TheShip
+version: 0.5
+website: http://www.inventivegames.de
+author: inventivetalent
+description: TheShip Minigame Plugin - Copyright inventivetalent 2014
+ 
+commands:
+  TheShip:
+    aliases: [ts, ship]

@@ -15,42 +15,46 @@ public class BungeeListener implements Listener {
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
-		if(Murder.instance.getConfig().getBoolean("useBungeeCord")) {
+		if (Murder.instance.getConfig().getBoolean("useBungeeCord")) {
 			Player p = e.getPlayer();
 			int arena = Murder.instance.getConfig().getInt("BungeeArena");
-			
+
 			Game.joinArena(arena, p);
 		}
 	}
-	
-	@EventHandler 
-	public void onQuit(PlayerQuitEvent e){
-		if(Murder.instance.getConfig().getBoolean("useBungeeCord")) {
+
+	@EventHandler
+	public void onQuit(PlayerQuitEvent e) {
+		if (Murder.instance.getConfig().getBoolean("useBungeeCord")) {
 			Player p = e.getPlayer();
 			int arena = Murder.instance.getConfig().getInt("BungeeArena");
-			
+
 			Game.leaveArena(arena, p);
 		}
 	}
-	
+
 	public static void restartServer() {
-		if(Murder.instance.getConfig().getBoolean("useBungeeCord")) {
+		if (Murder.instance.getConfig().getBoolean("useBungeeCord")) {
 			Murder.instance.getServer().broadcastMessage(Murder.prefix + "§c§l Server will restart in 10 Seconds!");
-			
+
 			Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
-				
+
 				@Override
 				public void run() {
 					Server server = Murder.instance.getServer();
-	
-			        server.savePlayers();
-	
-			        for (World world : server.getWorlds()) {
-			          world.save();
-			          server.unloadWorld(world, true);
-			        }
-	
-			        server.shutdown();
+
+					for (Player online : server.getOnlinePlayers()) {
+						online.kickPlayer(Murder.prefix + "§cGame has Ended, Server Restarting...");
+					}
+
+					server.savePlayers();
+
+					for (World world : server.getWorlds()) {
+						world.save();
+						server.unloadWorld(world, true);
+					}
+
+					server.shutdown();
 				}
 			}, 200);
 		}

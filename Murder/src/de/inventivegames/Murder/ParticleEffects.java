@@ -77,13 +77,11 @@ public enum ParticleEffects {
 
 	@SuppressWarnings("rawtypes")
 	public static ParticleEffects fromName(String name) {
-		if (name == null) {
+		if (name == null)
 			return null;
-		}
 		for (Map.Entry e : NAME_MAP.entrySet()) {
-			if (((String) e.getKey()).equalsIgnoreCase(name)) {
+			if (((String) e.getKey()).equalsIgnoreCase(name))
 				return (ParticleEffects) e.getValue();
-			}
 		}
 		return null;
 	}
@@ -117,8 +115,9 @@ public enum ParticleEffects {
 	}
 
 	public static Object createPacket(ParticleEffects effect, Location location, float offsetX, float offsetY, float offsetZ, float speed, int count) throws Exception {
-		if (count <= 0)
+		if (count <= 0) {
 			count = 1;
+		}
 		Object packet = getPacketPlayOutWorldParticles();
 		setValue(packet, "a", effect.name);
 		setValue(packet, "b", Float.valueOf((float) location.getX()));
@@ -133,8 +132,9 @@ public enum ParticleEffects {
 	}
 
 	public static Object createCrackPacket(boolean icon, int id, byte data, Location location, float offsetX, float offsetY, float offsetZ, int count) throws Exception {
-		if (count <= 0)
+		if (count <= 0) {
 			count = 1;
+		}
 		Object packet = getPacketPlayOutWorldParticles();
 		String modifier = "iconcrack_" + id;
 		if (!icon) {
@@ -154,9 +154,8 @@ public enum ParticleEffects {
 
 	public static void fakeBlockCrack(Block block, short damage) {
 		try {
-			if ((damage > 7) || (damage < 0)) {
+			if ((damage > 7) || (damage < 0))
 				throw new NumberFormatException("Damage needs to be between 0 and 7!");
-			}
 
 			Object packet = getPacketPlayInBlockDig();
 			setValue(packet, "a", Integer.valueOf(0));

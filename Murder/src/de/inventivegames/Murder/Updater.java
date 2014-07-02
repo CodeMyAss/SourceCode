@@ -6,7 +6,13 @@
 
 package de.inventivegames.Murder;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -25,19 +31,13 @@ import org.json.simple.JSONValue;
  * Check dev.bukkit.org to find updates for a given plugin, and download the
  * updates if needed.
  * <p/>
- * <b>VERY, VERY IMPORTANT</b>: Because there are no standards for adding
- * auto-update toggles in your plugin's config, this system provides NO CHECK
- * WITH YOUR CONFIG to make sure the user has allowed auto-updating. <br>
- * It is a <b>BUKKIT POLICY</b> that you include a boolean value in your config
- * that prevents the auto-updater from running <b>AT ALL</b>. <br>
- * If you fail to include this option in your config, your plugin will be
- * <b>REJECTED</b> when you attempt to submit it to dev.bukkit.org.
+ * <b>VERY, VERY IMPORTANT</b>: Because there are no standards for adding auto-update toggles in your plugin's config, this system provides NO CHECK WITH YOUR CONFIG to make sure
+ * the user has allowed auto-updating. <br>
+ * It is a <b>BUKKIT POLICY</b> that you include a boolean value in your config that prevents the auto-updater from running <b>AT ALL</b>. <br>
+ * If you fail to include this option in your config, your plugin will be <b>REJECTED</b> when you attempt to submit it to dev.bukkit.org.
  * <p/>
- * An example of a good configuration option would be something similar to
- * 'auto-update: true' - if this value is set to false you may NOT run the
- * auto-updater. <br>
- * If you are unsure about these rules, please read the plugin submission
- * guidelines: http://goo.gl/8iU5l
+ * An example of a good configuration option would be something similar to 'auto-update: true' - if this value is set to false you may NOT run the auto-updater. <br>
+ * If you are unsure about these rules, please read the plugin submission guidelines: http://goo.gl/8iU5l
  * 
  * @author Gravity
  * @version 2.1
@@ -53,105 +53,105 @@ public class Updater {
 	private String					versionGameVersion;
 
 	private boolean					announce;											// Whether
-																						// to
-																						// announce
-																						// file
-																						// downloads
+	// to
+	// announce
+	// file
+	// downloads
 
 	private URL						url;												// Connecting
-																						// to
-																						// RSS
+	// to
+	// RSS
 	private File					file;												// The
-																						// plugin's
-																						// file
+	// plugin's
+	// file
 	private Thread					thread;											// Updater
-																						// thread
+	// thread
 
 	private int						id				= -1;								// Project's
-																						// Curse
-																						// ID
+	// Curse
+	// ID
 	private String					apiKey			= null;							// BukkitDev
-																						// ServerMods
-																						// API
-																						// key
+	// ServerMods
+	// API
+	// key
 	private static final String		TITLE_VALUE		= "name";							// Gets
-																						// remote
-																						// file's
-																						// title
+	// remote
+	// file's
+	// title
 	private static final String		LINK_VALUE		= "downloadUrl";					// Gets
-																						// remote
-																						// file's
-																						// download
-																						// link
+	// remote
+	// file's
+	// download
+	// link
 	private static final String		TYPE_VALUE		= "releaseType";					// Gets
-																						// remote
-																						// file's
-																						// release
-																						// type
+	// remote
+	// file's
+	// release
+	// type
 	private static final String		VERSION_VALUE	= "gameVersion";					// Gets
-																						// remote
-																						// file's
-																						// build
-																						// version
+	// remote
+	// file's
+	// build
+	// version
 	private static final String		QUERY			= "/servermods/files?projectIds=";	// Path
-																						// to
-																						// GET
+	// to
+	// GET
 	private static final String		HOST			= "https://api.curseforge.com";	// Slugs
-																						// will
-																						// be
-																						// appended
-																						// to
-																						// this
-																						// to
-																						// get
-																						// to
-																						// the
-																						// project's
-																						// RSS
-																						// feed
+	// will
+	// be
+	// appended
+	// to
+	// this
+	// to
+	// get
+	// to
+	// the
+	// project's
+	// RSS
+	// feed
 
 	private static final String		USER_AGENT		= "Updater (by Gravity)";
 	private static final String		delimiter		= "^v|[\\s_-]v";					// Used
-																						// for
-																						// locating
-																						// version
-																						// numbers
-																						// in
-																						// file
-																						// names
+	// for
+	// locating
+	// version
+	// numbers
+	// in
+	// file
+	// names
 	private static final String[]	NO_UPDATE_TAG	= { "-DEV", "-PRE", "-SNAPSHOT" };	// If
-																						// the
-																						// version
-																						// number
-																						// contains
-																						// one
-																						// of
-																						// these,
-																						// don't
-																						// update.
+	// the
+	// version
+	// number
+	// contains
+	// one
+	// of
+	// these,
+	// don't
+	// update.
 	private static final int		BYTE_SIZE		= 1024;							// Used
-																						// for
-																						// downloading
-																						// files
+	// for
+	// downloading
+	// files
 	private final YamlConfiguration	config			= new YamlConfiguration();			// Config
-																						// file
+	// file
 	private String					updateFolder;										// The
-																						// folder
-																						// that
-																						// downloads
-																						// will
-																						// be
-																						// placed
-																						// in
+	// folder
+	// that
+	// downloads
+	// will
+	// be
+	// placed
+	// in
 	private Updater.UpdateResult	result			= Updater.UpdateResult.SUCCESS;	// Used
-																						// for
-																						// determining
-																						// the
-																						// outcome
-																						// of
-																						// the
-																						// update
-																						// process
+	// for
+	// determining
+	// the
+	// outcome
+	// of
+	// the
+	// update
+	// process
 
 	/**
 	 * Gives the developer the result of the update process. Can be obtained by
@@ -252,8 +252,7 @@ public class Updater {
 	 *            The file that the plugin is running from, get this by doing
 	 *            this.getFile() from within your main class.
 	 * @param type
-	 *            Specify the type of update this will be. See
-	 *            {@link UpdateType}
+	 *            Specify the type of update this will be. See {@link UpdateType}
 	 * @param announce
 	 *            True if the program should announce the progress of new
 	 *            updates in console.
@@ -340,9 +339,8 @@ public class Updater {
 		this.waitForThread();
 		if (this.versionType != null) {
 			for (ReleaseType type : ReleaseType.values()) {
-				if (this.versionType.equals(type.name().toLowerCase())) {
+				if (this.versionType.equals(type.name().toLowerCase()))
 					return type;
-				}
 			}
 		}
 		return null;
@@ -510,26 +508,26 @@ public class Updater {
 				if (dFile.isDirectory()) {
 					if (this.pluginFile(dFile.getName())) {
 						final File oFile = new File(this.plugin.getDataFolder().getParent(), dFile.getName()); // Get
-																												// current
-																												// dir
+						// current
+						// dir
 						final File[] contents = oFile.listFiles(); // List of
-																	// existing
-																	// files in
-																	// the
-																	// current
-																	// dir
+						// existing
+						// files in
+						// the
+						// current
+						// dir
 						for (final File cFile : dFile.listFiles()) // Loop
-																	// through
-																	// all the
-																	// files in
-																	// the new
-																	// dir
+							// through
+							// all the
+							// files in
+							// the new
+							// dir
 						{
 							boolean found = false;
 							for (final File xFile : contents) // Loop through
-																// contents to
-																// see if it
-																// exists
+								// contents to
+								// see if it
+								// exists
 							{
 								if (xFile.getName().equals(cFile.getName())) {
 									found = true;
@@ -568,9 +566,8 @@ public class Updater {
 	 */
 	private boolean pluginFile(String name) {
 		for (final File file : new File("plugins").listFiles()) {
-			if (file.getName().equals(name)) {
+			if (file.getName().equals(name))
 				return true;
-			}
 		}
 		return false;
 	}
@@ -589,11 +586,11 @@ public class Updater {
 			final String localVersion = this.plugin.getDescription().getVersion();
 			if (title.split(delimiter).length == 2) {
 				final String remoteVersion = title.split(delimiter)[1].split(" ")[0]; // Get
-																						// the
-																						// newest
-																						// file's
-																						// version
-																						// number
+				// the
+				// newest
+				// file's
+				// version
+				// number
 
 				if (this.hasTag(localVersion) || !this.shouldUpdate(localVersion, remoteVersion)) {
 					// We already have the latest version, or this build is
@@ -618,27 +615,18 @@ public class Updater {
 	 * <b>If you wish to run mathematical versioning checks, edit this
 	 * method.</b>
 	 * <p>
-	 * With default behavior, Updater will NOT verify that a remote version
-	 * available on BukkitDev which is not this version is indeed an "update".
-	 * If a version is present on BukkitDev that is not the version that is
-	 * currently running, Updater will assume that it is a newer version. This
-	 * is because there is no standard versioning scheme, and creating a
-	 * calculation that can determine whether a new update is actually an update
-	 * is sometimes extremely complicated.
+	 * With default behavior, Updater will NOT verify that a remote version available on BukkitDev which is not this version is indeed an "update". If a version is present on
+	 * BukkitDev that is not the version that is currently running, Updater will assume that it is a newer version. This is because there is no standard versioning scheme, and
+	 * creating a calculation that can determine whether a new update is actually an update is sometimes extremely complicated.
 	 * </p>
 	 * <p>
-	 * Updater will call this method from {@link #versionCheck(String)} before
-	 * deciding whether the remote version is actually an update. If you have a
-	 * specific versioning scheme with which a mathematical determination can be
-	 * reliably made to decide whether one version is higher than another, you
-	 * may revise this method, using the local and remote version parameters, to
-	 * execute the appropriate check.
+	 * Updater will call this method from {@link #versionCheck(String)} before deciding whether the remote version is actually an update. If you have a specific versioning scheme
+	 * with which a mathematical determination can be reliably made to decide whether one version is higher than another, you may revise this method, using the local and remote
+	 * version parameters, to execute the appropriate check.
 	 * </p>
 	 * <p>
-	 * Returning a value of <b>false</b> will tell the update process that this
-	 * is NOT a new version. Without revision, this method will always consider
-	 * a remote version at all different from that of the local version a new
-	 * update.
+	 * Returning a value of <b>false</b> will tell the update process that this is NOT a new version. Without revision, this method will always consider a remote version at all
+	 * different from that of the local version a new update.
 	 * </p>
 	 * 
 	 * @param localVersion
@@ -662,9 +650,8 @@ public class Updater {
 	 */
 	private boolean hasTag(String version) {
 		for (final String string : Updater.NO_UPDATE_TAG) {
-			if (version.contains(string)) {
+			if (version.contains(string))
 				return true;
-			}
 		}
 		return false;
 	}

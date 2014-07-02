@@ -29,6 +29,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 
 import de.inventivegames.Murder.Updater.UpdateResult;
 import de.inventivegames.Murder.BungeeCord.BungeeListener;
+import de.inventivegames.utils.IGUtils;
 
 public class Murder extends JavaPlugin implements Listener {
 
@@ -106,6 +107,17 @@ public class Murder extends JavaPlugin implements Listener {
 	private static Class<?>						nmsChatSerializer		= Reflection.getNMSClass("ChatSerializer");
 	private static Class<?>						nmsPacketPlayOutChat	= Reflection.getNMSClass("PacketPlayOutChat");
 
+	public static int							requiredMoney			= 10;
+
+	public static boolean						useEconomy				= false;
+	public static boolean						checkEconomy			= false;
+
+	public static int							deposit					= 10;
+	public static int							withdraw				= 5;
+
+	public static IGUtils						utils;
+
+	@Override
 	public void onEnable() {
 		instance = this;
 
@@ -129,6 +141,11 @@ public class Murder extends JavaPlugin implements Listener {
 			return;
 		}
 
+		if (instance.getServer().getPluginManager().isPluginEnabled("Vault")) {
+			console.sendMessage(prefix + "§2Successfully hooked into Vault!");
+			checkEconomy = true;
+		}
+
 		Messages.Manager();
 
 		Murder.minPlayers = instance.getConfig().getInt("MinPlayers");
@@ -149,8 +166,8 @@ public class Murder extends JavaPlugin implements Listener {
 		registerEvents(this, new Commands());
 		registerEvents(this, new Chat());
 		registerEvents(this, new Corpses());
-		
-		if(instance.getConfig().getBoolean("useBungeeCord")) {
+
+		if (instance.getConfig().getBoolean("useBungeeCord")) {
 			registerEvents(this, new BungeeListener());
 		}
 
@@ -158,13 +175,14 @@ public class Murder extends JavaPlugin implements Listener {
 
 		setupMetrics();
 
+		utils = new IGUtils(instance);
+
 		serverVersion = instance.getServer().getBukkitVersion().toString();
 
-			if((serverVersion != null) && (serverVersion.contains("1.7.9"))) {
-				Corpses.oldSpawns = true;
-				console.sendMessage(Murder.prefix + "§cIncompatible Server Version (" + serverVersion + ")! Using old Corpse spawns...");
-			}
-
+		if ((serverVersion != null) && (serverVersion.contains("1.7.9"))) {
+			Corpses.oldSpawns = true;
+			console.sendMessage(Murder.prefix + "§cIncompatible Server Version (" + serverVersion + ")! Using old Corpse spawns...");
+		}
 
 		for (int i = 0; i < 24; i++) {
 			Game.BystanderSelected[i] = false;
@@ -181,6 +199,7 @@ public class Murder extends JavaPlugin implements Listener {
 
 	}
 
+	@Override
 	public void onDisable() {
 		if (zombieMap != null) {
 			for (Zombie controlledZombie : Murder.zombieMap.values()) {
@@ -214,6 +233,14 @@ public class Murder extends JavaPlugin implements Listener {
 
 		instance.getServer().getPluginManager().disablePlugin(instance);
 
+	}
+
+	public static void checkEconomy() {
+		if (instance.getConfig().getBoolean("useEconomy")) {
+			useEconomy = true;
+
+			Rewards.setupEconomy();
+		}
 	}
 
 	@EventHandler
@@ -270,9 +297,8 @@ public class Murder extends JavaPlugin implements Listener {
 	public static int getPlayerNumber(Player p, int arena) {
 		for (int i = 0; i < 25; i++) {
 			for (int m = 0; m < 25; m++) {
-				if ((players[i][m] != null) && (players[i][m] == p)) {
+				if ((players[i][m] != null) && (players[i][m] == p))
 					return m;
-				}
 			}
 		}
 		return 0;
@@ -282,9 +308,8 @@ public class Murder extends JavaPlugin implements Listener {
 		int i = arena;
 		{
 			for (int m = 0; m < 25; m++) {
-				if ((players[i][m] != null) && (players[i][m] == murderers[i][m])) {
+				if ((players[i][m] != null) && (players[i][m] == murderers[i][m]))
 					return murderers[i][m];
-				}
 			}
 		}
 		return null;
@@ -294,9 +319,8 @@ public class Murder extends JavaPlugin implements Listener {
 		int i = Murder.getArena(p);
 		int m = getPlayerNumber(p, Murder.getArena(p));
 
-		if ((players[i][m] != null) && (players[i][m] == murderers[i][m])) {
+		if ((players[i][m] != null) && (players[i][m] == murderers[i][m]))
 			return true;
-		}
 
 		return false;
 	}
@@ -305,9 +329,8 @@ public class Murder extends JavaPlugin implements Listener {
 		int i = Murder.getArena(p);
 		int m = getPlayerNumber(p, Murder.getArena(p));
 
-		if ((players[i][m] != null) && (players[i][m] == bystanders[i][m])) {
+		if ((players[i][m] != null) && (players[i][m] == bystanders[i][m]))
 			return true;
-		}
 
 		return false;
 	}
@@ -316,48 +339,51 @@ public class Murder extends JavaPlugin implements Listener {
 		int i = Murder.getArena(p);
 		int m = getPlayerNumber(p, Murder.getArena(p));
 
-		if ((players[i][m] != null) && (players[i][m] == weaponBystanders[i][m])) {
+		if ((players[i][m] != null) && (players[i][m] == weaponBystanders[i][m]))
 			return true;
-		}
 
+		return false;
+	}
+
+	public static boolean isPlaying(Player p) {
+		for (int i = 0; i < 25; i++) {
+			for (int m = 0; m < 25; m++) {
+				if ((players[i][m] != null) && (players[i][m] == p))
+					return true;
+			}
+		}
 		return false;
 	}
 
 	public static boolean isSpectator(Player p) {
-		if (Murder.playersInSpectate.contains(p)) {
+		if (Murder.playersInSpectate.contains(p))
 			return true;
-		}
 		return false;
 	}
 
 	public static Player getPlayerName(int arena, int m) {
-		if ((players[arena][m] != null)) {
+		if ((players[arena][m] != null))
 			return players[arena][m];
-		}
 		return null;
 	}
 
 	public static boolean ArenaExists(int arena) {
 		arenaFile = new File("plugins/Murder/Arenas/" + arena + "/arena.yml");
-		if (arenaFile.exists()) {
+		if (arenaFile.exists())
 			return true;
-		} else {
+		else
 			return false;
-		}
 	}
 
 	public static String getStatus(int arena)
 
 	{
-		if ((playersAmount[arena] < maxPlayers) && (playersAmount[arena] >= 0) && (!inGame.contains(Integer.valueOf(arena)))) {
+		if ((playersAmount[arena] < maxPlayers) && (playersAmount[arena] >= 0) && (!inGame.contains(Integer.valueOf(arena))))
 			return "§2" + playersAmount[arena] + " / " + (maxPlayers);
-		}
-		if (playersAmount[arena] == maxPlayers) {
+		if (playersAmount[arena] == maxPlayers)
 			return "§c§l[Full]";
-		}
-		if (inGame.contains("" + arena)) {
+		if (inGame.contains("" + arena))
 			return "§c§l[InGame]";
-		}
 		return "§4[ERROR]";
 	}
 

@@ -42,6 +42,7 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
 		return String.valueOf(response).replace("-", "");
 	}
 
+	@Override
 	public Map<String, UUID> call() throws Exception {
 		Map<String, UUID> uuidMap = new HashMap<String, UUID>();
 		String body = buildBody(names);

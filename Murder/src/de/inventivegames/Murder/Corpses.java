@@ -57,6 +57,7 @@ public class Corpses implements Listener {
 			zombie.setCanPickupItems(false);
 			zombie.setMaxHealth(999999999D);
 			zombie.setHealth(999999999D);
+			zombie.setVillager(false);
 			zombie.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 2147000, 255));
 			zombie.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 2147000, 255));
 			zombie.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 2147000, 255));
@@ -153,12 +154,23 @@ public class Corpses implements Listener {
 
 	public static void removeFakePlayers(int arena) throws Exception {
 		WrapperPlayServerEntityDestroy destroy = new WrapperPlayServerEntityDestroy();
-		int[] ids = new int[25];
+		int[] ids = new int[29];
 		for (int i = 0; i < Murder.playersAmount[arena] + 1; i++) {
 			Player p = Murder.players[arena][i];
 			if (fakePlayerMap.get(p) != null) {
 				ids[i] = fakePlayerMap.get(p);
 				fakePlayerMap.remove(p);
+
+				try {
+					fakePlayerLocs.remove(Murder.utils.getCMapUtils().getKeyByValue(fakePlayerLocs, fakePlayerMap.get(p)));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				try {
+					fakePlayerList.remove(fakePlayerMap.get(p));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		destroy.setEntities(ids);

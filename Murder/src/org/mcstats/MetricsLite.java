@@ -108,9 +108,8 @@ public class MetricsLite {
 	private volatile BukkitTask		task			= null;
 
 	public MetricsLite(Plugin plugin) throws IOException {
-		if (plugin == null) {
+		if (plugin == null)
 			throw new IllegalArgumentException("Plugin cannot be null");
-		}
 
 		this.plugin = plugin;
 
@@ -145,20 +144,19 @@ public class MetricsLite {
 	public boolean start() {
 		synchronized (optOutLock) {
 			// Did we opt out?
-			if (isOptOut()) {
+			if (isOptOut())
 				return false;
-			}
 
 			// Is metrics already running?
-			if (task != null) {
+			if (task != null)
 				return true;
-			}
 
 			// Begin hitting the server with glorious data
 			task = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new Runnable() {
 
 				private boolean	firstPost	= true;
 
+				@Override
 				public void run() {
 					try {
 						// This has to be synchronized or it can collide
@@ -297,9 +295,9 @@ public class MetricsLite {
 		PluginDescriptionFile description = plugin.getDescription();
 		String pluginName = description.getName();
 		boolean onlineMode = Bukkit.getServer().getOnlineMode(); // TRUE if
-																	// online
-																	// mode is
-																	// enabled
+		// online
+		// mode is
+		// enabled
 		String pluginVersion = description.getVersion();
 		String serverVersion = Bukkit.getVersion();
 		int playersOnline = Bukkit.getServer().getOnlinePlayers().length;
@@ -416,11 +414,12 @@ public class MetricsLite {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			if (gzos != null)
+			if (gzos != null) {
 				try {
 					gzos.close();
 				} catch (IOException ignore) {
 				}
+			}
 		}
 
 		return baos.toByteArray();

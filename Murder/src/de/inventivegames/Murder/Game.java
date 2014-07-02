@@ -32,8 +32,6 @@ public class Game {
 	static int[]			delayedStart		= new int[29];
 	static int[]			smokeDelay			= new int[29];
 
-	
-
 	static int[]			cd0					= new int[29];
 	static int[]			cd1					= new int[29];
 	static int[]			cd2					= new int[29];
@@ -46,6 +44,14 @@ public class Game {
 	public static void joinArena(int arena, Player p) {
 		Damageable dp = (Damageable) p;
 		if (Murder.ArenaExists(arena)) {
+			if ((Murder.useEconomy) && (!Rewards.canPlay(p))) {
+				p.sendMessage(Murder.prefix + "§cYou don't have enough Money to Play!");
+				return;
+			}
+			if (!(p.hasPermission("murder.player.join." + arena))) {
+				p.sendMessage(Murder.prefix + "§cYou don't have Permission to join this Arena!");
+				return;
+			}
 			if (Murder.playersAmount[arena] < Murder.maxPlayers) {
 				arenaFile = new File("plugins/Murder/Arenas/" + arena + "/arena.yml");
 				YamlConfiguration ArenaFile = YamlConfiguration.loadConfiguration(arenaFile);
@@ -90,13 +96,16 @@ public class Game {
 					}
 
 					Signs.updateSigns(arena);
-				} else
+				} else {
 					p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("lobbySpawnNotExisting"));
-			} else
+				}
+			} else {
 				p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("arenaFull"));
+			}
 
-		} else
+		} else {
 			p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("arenaNotExisting"));
+		}
 
 	}
 
@@ -166,7 +175,7 @@ public class Game {
 		Murder.prevHealth.remove(p);
 		Murder.prevLevel.remove(p);
 		Murder.prevLocation.remove(p);
-		
+
 		if (Murder.prevGamemode.get(p) != GameMode.CREATIVE) {
 			p.setAllowFlight(false);
 			p.setFlying(false);
@@ -212,16 +221,26 @@ public class Game {
 		}
 
 		if (((Murder.playersAmount[arena] < Murder.minPlayers) || (Murder.playersAmount[arena] == 1)) && (Murder.playersAmount[arena] != 0)) {
-			Murder.instance.getServer().getScheduler().cancelTask(countdownLobby[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(cd0[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(cd1[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(cd2[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(cd3[arena]);
 			Murder.instance.getServer().getScheduler().cancelTask(countdown[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(countdownLobby[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(delayedStart[arena]);
 
 			Murder.sendArenaMessage(Murder.prefix + "§cNot enough Players!", arena);
 
 			removeEffects(arena);
 		}
-		if (Murder.playersAmount[arena] == 0) {
-			Murder.instance.getServer().getScheduler().cancelTask(countdownLobby[arena]);
+		if (Murder.playersAmount[arena] <= 0) {
+			Murder.instance.getServer().getScheduler().cancelTask(cd0[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(cd1[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(cd2[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(cd3[arena]);
 			Murder.instance.getServer().getScheduler().cancelTask(countdown[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(countdownLobby[arena]);
+			Murder.instance.getServer().getScheduler().cancelTask(delayedStart[arena]);
 
 			Murder.console.sendMessage(Murder.prefix + "§cCancelled Arena §2#" + arena);
 
@@ -284,7 +303,7 @@ public class Game {
 				public void run() {
 					assign(arena);
 					removeEffects(arena);
-					
+
 					startSmoke(arena);
 
 					Murder.instance.getServer().getScheduler().cancelTask(countdown[arena]);
@@ -326,10 +345,12 @@ public class Game {
 		if (Murder.ArenaExists(arena)) {
 			if ((Murder.playersAmount[arena] > Murder.minPlayers) || (Murder.playersAmount[arena] == Murder.minPlayers)) {
 				startGame(arena);
-			} else
+			} else {
 				p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("notEnoughPlayers"));
-		} else
+			}
+		} else {
 			p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("arenaNotExisting"));
+		}
 	}
 
 	public static void broadcastCountdown(final int arena) {
@@ -395,9 +416,21 @@ public class Game {
 		for (int i = 0; i < Murder.maxPlayers; i++) {
 			if (Murder.players[arena][i] != null) {
 				World world = Murder.instance.getServer().getWorld(ArenaFile.getString("World"));
-				double X = ArenaFile.getInt("SpawnPoints.players." + i + ".X");
-				double Y = ArenaFile.getInt("SpawnPoints.players." + i + ".Y");
-				double Z = ArenaFile.getInt("SpawnPoints.players." + i + ".Z");
+				double X;
+				double Y;
+				double Z;
+
+				X = ArenaFile.getInt("SpawnPoints.players." + i + ".X");
+				Y = ArenaFile.getInt("SpawnPoints.players." + i + ".Y");
+				Z = ArenaFile.getInt("SpawnPoints.players." + i + ".Z");
+
+				if ((X == 0) || (Y == 0) || (Z == 0)) {
+					i = 1;
+
+					X = ArenaFile.getInt("SpawnPoints.players." + i + ".X");
+					Y = ArenaFile.getInt("SpawnPoints.players." + i + ".Y");
+					Z = ArenaFile.getInt("SpawnPoints.players." + i + ".Z");
+				}
 
 				Location loc = new Location(world, X, Y, Z);
 
@@ -442,8 +475,9 @@ public class Game {
 					}
 					if (m <= Murder.playersAmount[arena]) {
 						m++;
-					} else
+					} else {
 						m--;
+					}
 					preAssign2(arena);
 					break;
 				}
@@ -545,47 +579,47 @@ public class Game {
 					}
 				} else
 
-				if ((PlayerFile.getInt("type") == 2)) {
-					Murder.Murderers.add(pn);
-					Murder.playersInLobby.remove(pn);
-					Murder.playerInGame.put(pn, arena);
+					if ((PlayerFile.getInt("type") == 2)) {
+						Murder.Murderers.add(pn);
+						Murder.playersInLobby.remove(pn);
+						Murder.playerInGame.put(pn, arena);
 
-					Murder.players[arena][m].sendMessage(Murder.prefix + "§c§l" + Messages.getMessage("murderer"));
+						Murder.players[arena][m].sendMessage(Murder.prefix + "§c§l" + Messages.getMessage("murderer"));
 
-					Murder.players[arena][m].getInventory().setItem(4, Murder.Knife());
-					Murder.players[arena][m].getInventory().setItem(0, Murder.NameInfo(Murder.players[arena][m]));
+						Murder.players[arena][m].getInventory().setItem(4, Murder.Knife());
+						Murder.players[arena][m].getInventory().setItem(0, Murder.NameInfo(Murder.players[arena][m]));
 
-					Murder.playerType.put(pn, 2);
-					PlayerFile.set("type", 2);
+						Murder.playerType.put(pn, 2);
+						PlayerFile.set("type", 2);
 
-					try {
-						PlayerFile.save(playerFile);
-					} catch (IOException e) {
-						e.printStackTrace();
+						try {
+							PlayerFile.save(playerFile);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+
+						Murder.console.sendMessage(Murder.prefix + "§7" + Murder.players[arena][m].getName() + " §8is Murderer in Arena #" + arena);
+					} else if ((PlayerFile.getInt("type") == 0)) {
+						Murder.Bystanders.add(pn);
+						Murder.playersInLobby.remove(pn);
+						Murder.playerInGame.put(pn, arena);
+
+						Murder.players[arena][m].sendMessage(Murder.prefix + "§1§l" + Messages.getMessage("bystander"));
+						Murder.bystanders[arena][m] = Murder.players[arena][m];
+
+						Murder.players[arena][m].getInventory().setItem(0, Murder.NameInfo(Murder.players[arena][m]));
+
+						Murder.playerType.put(pn, 0);
+						PlayerFile.set("type", 0);
+						Murder.bystanders[arena][m] = Murder.getPlayerName(arena, m);
+
+						Murder.bystanderAmount[arena] += 1;
+						try {
+							PlayerFile.save(playerFile);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 					}
-
-					Murder.console.sendMessage(Murder.prefix + "§7" + Murder.players[arena][m].getName() + " §8is Murderer in Arena #" + arena);
-				} else if ((PlayerFile.getInt("type") == 0)) {
-					/* 285 */Murder.Bystanders.add(pn);
-					Murder.playersInLobby.remove(pn);
-					Murder.playerInGame.put(pn, arena);
-
-					Murder.players[arena][m].sendMessage(Murder.prefix + "§1§l" + Messages.getMessage("bystander"));
-					Murder.bystanders[arena][m] = Murder.players[arena][m];
-
-					Murder.players[arena][m].getInventory().setItem(0, Murder.NameInfo(Murder.players[arena][m]));
-
-					Murder.playerType.put(pn, 0);
-					PlayerFile.set("type", 0);
-					Murder.bystanders[arena][m] = Murder.getPlayerName(arena, m);
-
-					Murder.bystanderAmount[arena] += 1;
-					try {
-						PlayerFile.save(playerFile);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
 
 			}
 
@@ -653,9 +687,8 @@ public class Game {
 				Murder.Bystanders.remove(p);
 
 				Murder.instance.getServer().getScheduler().cancelTask(loot[arena]);
+				Murder.instance.getServer().getScheduler().cancelTask(Players.knifeTimer[arena]);
 
-
-				
 				Murder.instance.getServer().getScheduler().cancelTask(smokeDelay[arena]);
 
 				if (Murder.prevGamemode.get(p) != GameMode.CREATIVE) {
@@ -700,9 +733,8 @@ public class Game {
 		}
 
 		Signs.updateSigns(arena);
-		
-		
-		if(Murder.instance.getConfig().getBoolean("useBungeeCord")) {
+
+		if (Murder.instance.getConfig().getBoolean("useBungeeCord")) {
 			BungeeListener.restartServer();
 		}
 
@@ -744,6 +776,7 @@ public class Game {
 		printScoreboard(arena);
 
 		Murder.instance.getServer().getScheduler().cancelTask(loot[arena]);
+		Murder.instance.getServer().getScheduler().cancelTask(Players.knifeTimer[arena]);
 
 		Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
@@ -768,7 +801,7 @@ public class Game {
 				pl.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 2147000, 128));
 				pl.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 2147000, 255));
 				pl.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 2147000, 255));
-				
+
 				pl.getInventory().setHelmet(new ItemStack(Material.PUMPKIN));
 			}
 		}
@@ -853,8 +886,9 @@ public class Game {
 					Murder.Loot[arena][Number] = world.dropItemNaturally(new Location(world, X, Y, Z), Murder.Loot());
 					Murder.console.sendMessage(Murder.prefix + "§7Spawning Loot in Arena " + arena + " at " + X + " " + Z + " " + Z);
 					Number++;
-				} else
+				} else {
 					Number = 1;
+				}
 
 				randomTime = Murder.rd.nextInt(90 - (30 - 1)) + 30;
 
@@ -873,21 +907,19 @@ public class Game {
 			}
 		}
 	}
-	
-	
+
 	public static void startSmoke(final int arena) {
-		if(Murder.smokeTimer != -1) {
+		if (Murder.smokeTimer != -1) {
 			smokeDelay[arena] = Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
-				
+
 				@Override
 				public void run() {
-					Players.smoke[arena] = true;	
+					Players.smoke[arena] = true;
 					Murder.getMurderer(arena).sendMessage(Murder.prefix + "§aOther Players can now recognize you as the Murderer.");
 				}
 			}, 20 * Murder.smokeTimer);
 		}
 	}
-	
 
 	public static void forceMurderer(int arena, Player p) {
 		arenaFile = new File("plugins/Murder/Arenas/" + arena + "/arena.yml");
@@ -903,8 +935,9 @@ public class Game {
 		Player p = Murder.instance.getServer().getPlayerExact(string);
 		if (p != null) {
 			forceMurderer(arena, p);
-		} else
+		} else {
 			sender.sendMessage(Murder.prefix + "§cPlayer §4" + p.getName() + " §c is not online!");
+		}
 	}
 
 	public static void forceWeapon(int arena, Player p) {
@@ -921,8 +954,9 @@ public class Game {
 		Player p = Murder.instance.getServer().getPlayerExact(string);
 		if (p != null) {
 			forceWeapon(arena, p);
-		} else
+		} else {
 			sender.sendMessage(Murder.prefix + "§cPlayer §4" + p.getName() + " §c is not online!");
+		}
 	}
 
 	public static void joinArena(String string, Player p) {

@@ -38,6 +38,7 @@ public class Signs implements Listener {
 				e.setLine(3, Murder.getStatus(Integer.valueOf(e.getLine(2))));
 			} else if (e.getLine(1).equalsIgnoreCase("leave")) {
 				e.setLine(1, "§cLeave");
+				return;
 			}
 
 			if (e.getLine(2) != null) {
@@ -113,7 +114,7 @@ public class Signs implements Listener {
 		signFile = new File("plugins/Murder/Arenas/" + arena + "/signs.yml");
 		YamlConfiguration SignFile = YamlConfiguration.loadConfiguration(signFile);
 
-		if(SignFile.get("Signs") != null) {
+		if (SignFile.get("Signs") != null) {
 			Set<String> IDs = SignFile.getConfigurationSection("Signs").getKeys(false);
 			Object[] ids = IDs.toArray();
 			String ID;
@@ -124,19 +125,19 @@ public class Signs implements Listener {
 			} else {
 				id = 1;
 			}
-	
+
 			for (int i = 0; i < id; i++) {
 				if (SignFile.get("Signs." + i) != null) {
 					World world = Murder.instance.getServer().getWorld(SignFile.getString("Signs." + i + ".World"));
 					double X = SignFile.getDouble("Signs." + i + ".X");
 					double Y = SignFile.getDouble("Signs." + i + ".Y");
 					double Z = SignFile.getDouble("Signs." + i + ".Z");
-	
+
 					Location loc = new Location(world, X, Y, Z);
-	
+
 					if ((loc.getBlock().getType() == Material.SIGN) || (loc.getBlock().getType() == Material.WALL_SIGN)) {
 						Sign sign = (Sign) loc.getBlock().getState();
-	
+
 						sign.setLine(3, Murder.getStatus(arena));
 						sign.update();
 					} else {
@@ -170,6 +171,7 @@ public class Signs implements Listener {
 							if (!(Murder.inGame.contains("" + sign.getLine(2)))) {
 								if (p.getItemInHand().getType() == Material.AIR) {
 									Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+										@Override
 										public void run() {
 											Game.joinArena(sign.getLine(2), p);
 
@@ -195,19 +197,22 @@ public class Signs implements Listener {
 										}
 									}, 1L);
 								}
-							} else
+							} else {
 								p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("arenaIngame"));
+							}
 							return;
-						} else
+						} else {
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("playerIngame"));
+						}
 						return;
 					} else if ((sign.getLine(1).equals("§cLeave")) && (p.hasPermission("murder.player.leave"))) {
 						if (Murder.playersInGame.contains(p)) {
 							int arena = Murder.getArena(p);
 							Game.leaveArena(arena, p);
 							return;
-						} else
+						} else {
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("playerNotIngame"));
+						}
 						return;
 					}
 
