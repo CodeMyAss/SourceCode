@@ -14,6 +14,7 @@ import de.inventivegames.theShip.commands.CommandInterface;
 import de.inventivegames.theShip.commands.Join;
 import de.inventivegames.theShip.commands.Leave;
 import de.inventivegames.theShip.commands.RemoveArena;
+import de.inventivegames.theShip.commands.Report;
 
 public class CommandHandler implements CommandExecutor {
 
@@ -31,6 +32,7 @@ public class CommandHandler implements CommandExecutor {
 		commands.put("addspawn", new AddSpawn());
 		commands.put("join", new Join());
 		commands.put("leave", new Leave());
+		commands.put("report", new Report());
 	}
 
 	@Override

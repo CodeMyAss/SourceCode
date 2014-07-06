@@ -17,6 +17,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
 
+import de.inventivegames.utils.IGUtils;
+import de.inventivegames.utils.debug.Debug;
+
 public class TheShip extends JavaPlugin implements Listener {
 
 	public static String						prefix					= "§1[§aThe§bShip§1] ";
@@ -68,9 +71,13 @@ public class TheShip extends JavaPlugin implements Listener {
 	
 	public static ArrayList<String> spawnTypes = new ArrayList<String>(Arrays.asList("lobby", "players", "prison", "prisonOut"));
 
+	public static IGUtils utils;
+	
 	public void onEnable() {
 		instance = this;
 
+		utils = new IGUtils(instance);
+		
 		console = Bukkit.getServer().getConsoleSender();
 
 		instance.getCommand("theship").setExecutor(new CommandHandler());
@@ -186,6 +193,38 @@ public class TheShip extends JavaPlugin implements Listener {
 		return 0;
 	}
 
+	
+
+
+	private static boolean reportActive = false;
+	
+	public static void reportCmd(Player p) {
+		if(!reportActive) {
+			p.sendMessage("§7==========");
+			p.sendMessage("§2This command will collect your Server Data and send it to pastebin.");
+			p.sendMessage("§2Type §a/theship report §2again to continue. This option will only be available for 10 seconds.");
+			reportActive = true;
+			p.sendMessage("§7==========");
+			
+			instance.getServer().getScheduler().scheduleSyncDelayedTask(instance, new Runnable() {
+				
+				@Override
+				public void run() {
+					reportActive = false;
+				}
+			}, 20 * 10);
+		} else {
+			p.sendMessage("§2Reporting...");
+			Debug debug = utils.getDebug();
+			p.sendMessage(debug.send());
+			TheShip.utils.getChatUtils().sendRawMessage(p, "{\"text\":\"\",\"extra\":[{\"text\":\"Click here\",\"color\":\"green\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + debug.getReportURL() + "\"}},{\"text\":\" to create a Report.\",\"color\":\"dark_green\"}]}");
+			reportActive = false;
+		}
+	}
+	
+	
+	
+	
 	public static void sendRawMessage(Player player, String message) {
 		try {
 			Object handle = Reflection.getHandle(player);
