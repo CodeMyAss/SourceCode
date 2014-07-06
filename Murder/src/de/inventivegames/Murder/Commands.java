@@ -9,6 +9,8 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
+import de.inventivegames.utils.debug.Debug;
+
 public class Commands implements Listener, CommandExecutor, TabCompleter {
 
 	@Override
@@ -261,6 +263,15 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 						} else {
 							p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("noPermission"));
 						}
+					} else if (args[0].equalsIgnoreCase("report")) {
+						if (p.isOp()) {
+							if (args.length == 1) {
+								reportCmd(p);
+							} else {
+								p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));
+							}
+							return true;
+						}
 					} else {
 						p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("wrongUsage").replace("%1$s", "§4/murder help§c"));
 						return true;
@@ -275,4 +286,30 @@ public class Commands implements Listener, CommandExecutor, TabCompleter {
 		return false;
 	}
 
+	private static boolean reportActive = false;
+	
+	public static void reportCmd(Player p) {
+		if(!reportActive) {
+			p.sendMessage("§7==========");
+			p.sendMessage("§2This command will collect your Server Data and send it to pastebin.");
+			p.sendMessage("§2Type §a/murder report §2again to continue. This option will only be available for 10 seconds.");
+			reportActive = true;
+			p.sendMessage("§7==========");
+			
+			Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+				
+				@Override
+				public void run() {
+					reportActive = false;
+				}
+			}, 20 * 10);
+		} else {
+			p.sendMessage("§2Reporting...");
+			Debug debug = Murder.utils.getDebug();
+			p.sendMessage(debug.send());
+			Murder.utils.getChatUtils().sendRawMessage(p, "{\"text\":\"\",\"extra\":[{\"text\":\"Click here\",\"color\":\"green\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + debug.getReportURL() + "\"}},{\"text\":\" to create a Report.\",\"color\":\"dark_green\"}]}");
+			reportActive = false;
+		}
+	}
+	
 }

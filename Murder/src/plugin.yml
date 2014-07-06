@@ -1,10 +1,10 @@
 name: Murder
 main: de.inventivegames.Murder.Murder
-version: 1.8.7
+version: 1.8.8
 website: http://www.inventivegames.de
 author: inventivetalent
 description: >
-            Murder-Gamemode Plugin - Copyright inventivetalent 2013!
+            Murder-Gamemode Plugin - Copyright inventivetalent 2013-2014!
 
 softdepend: [TagAPI, ProtocolLib]
     

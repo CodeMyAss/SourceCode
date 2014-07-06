@@ -612,7 +612,7 @@ public class Players implements Listener {
 					double vY = p.getLocation().getDirection().getY() * 5;
 					double vZ = p.getLocation().getDirection().getZ() * 5;
 
-					Arrow arrow;
+					final Arrow arrow;
 					Snowball snowball;
 
 					if (Murder.serverVersion.contains("1.7.2")) {

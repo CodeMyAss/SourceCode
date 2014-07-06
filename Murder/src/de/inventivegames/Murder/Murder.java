@@ -175,7 +175,13 @@ public class Murder extends JavaPlugin implements Listener {
 
 		setupMetrics();
 
-		utils = new IGUtils(instance);
+		
+		try {
+			utils = new IGUtils(instance);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 
 		serverVersion = instance.getServer().getBukkitVersion().toString();
 
