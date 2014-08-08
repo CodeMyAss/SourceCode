@@ -34,7 +34,7 @@ public class WrapperPlayClientPosition extends WrapperPlayClientFlying {
 
 	/**
 	 * Retrieve absolute position.
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public double getX() {
@@ -43,8 +43,9 @@ public class WrapperPlayClientPosition extends WrapperPlayClientFlying {
 
 	/**
 	 * Set absolute position.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(double value) {
 		handle.getDoubles().write(0, value);
@@ -52,7 +53,7 @@ public class WrapperPlayClientPosition extends WrapperPlayClientFlying {
 
 	/**
 	 * Retrieve absolute position.
-	 * 
+	 *
 	 * @return The current Y
 	 */
 	public double getY() {
@@ -61,16 +62,18 @@ public class WrapperPlayClientPosition extends WrapperPlayClientFlying {
 
 	/**
 	 * Set absolute position.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(double value) {
 		handle.getDoubles().write(1, value);
 	}
 
 	/**
-	 * Retrieve used to modify the players bounding box when going up stairs, crouching, etc….
-	 * 
+	 * Retrieve used to modify the players bounding box when going up stairs,
+	 * crouching, etc….
+	 *
 	 * @return The current Stance
 	 */
 	public double getStance() {
@@ -78,9 +81,11 @@ public class WrapperPlayClientPosition extends WrapperPlayClientFlying {
 	}
 
 	/**
-	 * Set used to modify the players bounding box when going up stairs, crouching, etc….
-	 * 
-	 * @param value - new value.
+	 * Set used to modify the players bounding box when going up stairs,
+	 * crouching, etc….
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setStance(double value) {
 		handle.getDoubles().write(3, value);
@@ -88,7 +93,7 @@ public class WrapperPlayClientPosition extends WrapperPlayClientFlying {
 
 	/**
 	 * Retrieve absolute position.
-	 * 
+	 *
 	 * @return The current Z
 	 */
 	public double getZ() {
@@ -97,8 +102,9 @@ public class WrapperPlayClientPosition extends WrapperPlayClientFlying {
 
 	/**
 	 * Set absolute position.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(double value) {
 		handle.getDoubles().write(2, value);

@@ -19,7 +19,7 @@ public class WrapperPlayServerRelEntityMove extends WrapperPlayServerEntity {
 	 * Retrieve the relative movement in the x axis.
 	 * <p>
 	 * Note that this cannot exceed 4 blocks in either direction.
-	 * 
+	 *
 	 * @return The current dX
 	 */
 	public double getDx() {
@@ -30,12 +30,12 @@ public class WrapperPlayServerRelEntityMove extends WrapperPlayServerEntity {
 	 * Set the relative movement in the x axis.
 	 * <p>
 	 * Note that this cannot exceed 4 blocks in either direction.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setDx(double value) {
-		if (Math.abs(value) > 4)
-			throw new IllegalArgumentException("Displacement cannot exceed 4 meters.");
+		if (Math.abs(value) > 4) throw new IllegalArgumentException("Displacement cannot exceed 4 meters.");
 		handle.getBytes().write(0, (byte) Math.min(Math.floor(value * 32.0D), 127));
 	}
 
@@ -43,7 +43,7 @@ public class WrapperPlayServerRelEntityMove extends WrapperPlayServerEntity {
 	 * Retrieve the relative movement in the y axis.
 	 * <p>
 	 * Note that this cannot exceed 4 blocks in either direction.
-	 * 
+	 *
 	 * @return The current dY
 	 */
 	public double getDy() {
@@ -54,12 +54,12 @@ public class WrapperPlayServerRelEntityMove extends WrapperPlayServerEntity {
 	 * Set the relative movement in the y axis.
 	 * <p>
 	 * Note that this cannot exceed 4 blocks in either direction.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setDy(double value) {
-		if (Math.abs(value) > 4)
-			throw new IllegalArgumentException("Displacement cannot exceed 4 meters.");
+		if (Math.abs(value) > 4) throw new IllegalArgumentException("Displacement cannot exceed 4 meters.");
 		handle.getBytes().write(1, (byte) Math.min(Math.floor(value * 32.0D), 127));
 	}
 
@@ -67,7 +67,7 @@ public class WrapperPlayServerRelEntityMove extends WrapperPlayServerEntity {
 	 * Retrieve the relative movement in the z axis.
 	 * <p>
 	 * Note that this cannot exceed 4 blocks in either direction.
-	 * 
+	 *
 	 * @return The current dZ
 	 */
 	public double getDz() {
@@ -78,12 +78,12 @@ public class WrapperPlayServerRelEntityMove extends WrapperPlayServerEntity {
 	 * Set the relative movement in the z axis.
 	 * <p>
 	 * Note that this cannot exceed 4 blocks in either direction.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setDz(double value) {
-		if (Math.abs(value) > 4)
-			throw new IllegalArgumentException("Displacement cannot exceed 4 meters.");
+		if (Math.abs(value) > 4) throw new IllegalArgumentException("Displacement cannot exceed 4 meters.");
 		handle.getBytes().write(2, (byte) Math.min(Math.floor(value * 32.0D), 127));
 	}
 }

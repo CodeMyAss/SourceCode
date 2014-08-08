@@ -34,7 +34,7 @@ public class WrapperPlayClientEnchantItem extends AbstractPacket {
 
 	/**
 	 * Retrieve the ID sent by open window.
-	 * 
+	 *
 	 * @return The current Window ID
 	 */
 	public byte getWindowId() {
@@ -43,16 +43,18 @@ public class WrapperPlayClientEnchantItem extends AbstractPacket {
 
 	/**
 	 * Set the ID sent by open window.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setWindowId(byte value) {
 		handle.getIntegers().write(0, (int) value);
 	}
 
 	/**
-	 * Retrieve the position of the enchantment on the enchantment table window, starting with 0 as the top-most one.
-	 * 
+	 * Retrieve the position of the enchantment on the enchantment table window,
+	 * starting with 0 as the top-most one.
+	 *
 	 * @return The current Enchantment
 	 */
 	public byte getEnchantment() {
@@ -60,9 +62,11 @@ public class WrapperPlayClientEnchantItem extends AbstractPacket {
 	}
 
 	/**
-	 * Set the position of the enchantment on the enchantment table window, starting with 0 as the top-most one.
-	 * 
-	 * @param value - new value.
+	 * Set the position of the enchantment on the enchantment table window,
+	 * starting with 0 as the top-most one.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEnchantment(byte value) {
 		handle.getIntegers().write(1, (int) value);

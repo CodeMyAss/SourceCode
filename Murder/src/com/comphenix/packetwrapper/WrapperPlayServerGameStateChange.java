@@ -36,7 +36,7 @@ public class WrapperPlayServerGameStateChange extends AbstractPacket {
 
 	/**
 	 * Enumeration of all the reason codes in Minecraft.
-	 * 
+	 *
 	 * @author Kristian
 	 */
 	public static class Reasons {
@@ -47,12 +47,14 @@ public class WrapperPlayServerGameStateChange extends AbstractPacket {
 		public static final int			ENTER_CREDITS			= 4;
 
 		/**
-		 * Show demo screen. 101 - Tell movement controls, 102 - Tell jump control, 103 - Tell inventory control.
+		 * Show demo screen. 101 - Tell movement controls, 102 - Tell jump
+		 * control, 103 - Tell inventory control.
 		 */
 		public static final int			DEMO_MESSAGES			= 5;
 
 		/**
-		 * Value: Appears to be played when an arrow strikes another player in Multiplayer
+		 * Value: Appears to be played when an arrow strikes another player in
+		 * Multiplayer
 		 */
 		public static final int			ARROW_HITTING_PLAYER	= 6;
 
@@ -70,7 +72,7 @@ public class WrapperPlayServerGameStateChange extends AbstractPacket {
 
 		/**
 		 * Retrieve the reasons enum.
-		 * 
+		 *
 		 * @return Reasons enum.
 		 */
 		public static Reasons getInstance() {
@@ -80,7 +82,7 @@ public class WrapperPlayServerGameStateChange extends AbstractPacket {
 
 	/**
 	 * Retrieve the reason the game state changed.
-	 * 
+	 *
 	 * @see {@link Reasons}.
 	 * @return The current Reason
 	 */
@@ -90,9 +92,10 @@ public class WrapperPlayServerGameStateChange extends AbstractPacket {
 
 	/**
 	 * Set the reason the game state changed.
-	 * 
+	 *
 	 * @see {@link Reasons}.
-	 * @param value - new value.
+	 * @param value
+	 *            - new value.
 	 */
 	public void setReason(int value) {
 		handle.getIntegers().write(0, value);
@@ -102,7 +105,7 @@ public class WrapperPlayServerGameStateChange extends AbstractPacket {
 	 * Retrieve the new game mode.
 	 * <p>
 	 * Only used when reason is 3.
-	 * 
+	 *
 	 * @return The current Game mode
 	 */
 	@SuppressWarnings("deprecation")
@@ -114,8 +117,9 @@ public class WrapperPlayServerGameStateChange extends AbstractPacket {
 	 * Set the new game mode.
 	 * <p>
 	 * Only used when reason is 3.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	@SuppressWarnings("deprecation")
 	public void setGameMode(GameMode value) {

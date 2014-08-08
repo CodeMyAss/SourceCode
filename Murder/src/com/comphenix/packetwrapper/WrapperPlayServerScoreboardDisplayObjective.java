@@ -26,7 +26,7 @@ public class WrapperPlayServerScoreboardDisplayObjective extends AbstractPacket 
 
 	/**
 	 * Enumeration of all the possible scoreboard positions.
-	 * 
+	 *
 	 * @author Kristian
 	 */
 	public static class Positions extends IntEnum {
@@ -52,7 +52,7 @@ public class WrapperPlayServerScoreboardDisplayObjective extends AbstractPacket 
 
 	/**
 	 * Retrieve the {@link Positions} of the scoreboard.
-	 * 
+	 *
 	 * @return The current Position
 	 */
 	public byte getPosition() {
@@ -61,8 +61,9 @@ public class WrapperPlayServerScoreboardDisplayObjective extends AbstractPacket 
 
 	/**
 	 * Set the {@link Positions} of the scoreboard.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setPosition(byte value) {
 		handle.getIntegers().write(0, (int) value);
@@ -70,7 +71,7 @@ public class WrapperPlayServerScoreboardDisplayObjective extends AbstractPacket 
 
 	/**
 	 * Retrieve the unique name for the scoreboard to be displayed..
-	 * 
+	 *
 	 * @return The current Score Name
 	 */
 	public String getScoreName() {
@@ -79,8 +80,9 @@ public class WrapperPlayServerScoreboardDisplayObjective extends AbstractPacket 
 
 	/**
 	 * Set the unique name for the scoreboard to be displayed..
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setScoreName(String value) {
 		handle.getStrings().write(0, value);

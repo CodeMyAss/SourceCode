@@ -34,7 +34,7 @@ public class WrapperPlayClientLook extends WrapperPlayClientFlying {
 
 	/**
 	 * Retrieve absolute rotation on the X Axis, in degrees.
-	 * 
+	 *
 	 * @return The current Yaw
 	 */
 	public float getYaw() {
@@ -43,8 +43,9 @@ public class WrapperPlayClientLook extends WrapperPlayClientFlying {
 
 	/**
 	 * Set absolute rotation on the X Axis, in degrees.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setYaw(float value) {
 		handle.getFloat().write(0, value);
@@ -52,7 +53,7 @@ public class WrapperPlayClientLook extends WrapperPlayClientFlying {
 
 	/**
 	 * Retrieve absolute rotation on the Y Axis, in degrees.
-	 * 
+	 *
 	 * @return The current Pitch
 	 */
 	public float getPitch() {
@@ -61,8 +62,9 @@ public class WrapperPlayClientLook extends WrapperPlayClientFlying {
 
 	/**
 	 * Set absolute rotation on the Y Axis, in degrees.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setPitch(float value) {
 		handle.getFloat().write(1, value);

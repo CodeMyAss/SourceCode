@@ -34,7 +34,7 @@ public class WrapperPlayServerMapChunk extends AbstractPacket {
 
 	/**
 	 * Retrieve chunk X Coordinate (multiply by 16 to get the true X).
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public int getChunkX() {
@@ -43,8 +43,9 @@ public class WrapperPlayServerMapChunk extends AbstractPacket {
 
 	/**
 	 * Set chunk X Coordinate (multiply by 16 to get the true X).
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setChunkX(int value) {
 		handle.getIntegers().write(0, value);
@@ -52,7 +53,7 @@ public class WrapperPlayServerMapChunk extends AbstractPacket {
 
 	/**
 	 * Retrieve chunk Z Coordinate (multiply by 16 to get the true Z).
-	 * 
+	 *
 	 * @return The current Z
 	 */
 	public int getChunkZ() {
@@ -61,18 +62,21 @@ public class WrapperPlayServerMapChunk extends AbstractPacket {
 
 	/**
 	 * Set chunk Z Coordinate (multiply by 16 to get the true Z).
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setChunkZ(int value) {
 		handle.getIntegers().write(1, value);
 	}
 
 	/**
-	 * Retrieve whether or not the packet represents all sections in this vertical column.
+	 * Retrieve whether or not the packet represents all sections in this
+	 * vertical column.
 	 * <p>
-	 * The primary bit map specifies exactly which sections are included, and which are air.
-	 * 
+	 * The primary bit map specifies exactly which sections are included, and
+	 * which are air.
+	 *
 	 * @return The current Ground-up continuous
 	 */
 	public boolean getGroundUpContinuous() {
@@ -80,19 +84,23 @@ public class WrapperPlayServerMapChunk extends AbstractPacket {
 	}
 
 	/**
-	 * Set whether or not this packet represents all sections in this vertical column.
+	 * Set whether or not this packet represents all sections in this vertical
+	 * column.
 	 * <p>
-	 * The primary bit map specifies exactly which sections are included, and which are air.
-	 * 
-	 * @param value - new value.
+	 * The primary bit map specifies exactly which sections are included, and
+	 * which are air.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setGroundUpContinuous(boolean value) {
 		handle.getSpecificModifier(boolean.class).write(0, value);
 	}
 
 	/**
-	 * Retrieve a bitmask indicating which 16x16x16 section is stored in the compressed data.
-	 * 
+	 * Retrieve a bitmask indicating which 16x16x16 section is stored in the
+	 * compressed data.
+	 *
 	 * @return The current Primary bit map
 	 */
 	public short getPrimaryBitMap() {
@@ -100,17 +108,20 @@ public class WrapperPlayServerMapChunk extends AbstractPacket {
 	}
 
 	/**
-	 * Set a bitmask indicating which 16x16x16 section is stored in the compressed data.
-	 * 
-	 * @param value - new value.
+	 * Set a bitmask indicating which 16x16x16 section is stored in the
+	 * compressed data.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setPrimaryBitMap(short value) {
 		handle.getIntegers().write(2, (int) value);
 	}
 
 	/**
-	 * Retrieve a bitmask similar to {@link #getPrimaryBitMap()}, but this is used exclusively for the 'add' portion of the payload.
-	 * 
+	 * Retrieve a bitmask similar to {@link #getPrimaryBitMap()}, but this is
+	 * used exclusively for the 'add' portion of the payload.
+	 *
 	 * @return The current add bit map
 	 */
 	public short getAddBitMap() {
@@ -118,9 +129,11 @@ public class WrapperPlayServerMapChunk extends AbstractPacket {
 	}
 
 	/**
-	 * Set a bitmask similar to {@link #getPrimaryBitMap()}, which is used exclusively for the 'add' portion of the payload.
-	 * 
-	 * @param value - new value.
+	 * Set a bitmask similar to {@link #getPrimaryBitMap()}, which is used
+	 * exclusively for the 'add' portion of the payload.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setAddBitMap(short value) {
 		handle.getIntegers().write(3, (int) value);
@@ -128,7 +141,7 @@ public class WrapperPlayServerMapChunk extends AbstractPacket {
 
 	/**
 	 * Retrieve size of compressed chunk data.
-	 * 
+	 *
 	 * @return The current Compressed size
 	 */
 	public int getCompressedSize() {
@@ -137,8 +150,9 @@ public class WrapperPlayServerMapChunk extends AbstractPacket {
 
 	/**
 	 * Set size of compressed chunk data..
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setCompressedSize(int value) {
 		handle.getIntegers().write(4, value);
@@ -148,43 +162,45 @@ public class WrapperPlayServerMapChunk extends AbstractPacket {
 	 * Retrieve the chunk data that is compressed using ZLib Deflate function.
 	 * <p>
 	 * This is the data that will be transmitted to the client.
-	 * 
+	 *
 	 * @return The current Compressed data
 	 */
 	public byte[] getCompressedData() {
-		return (byte[]) handle.getByteArrays().read(0);
+		return handle.getByteArrays().read(0);
 	}
 
 	/**
 	 * Set the chunk data that has been compressed using ZLib Deflate function.
 	 * <p>
 	 * This is the data that will be transmitted to the client.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setCompressedData(byte[] value) {
-		handle.getByteArrays().write(0, (byte[]) value);
+		handle.getByteArrays().write(0, value);
 	}
 
 	/**
 	 * Retrieve the chunk data that is compressed using ZLib Deflate function.
 	 * <p>
 	 * This will not be transmitted to the client.
-	 * 
+	 *
 	 * @return The current Compressed data
 	 */
 	public byte[] getUncompressedData() {
-		return (byte[]) handle.getByteArrays().read(1);
+		return handle.getByteArrays().read(1);
 	}
 
 	/**
 	 * Set the originally uncompressed chunk data.
 	 * <p>
 	 * This will not be transmitted to the client.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setUncompressedData(byte[] value) {
-		handle.getByteArrays().write(1, (byte[]) value);
+		handle.getByteArrays().write(1, value);
 	}
 }

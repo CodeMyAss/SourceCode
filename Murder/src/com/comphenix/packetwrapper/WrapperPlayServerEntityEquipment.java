@@ -39,7 +39,7 @@ public class WrapperPlayServerEntityEquipment extends AbstractPacket {
 
 	/**
 	 * Retrieve named Entity ID.
-	 * 
+	 *
 	 * @return The current Entity ID
 	 */
 	public int getEntityId() {
@@ -48,8 +48,9 @@ public class WrapperPlayServerEntityEquipment extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity.
-	 * 
-	 * @param world - the current world of the entity.
+	 *
+	 * @param world
+	 *            - the current world of the entity.
 	 * @return The entity.
 	 */
 	public Entity getEntity(World world) {
@@ -58,8 +59,9 @@ public class WrapperPlayServerEntityEquipment extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The entity.
 	 */
 	public Entity getEntity(PacketEvent event) {
@@ -68,8 +70,9 @@ public class WrapperPlayServerEntityEquipment extends AbstractPacket {
 
 	/**
 	 * Set named Entity ID.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityId(int value) {
 		handle.getIntegers().write(0, value);
@@ -78,8 +81,9 @@ public class WrapperPlayServerEntityEquipment extends AbstractPacket {
 	/**
 	 * Retrieve equipment slot.
 	 * <p>
-	 * Here zero indicates a held weapon or item, while 1 is boots, 2 is leggings, 3 is chestplate and 4 is helmet.
-	 * 
+	 * Here zero indicates a held weapon or item, while 1 is boots, 2 is
+	 * leggings, 3 is chestplate and 4 is helmet.
+	 *
 	 * @return The current slot
 	 */
 	public short getSlot() {
@@ -89,9 +93,11 @@ public class WrapperPlayServerEntityEquipment extends AbstractPacket {
 	/**
 	 * Set equipment slot.
 	 * <p>
-	 * Here zero indicates a held weapon or item, while 1 is boots, 2 is leggings, 3 is chestplate and 4 is helmet.
-	 * 
-	 * @param value - new value.
+	 * Here zero indicates a held weapon or item, while 1 is boots, 2 is
+	 * leggings, 3 is chestplate and 4 is helmet.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setSlot(short value) {
 		handle.getIntegers().write(1, (int) value);
@@ -99,7 +105,7 @@ public class WrapperPlayServerEntityEquipment extends AbstractPacket {
 
 	/**
 	 * Retrieve the equipped item.
-	 * 
+	 *
 	 * @return The current item
 	 */
 	public ItemStack getItem() {
@@ -108,8 +114,9 @@ public class WrapperPlayServerEntityEquipment extends AbstractPacket {
 
 	/**
 	 * Set the equipped item.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setItem(ItemStack value) {
 		handle.getItemModifier().write(0, value);

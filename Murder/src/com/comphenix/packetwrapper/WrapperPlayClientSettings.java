@@ -19,7 +19,7 @@ public class WrapperPlayClientSettings extends AbstractPacket {
 
 	/**
 	 * Retrieve en_GB.
-	 * 
+	 *
 	 * @return The current Locale
 	 */
 	public String getLocale() {
@@ -28,8 +28,9 @@ public class WrapperPlayClientSettings extends AbstractPacket {
 
 	/**
 	 * Set en_GB.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setLocale(String value) {
 		handle.getStrings().write(0, value);
@@ -37,7 +38,7 @@ public class WrapperPlayClientSettings extends AbstractPacket {
 
 	/**
 	 * Retrieve 0-3 for 'far', 'normal', 'short', 'tiny'.
-	 * 
+	 *
 	 * @return The current View distance
 	 */
 	public byte getViewDistance() {
@@ -46,8 +47,9 @@ public class WrapperPlayClientSettings extends AbstractPacket {
 
 	/**
 	 * Set 0-3 for 'far', 'normal', 'short', 'tiny'..
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setViewDistance(byte value) {
 		handle.getIntegers().write(0, (int) value);
@@ -55,7 +57,7 @@ public class WrapperPlayClientSettings extends AbstractPacket {
 
 	/**
 	 * Retrieve chat settings.
-	 * 
+	 *
 	 * @return The current chat settings,
 	 */
 	public ChatVisibility getChatVisibility() {
@@ -64,8 +66,9 @@ public class WrapperPlayClientSettings extends AbstractPacket {
 
 	/**
 	 * Set chat settings.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setChatFlags(ChatVisibility value) {
 		handle.getChatVisibilities().write(0, value);
@@ -73,7 +76,7 @@ public class WrapperPlayClientSettings extends AbstractPacket {
 
 	/**
 	 * Retrieve whether or not the colours multiplayer setting is enabled.
-	 * 
+	 *
 	 * @return The current Chat colours
 	 */
 	public boolean getChatColours() {
@@ -82,16 +85,17 @@ public class WrapperPlayClientSettings extends AbstractPacket {
 
 	/**
 	 * Set whether or not the colours multiplayer setting is enabled.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setChatColours(boolean value) {
-		handle.getSpecificModifier(boolean.class).write(0, (boolean) value);
+		handle.getSpecificModifier(boolean.class).write(0, value);
 	}
 
 	/**
 	 * Retrieve the client-side difficulty.
-	 * 
+	 *
 	 * @return The current Difficulty
 	 */
 	public Difficulty getDifficulty() {
@@ -100,8 +104,9 @@ public class WrapperPlayClientSettings extends AbstractPacket {
 
 	/**
 	 * Set the client-side difficulty.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setDifficulty(Difficulty difficulty) {
 		handle.getDifficulties().write(0, difficulty);
@@ -109,7 +114,7 @@ public class WrapperPlayClientSettings extends AbstractPacket {
 
 	/**
 	 * Retrieve the client-side "show cape" option.
-	 * 
+	 *
 	 * @return The current Show Cape
 	 */
 	public boolean getShowCape() {
@@ -118,10 +123,11 @@ public class WrapperPlayClientSettings extends AbstractPacket {
 
 	/**
 	 * Set the client-side "show cape" option.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setShowCape(boolean value) {
-		handle.getSpecificModifier(boolean.class).write(1, (boolean) value);
+		handle.getSpecificModifier(boolean.class).write(1, value);
 	}
 }

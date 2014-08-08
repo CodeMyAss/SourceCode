@@ -38,7 +38,7 @@ public class WrapperPlayServerBlockBreakAnimation extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity breaking the block.
-	 * 
+	 *
 	 * @return The current EID?
 	 */
 	public int getEntityID() {
@@ -47,8 +47,9 @@ public class WrapperPlayServerBlockBreakAnimation extends AbstractPacket {
 
 	/**
 	 * Set the entity breaking the block.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityID(int value) {
 		handle.getIntegers().write(0, value);
@@ -56,8 +57,9 @@ public class WrapperPlayServerBlockBreakAnimation extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity.
-	 * 
-	 * @param world - the current world of the entity.
+	 *
+	 * @param world
+	 *            - the current world of the entity.
 	 * @return The entity.
 	 */
 	public Entity getEntity(World world) {
@@ -66,8 +68,9 @@ public class WrapperPlayServerBlockBreakAnimation extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The entity.
 	 */
 	public Entity getEntity(PacketEvent event) {
@@ -76,7 +79,7 @@ public class WrapperPlayServerBlockBreakAnimation extends AbstractPacket {
 
 	/**
 	 * Retrieve the x axis of the block coordinate.
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public int getX() {
@@ -85,8 +88,9 @@ public class WrapperPlayServerBlockBreakAnimation extends AbstractPacket {
 
 	/**
 	 * Set the x axis of the block coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(int value) {
 		handle.getIntegers().write(1, value);
@@ -94,7 +98,7 @@ public class WrapperPlayServerBlockBreakAnimation extends AbstractPacket {
 
 	/**
 	 * Retrieve the y axis of the block coordinate.
-	 * 
+	 *
 	 * @return The current Y
 	 */
 	public int getY() {
@@ -103,8 +107,9 @@ public class WrapperPlayServerBlockBreakAnimation extends AbstractPacket {
 
 	/**
 	 * Set the y axis of the block coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(int value) {
 		handle.getIntegers().write(2, value);
@@ -112,7 +117,7 @@ public class WrapperPlayServerBlockBreakAnimation extends AbstractPacket {
 
 	/**
 	 * Retrieve the z axis of the block coordinate.
-	 * 
+	 *
 	 * @return The current Z
 	 */
 	public int getZ() {
@@ -121,8 +126,9 @@ public class WrapperPlayServerBlockBreakAnimation extends AbstractPacket {
 
 	/**
 	 * Set the z axis of the block coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(int value) {
 		handle.getIntegers().write(3, value);
@@ -130,7 +136,7 @@ public class WrapperPlayServerBlockBreakAnimation extends AbstractPacket {
 
 	/**
 	 * Retrieve how far destroyed this block is (0 - 9).
-	 * 
+	 *
 	 * @return The current Destroy Stage
 	 */
 	public byte getDestroyStage() {
@@ -139,8 +145,9 @@ public class WrapperPlayServerBlockBreakAnimation extends AbstractPacket {
 
 	/**
 	 * Set how far destroyed this block is (0 - 9).
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setDestroyStage(byte value) {
 		handle.getIntegers().write(4, (int) value);

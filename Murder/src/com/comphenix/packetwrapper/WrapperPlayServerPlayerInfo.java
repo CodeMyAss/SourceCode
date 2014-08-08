@@ -36,7 +36,7 @@ public class WrapperPlayServerPlayerInfo extends AbstractPacket {
 	 * Retrieve the player name.
 	 * <p>
 	 * Supports chat colouring. limited to 16 characters.
-	 * 
+	 *
 	 * @return The current Player name
 	 */
 	public String getPlayerName() {
@@ -47,16 +47,18 @@ public class WrapperPlayServerPlayerInfo extends AbstractPacket {
 	 * Set the player name.
 	 * <p>
 	 * Supports chat colouring. Limited to 16 characters.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setPlayerName(String value) {
 		handle.getStrings().write(0, value);
 	}
 
 	/**
-	 * Retrieve whether or not to remove the given player from the list of online players.
-	 * 
+	 * Retrieve whether or not to remove the given player from the list of
+	 * online players.
+	 *
 	 * @return The current Online
 	 */
 	public boolean getOnline() {
@@ -64,9 +66,11 @@ public class WrapperPlayServerPlayerInfo extends AbstractPacket {
 	}
 
 	/**
-	 * Set whether or not to remove the given player from the list of online players.
-	 * 
-	 * @param value - new value.
+	 * Set whether or not to remove the given player from the list of online
+	 * players.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setOnline(boolean value) {
 		handle.getSpecificModifier(boolean.class).write(0, value);
@@ -74,7 +78,7 @@ public class WrapperPlayServerPlayerInfo extends AbstractPacket {
 
 	/**
 	 * Retrieve ping in milliseconds.
-	 * 
+	 *
 	 * @return The current Ping
 	 */
 	public short getPing() {
@@ -83,8 +87,9 @@ public class WrapperPlayServerPlayerInfo extends AbstractPacket {
 
 	/**
 	 * Set ping in milliseconds.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setPing(short value) {
 		handle.getIntegers().write(0, (int) value);

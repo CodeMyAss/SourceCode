@@ -25,7 +25,7 @@ import com.comphenix.protocol.wrappers.ChunkCoordIntPair;
  * Represents a multi-block change.
  * <p>
  * See also {@link BlockChangeArray} for constructing an array of block changes.
- * 
+ *
  * @author Kristian
  */
 public class WrapperPlayServerMultiBlockChange extends AbstractPacket {
@@ -42,7 +42,7 @@ public class WrapperPlayServerMultiBlockChange extends AbstractPacket {
 
 	/**
 	 * Retrieve the chunk x position.
-	 * 
+	 *
 	 * @return The chunk x.
 	 */
 	public int getChunkX() {
@@ -51,8 +51,9 @@ public class WrapperPlayServerMultiBlockChange extends AbstractPacket {
 
 	/**
 	 * Set the chunk x position.
-	 * 
-	 * @param index - the new position.
+	 *
+	 * @param index
+	 *            - the new position.
 	 */
 	public void setChunkX(int index) {
 		setChunk(new ChunkCoordIntPair(index, getChunkZ()));
@@ -60,7 +61,7 @@ public class WrapperPlayServerMultiBlockChange extends AbstractPacket {
 
 	/**
 	 * Retrieve the chunk Z position.
-	 * 
+	 *
 	 * @return The chunk z.
 	 */
 	public int getChunkZ() {
@@ -69,8 +70,9 @@ public class WrapperPlayServerMultiBlockChange extends AbstractPacket {
 
 	/**
 	 * Set the chunk Z position.
-	 * 
-	 * @param index - the new position.
+	 *
+	 * @param index
+	 *            - the new position.
 	 */
 	public void setChunkZ(int index) {
 		setChunk(new ChunkCoordIntPair(getChunkX(), index));
@@ -78,7 +80,7 @@ public class WrapperPlayServerMultiBlockChange extends AbstractPacket {
 
 	/**
 	 * Retrieve the chunk that has been altered.
-	 * 
+	 *
 	 * @return The current chunk
 	 */
 	public ChunkCoordIntPair getChunk() {
@@ -87,8 +89,9 @@ public class WrapperPlayServerMultiBlockChange extends AbstractPacket {
 
 	/**
 	 * Set chunk that has been altered.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setChunk(ChunkCoordIntPair value) {
 		handle.getChunkCoordIntPairs().write(0, value);
@@ -96,7 +99,7 @@ public class WrapperPlayServerMultiBlockChange extends AbstractPacket {
 
 	/**
 	 * Retrieve the number of blocks affected.
-	 * 
+	 *
 	 * @return The current Record count
 	 */
 	public short getRecordCount() {
@@ -105,8 +108,9 @@ public class WrapperPlayServerMultiBlockChange extends AbstractPacket {
 
 	/**
 	 * Set the number of blocks affected.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setRecordCount(short value) {
 		handle.getIntegers().write(0, (int) value);
@@ -148,7 +152,7 @@ public class WrapperPlayServerMultiBlockChange extends AbstractPacket {
 	 * <td>X co-ordinate, relative to chunk</td>
 	 * </tr>
 	 * </table>
-	 * 
+	 *
 	 * @return The current Record count
 	 */
 	public byte[] getRecordData() {
@@ -158,9 +162,11 @@ public class WrapperPlayServerMultiBlockChange extends AbstractPacket {
 	/**
 	 * Set the record data.
 	 * <p>
-	 * Each record is four bytes. See {@link #getRecordData()} for more information.
-	 * 
-	 * @param value - new value.
+	 * Each record is four bytes. See {@link #getRecordData()} for more
+	 * information.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setRecordData(byte[] value) {
 		setRecordCount((short) value.length);
@@ -169,8 +175,9 @@ public class WrapperPlayServerMultiBlockChange extends AbstractPacket {
 
 	/**
 	 * Set the record data using the given helper array.
-	 * 
-	 * @param array - useful helper array.
+	 *
+	 * @param array
+	 *            - useful helper array.
 	 */
 	public void setRecordData(BlockChangeArray array) {
 		setRecordData(array.toByteArray());
@@ -178,7 +185,7 @@ public class WrapperPlayServerMultiBlockChange extends AbstractPacket {
 
 	/**
 	 * Retrieve a copy of the record data as a block change array.
-	 * 
+	 *
 	 * @return The copied block change array.
 	 */
 	public BlockChangeArray getRecordDataArray() {

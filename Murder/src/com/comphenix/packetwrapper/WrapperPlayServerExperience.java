@@ -33,8 +33,9 @@ public class WrapperPlayServerExperience extends AbstractPacket {
 	}
 
 	/**
-	 * Retrieve the new amount of experience in the experience bar as a value between 0 and 1.
-	 * 
+	 * Retrieve the new amount of experience in the experience bar as a value
+	 * between 0 and 1.
+	 *
 	 * @return The current Experience bar
 	 */
 	public float getExperienceBar() {
@@ -42,9 +43,11 @@ public class WrapperPlayServerExperience extends AbstractPacket {
 	}
 
 	/**
-	 * Set the new amount of experience in the experience bar as a value between 0 and 1.
-	 * 
-	 * @param value - new value.
+	 * Set the new amount of experience in the experience bar as a value between
+	 * 0 and 1.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setExperienceBar(float value) {
 		handle.getFloat().write(0, value);
@@ -52,7 +55,7 @@ public class WrapperPlayServerExperience extends AbstractPacket {
 
 	/**
 	 * Retrieve the displayed level.
-	 * 
+	 *
 	 * @return The current Level
 	 */
 	public short getLevel() {
@@ -61,8 +64,9 @@ public class WrapperPlayServerExperience extends AbstractPacket {
 
 	/**
 	 * Set the displayed level.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setLevel(short value) {
 		handle.getIntegers().write(1, (int) value);
@@ -70,7 +74,7 @@ public class WrapperPlayServerExperience extends AbstractPacket {
 
 	/**
 	 * Retrieve the total amount of experienced gained.
-	 * 
+	 *
 	 * @return The current Total experience
 	 */
 	public short getTotalExperience() {
@@ -79,8 +83,9 @@ public class WrapperPlayServerExperience extends AbstractPacket {
 
 	/**
 	 * Set the total amount of experience gained.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setTotalExperience(short value) {
 		handle.getIntegers().write(0, (int) value);

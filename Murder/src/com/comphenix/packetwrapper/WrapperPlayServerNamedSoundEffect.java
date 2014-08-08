@@ -42,7 +42,7 @@ public class WrapperPlayServerNamedSoundEffect extends AbstractPacket {
 
 	/**
 	 * List of all the named sound effects in Minecraft.
-	 * 
+	 *
 	 * @author Kristian
 	 */
 	public static class NamedSoundEffects {
@@ -216,13 +216,13 @@ public class WrapperPlayServerNamedSoundEffect extends AbstractPacket {
 
 		public static String[] values() {
 			if (values == null) {
-				List<String> result = Lists.newArrayList();
+				final List<String> result = Lists.newArrayList();
 
 				// Get all public fields
-				for (Field field : NamedSoundEffects.class.getFields()) {
+				for (final Field field : NamedSoundEffects.class.getFields()) {
 					try {
 						result.add((String) field.get(null));
-					} catch (Exception e) {
+					} catch (final Exception e) {
 						throw new RuntimeException("Cannot read field.", e);
 					}
 				}
@@ -235,7 +235,7 @@ public class WrapperPlayServerNamedSoundEffect extends AbstractPacket {
 
 	/**
 	 * Retrieve the sound name.
-	 * 
+	 *
 	 * @see {@link NamedSoundEffects}.
 	 * @return The current Sound name
 	 */
@@ -245,9 +245,10 @@ public class WrapperPlayServerNamedSoundEffect extends AbstractPacket {
 
 	/**
 	 * Set the sound name.
-	 * 
+	 *
 	 * @see {@link NamedSoundEffects}.
-	 * @param value - new value.
+	 * @param value
+	 *            - new value.
 	 */
 	public void setSoundName(String value) {
 		handle.getStrings().write(0, value);
@@ -255,8 +256,9 @@ public class WrapperPlayServerNamedSoundEffect extends AbstractPacket {
 
 	/**
 	 * Retrieve the location of the effect.
-	 * 
-	 * @param event - the current event.
+	 *
+	 * @param event
+	 *            - the current event.
 	 * @return The effect location.
 	 */
 	public Location getEffectPosition(PacketEvent event) {
@@ -265,8 +267,9 @@ public class WrapperPlayServerNamedSoundEffect extends AbstractPacket {
 
 	/**
 	 * Retrieve the location of the effect.
-	 * 
-	 * @param world - the current world.
+	 *
+	 * @param world
+	 *            - the current world.
 	 * @return The effect location.
 	 */
 	public Location getEffectPosition(World world) {
@@ -275,7 +278,7 @@ public class WrapperPlayServerNamedSoundEffect extends AbstractPacket {
 
 	/**
 	 * Retrieve the x coordinate of the effect.
-	 * 
+	 *
 	 * @return The current effect position X
 	 */
 	public double getEffectPositionX() {
@@ -286,8 +289,9 @@ public class WrapperPlayServerNamedSoundEffect extends AbstractPacket {
 	 * Set the x coordinate of the effect.
 	 * <p>
 	 * Note that the value is rounded of to the nearest 1/8.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEffectPositionX(double value) {
 		handle.getIntegers().write(0, (int) (value * 8.0));
@@ -297,7 +301,7 @@ public class WrapperPlayServerNamedSoundEffect extends AbstractPacket {
 	 * Retrieve the y coordinate of the effect.
 	 * <p>
 	 * Note that the value is rounded of to the nearest 1/8.
-	 * 
+	 *
 	 * @return The current effect position Y
 	 */
 	public double getEffectPositionY() {
@@ -308,8 +312,9 @@ public class WrapperPlayServerNamedSoundEffect extends AbstractPacket {
 	 * Set the y coordinate of the effect.
 	 * <p>
 	 * Note that the value is rounded of to the nearest 1/8.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEffectPositionY(double value) {
 		handle.getIntegers().write(1, (int) (value * 8.0));
@@ -319,7 +324,7 @@ public class WrapperPlayServerNamedSoundEffect extends AbstractPacket {
 	 * Retrieve the z coordinate of the effect.
 	 * <p>
 	 * Note that the value is rounded of to the nearest 1/8.
-	 * 
+	 *
 	 * @return The current effect position z
 	 */
 	public double getEffectPositionZ() {
@@ -330,8 +335,9 @@ public class WrapperPlayServerNamedSoundEffect extends AbstractPacket {
 	 * Set the z coordinate of the effect.
 	 * <p>
 	 * Note that the value is rounded of to the nearest 1/8.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEffectPositionZ(double value) {
 		handle.getIntegers().write(2, (int) (value * 8.0));
@@ -341,7 +347,7 @@ public class WrapperPlayServerNamedSoundEffect extends AbstractPacket {
 	 * Retrieve the volumne.
 	 * <p>
 	 * One (1) is 100%, can be more.
-	 * 
+	 *
 	 * @return The current Volume
 	 */
 	public float getVolume() {
@@ -352,8 +358,9 @@ public class WrapperPlayServerNamedSoundEffect extends AbstractPacket {
 	 * Set the volume.
 	 * <p>
 	 * One (1) is 100%, can be more.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setVolume(float value) {
 		handle.getFloat().write(0, value);
@@ -363,7 +370,7 @@ public class WrapperPlayServerNamedSoundEffect extends AbstractPacket {
 	 * Retrieve the pitch.
 	 * <p>
 	 * One (1) is 100%, can be up to 3.9.
-	 * 
+	 *
 	 * @return The current Pitch
 	 */
 	public float getPitch() {
@@ -374,8 +381,9 @@ public class WrapperPlayServerNamedSoundEffect extends AbstractPacket {
 	 * Set the pitch.
 	 * <p>
 	 * One (1) is 100%, can be up to 3.9.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setPitch(float value) {
 		handle.getIntegers().write(3, (int) (value * 63.0F));

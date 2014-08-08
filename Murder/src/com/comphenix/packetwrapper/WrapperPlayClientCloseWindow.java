@@ -17,7 +17,7 @@ public class WrapperPlayClientCloseWindow extends AbstractPacket {
 
 	/**
 	 * Retrieve this is the id of the window that was closed. 0 for inventory.
-	 * 
+	 *
 	 * @return The current Window id
 	 */
 	public byte getWindowId() {
@@ -26,8 +26,9 @@ public class WrapperPlayClientCloseWindow extends AbstractPacket {
 
 	/**
 	 * Set this is the id of the window that was closed. 0 for inventory.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setWindowId(byte value) {
 		handle.getIntegers().write(0, (int) value);

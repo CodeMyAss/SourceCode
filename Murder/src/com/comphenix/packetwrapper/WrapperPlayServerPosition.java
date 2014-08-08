@@ -17,7 +17,7 @@ public class WrapperPlayServerPosition extends AbstractPacket {
 
 	/**
 	 * Retrieve absolute position.
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public double getX() {
@@ -26,8 +26,9 @@ public class WrapperPlayServerPosition extends AbstractPacket {
 
 	/**
 	 * Set absolute position.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(double value) {
 		handle.getDoubles().write(0, value);
@@ -35,7 +36,7 @@ public class WrapperPlayServerPosition extends AbstractPacket {
 
 	/**
 	 * Retrieve absolute position.
-	 * 
+	 *
 	 * @return The current Y
 	 */
 	public double getY() {
@@ -44,8 +45,9 @@ public class WrapperPlayServerPosition extends AbstractPacket {
 
 	/**
 	 * Set absolute position.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(double value) {
 		handle.getDoubles().write(1, value);
@@ -53,7 +55,7 @@ public class WrapperPlayServerPosition extends AbstractPacket {
 
 	/**
 	 * Retrieve absolute position.
-	 * 
+	 *
 	 * @return The current Z
 	 */
 	public double getZ() {
@@ -62,8 +64,9 @@ public class WrapperPlayServerPosition extends AbstractPacket {
 
 	/**
 	 * Set absolute position.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(double value) {
 		handle.getDoubles().write(2, value);
@@ -71,7 +74,7 @@ public class WrapperPlayServerPosition extends AbstractPacket {
 
 	/**
 	 * Retrieve absolute rotation on the X Axis, in degrees.
-	 * 
+	 *
 	 * @return The current Yaw
 	 */
 	public float getYaw() {
@@ -80,8 +83,9 @@ public class WrapperPlayServerPosition extends AbstractPacket {
 
 	/**
 	 * Set absolute rotation on the X Axis, in degrees.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setYaw(float value) {
 		handle.getFloat().write(0, value);
@@ -89,7 +93,7 @@ public class WrapperPlayServerPosition extends AbstractPacket {
 
 	/**
 	 * Retrieve absolute rotation on the Y Axis, in degrees.
-	 * 
+	 *
 	 * @return The current Pitch
 	 */
 	public float getPitch() {
@@ -98,8 +102,9 @@ public class WrapperPlayServerPosition extends AbstractPacket {
 
 	/**
 	 * Set absolute rotation on the Y Axis, in degrees.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setPitch(float value) {
 		handle.getFloat().write(1, value);
@@ -107,7 +112,7 @@ public class WrapperPlayServerPosition extends AbstractPacket {
 
 	/**
 	 * Retrieve true if the client is on the ground, False otherwise.
-	 * 
+	 *
 	 * @return The current On Ground
 	 */
 	public boolean getOnGround() {
@@ -116,8 +121,9 @@ public class WrapperPlayServerPosition extends AbstractPacket {
 
 	/**
 	 * Set true if the client is on the ground, False otherwise.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setOnGround(boolean value) {
 		handle.getSpecificModifier(boolean.class).write(0, value);

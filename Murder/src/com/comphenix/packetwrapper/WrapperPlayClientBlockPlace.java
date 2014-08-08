@@ -36,7 +36,7 @@ public class WrapperPlayClientBlockPlace extends AbstractPacket {
 
 	/**
 	 * Retrieve the x block position.
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public int getX() {
@@ -45,8 +45,9 @@ public class WrapperPlayClientBlockPlace extends AbstractPacket {
 
 	/**
 	 * Set the x block position.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(int value) {
 		handle.getIntegers().write(0, value);
@@ -54,7 +55,7 @@ public class WrapperPlayClientBlockPlace extends AbstractPacket {
 
 	/**
 	 * Retrieve the y block position.
-	 * 
+	 *
 	 * @return The current Y
 	 */
 	public byte getY() {
@@ -63,8 +64,9 @@ public class WrapperPlayClientBlockPlace extends AbstractPacket {
 
 	/**
 	 * Set the y block position.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(byte value) {
 		handle.getIntegers().write(1, (int) value);
@@ -72,7 +74,7 @@ public class WrapperPlayClientBlockPlace extends AbstractPacket {
 
 	/**
 	 * Retrieve the z block position.
-	 * 
+	 *
 	 * @return The current Z
 	 */
 	public int getZ() {
@@ -81,8 +83,9 @@ public class WrapperPlayClientBlockPlace extends AbstractPacket {
 
 	/**
 	 * Set the z block position.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(int value) {
 		handle.getIntegers().write(2, value);
@@ -90,7 +93,7 @@ public class WrapperPlayClientBlockPlace extends AbstractPacket {
 
 	/**
 	 * Retrieve the offset to use for block/item placement.
-	 * 
+	 *
 	 * @return The current Direction
 	 */
 	public byte getDirection() {
@@ -99,8 +102,9 @@ public class WrapperPlayClientBlockPlace extends AbstractPacket {
 
 	/**
 	 * Set the offset to use for block/item placement.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setDirection(byte value) {
 		handle.getIntegers().write(3, (int) value);
@@ -108,7 +112,7 @@ public class WrapperPlayClientBlockPlace extends AbstractPacket {
 
 	/**
 	 * Retrieve the currently held item.
-	 * 
+	 *
 	 * @return The current Held item
 	 */
 	public ItemStack getHeldItem() {
@@ -117,8 +121,9 @@ public class WrapperPlayClientBlockPlace extends AbstractPacket {
 
 	/**
 	 * Set the currently held item.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setHeldItem(ItemStack value) {
 		handle.getItemModifier().write(0, value);
@@ -126,7 +131,7 @@ public class WrapperPlayClientBlockPlace extends AbstractPacket {
 
 	/**
 	 * Retrieve the x position of the crosshair on the block.
-	 * 
+	 *
 	 * @return The current cursor position X
 	 */
 	public float getCursorPositionX() {
@@ -135,8 +140,9 @@ public class WrapperPlayClientBlockPlace extends AbstractPacket {
 
 	/**
 	 * Set the x position of the crosshair on the block.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setCursorPositionX(float value) {
 		handle.getFloat().write(0, value);
@@ -144,7 +150,7 @@ public class WrapperPlayClientBlockPlace extends AbstractPacket {
 
 	/**
 	 * Retrieve the y position of the cursor.
-	 * 
+	 *
 	 * @return The current Cursor position Y
 	 */
 	public float getCursorPositionY() {
@@ -153,8 +159,9 @@ public class WrapperPlayClientBlockPlace extends AbstractPacket {
 
 	/**
 	 * Set the y position of the cursor.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setCursorPositionY(float value) {
 		handle.getFloat().write(1, value);
@@ -162,7 +169,7 @@ public class WrapperPlayClientBlockPlace extends AbstractPacket {
 
 	/**
 	 * Retrieve the z position of the cursor.
-	 * 
+	 *
 	 * @return The current Cursor position Z
 	 */
 	public byte getCursorPositionZ() {
@@ -171,8 +178,9 @@ public class WrapperPlayClientBlockPlace extends AbstractPacket {
 
 	/**
 	 * Set the z position of the cursor.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setCursorPositionZ(byte value) {
 		handle.getFloat().write(2, (float) value);

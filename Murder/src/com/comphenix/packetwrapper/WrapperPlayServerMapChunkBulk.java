@@ -34,7 +34,7 @@ public class WrapperPlayServerMapChunkBulk extends AbstractPacket {
 
 	/**
 	 * Retrieve the size of the data field.
-	 * 
+	 *
 	 * @return The current Data length
 	 */
 	public int getDataLength() {
@@ -43,8 +43,9 @@ public class WrapperPlayServerMapChunkBulk extends AbstractPacket {
 
 	/**
 	 * Set the size of the data field.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setDataLength(int value) {
 		handle.getIntegers().write(0, value);
@@ -54,7 +55,7 @@ public class WrapperPlayServerMapChunkBulk extends AbstractPacket {
 	 * Retrieve whether or not the chunk data contains a light nibble array.
 	 * <p>
 	 * This is true in the main world, false in the end + nether.
-	 * 
+	 *
 	 * @return The current Sky light sent
 	 */
 	public boolean getSkyLightSent() {
@@ -65,8 +66,9 @@ public class WrapperPlayServerMapChunkBulk extends AbstractPacket {
 	 * Set whether or not the chunk data contains a light nibble array.
 	 * <p>
 	 * This is true in the main world, false in the end + nether.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setSkyLightSent(boolean value) {
 		handle.getSpecificModifier(boolean.class).write(0, value);
@@ -74,7 +76,7 @@ public class WrapperPlayServerMapChunkBulk extends AbstractPacket {
 
 	/**
 	 * Retrieve the x coordinates for each chunk segment.
-	 * 
+	 *
 	 * @return Chunk x coordindates.
 	 */
 	public int[] getChunksX() {
@@ -83,8 +85,9 @@ public class WrapperPlayServerMapChunkBulk extends AbstractPacket {
 
 	/**
 	 * Set the x coordinates for each chunk segment.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setChunksX(int[] value) {
 		handle.getIntegerArrays().write(0, value);
@@ -92,7 +95,7 @@ public class WrapperPlayServerMapChunkBulk extends AbstractPacket {
 
 	/**
 	 * Retrieve the y coordinates for each chunk segment.
-	 * 
+	 *
 	 * @return Chunk y coordindates.
 	 */
 	public int[] getChunksY() {
@@ -101,8 +104,9 @@ public class WrapperPlayServerMapChunkBulk extends AbstractPacket {
 
 	/**
 	 * Set the y coordinates for each chunk segment.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setChunksY(int[] value) {
 		handle.getIntegerArrays().write(1, value);
@@ -110,7 +114,7 @@ public class WrapperPlayServerMapChunkBulk extends AbstractPacket {
 
 	/**
 	 * Retrieve the chunk mask for each chunk segment.
-	 * 
+	 *
 	 * @return Chunk x coordindates.
 	 */
 	public int[] getChunksMask() {
@@ -119,8 +123,9 @@ public class WrapperPlayServerMapChunkBulk extends AbstractPacket {
 
 	/**
 	 * Set the chunk mask for each chunk segment.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setChunksMask(int[] value) {
 		handle.getIntegerArrays().write(2, value);
@@ -128,7 +133,7 @@ public class WrapperPlayServerMapChunkBulk extends AbstractPacket {
 
 	/**
 	 * Retrieve the mask for the extra data in each chunk segment.
-	 * 
+	 *
 	 * @return Chunk x coordindates.
 	 */
 	public int[] getChunksExtraMask() {
@@ -137,8 +142,9 @@ public class WrapperPlayServerMapChunkBulk extends AbstractPacket {
 
 	/**
 	 * Set the mask for the extra data in each chunk segment.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setChunksExtraMask(int[] value) {
 		handle.getIntegerArrays().write(3, value);
@@ -146,7 +152,7 @@ public class WrapperPlayServerMapChunkBulk extends AbstractPacket {
 
 	/**
 	 * Retrieve the inflated buffer for each chunk segment.
-	 * 
+	 *
 	 * @return Array of each chunk data array.
 	 */
 	public byte[][] getChunksInflatedBuffers() {
@@ -155,8 +161,9 @@ public class WrapperPlayServerMapChunkBulk extends AbstractPacket {
 
 	/**
 	 * Set the inflated buffer for each chunk segment.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setChunksExtraMask(byte[][] value) {
 		handle.getSpecificModifier(byte[][].class).write(0, value);
@@ -164,7 +171,7 @@ public class WrapperPlayServerMapChunkBulk extends AbstractPacket {
 
 	/**
 	 * Retrieve the uncompressed chunks data that will be compressed and sent.
-	 * 
+	 *
 	 * @return The uncompressed chunks data.
 	 */
 	public byte[] getUncompressedData() {
@@ -173,8 +180,9 @@ public class WrapperPlayServerMapChunkBulk extends AbstractPacket {
 
 	/**
 	 * Set the uncompressed chunks data that will be compressed and sent.
-	 * 
-	 * @param value - the uncompressed data.
+	 *
+	 * @param value
+	 *            - the uncompressed data.
 	 */
 	public void setUncompressedData(byte[] value) {
 		handle.getByteArrays().write(1, value);

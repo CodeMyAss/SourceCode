@@ -28,7 +28,7 @@ public class WrapperPlayServerScoreboardTeam extends AbstractPacket {
 
 	/**
 	 * Enumeration of all the known packet modes.
-	 * 
+	 *
 	 * @author Kristian
 	 */
 	public static class Modes extends IntEnum {
@@ -56,7 +56,7 @@ public class WrapperPlayServerScoreboardTeam extends AbstractPacket {
 
 	/**
 	 * Retrieve an unique name for the team. (Shared with scoreboard)..
-	 * 
+	 *
 	 * @return The current Team Name
 	 */
 	public String getTeamName() {
@@ -65,8 +65,9 @@ public class WrapperPlayServerScoreboardTeam extends AbstractPacket {
 
 	/**
 	 * Set an unique name for the team. (Shared with scoreboard)..
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setTeamName(String value) {
 		handle.getStrings().write(0, value);
@@ -76,7 +77,7 @@ public class WrapperPlayServerScoreboardTeam extends AbstractPacket {
 	 * Retrieve the current packet {@link Modes}.
 	 * <p>
 	 * This determines whether or not team information is added or removed.
-	 * 
+	 *
 	 * @return The current packet mode.
 	 */
 	public byte getPacketMode() {
@@ -87,8 +88,9 @@ public class WrapperPlayServerScoreboardTeam extends AbstractPacket {
 	 * Set the current packet {@link Modes}.
 	 * <p>
 	 * This determines whether or not team information is added or removed.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setPacketMode(byte value) {
 		handle.getIntegers().write(0, (int) value);
@@ -98,7 +100,7 @@ public class WrapperPlayServerScoreboardTeam extends AbstractPacket {
 	 * Retrieve the team display name.
 	 * <p>
 	 * A team must be created or updated.
-	 * 
+	 *
 	 * @return The current display name.
 	 */
 	public String getTeamDisplayName() {
@@ -109,18 +111,20 @@ public class WrapperPlayServerScoreboardTeam extends AbstractPacket {
 	 * Set the team display name.
 	 * <p>
 	 * A team must be created or updated.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setTeamDisplayName(String value) {
 		handle.getStrings().write(1, value);
 	}
 
 	/**
-	 * Retrieve the team prefix. This will be inserted before the name of each team member.
+	 * Retrieve the team prefix. This will be inserted before the name of each
+	 * team member.
 	 * <p>
 	 * A team must be created or updated.
-	 * 
+	 *
 	 * @return The current Team Prefix
 	 */
 	public String getTeamPrefix() {
@@ -128,21 +132,24 @@ public class WrapperPlayServerScoreboardTeam extends AbstractPacket {
 	}
 
 	/**
-	 * Set the team prefix. This will be inserted before the name of each team member.
+	 * Set the team prefix. This will be inserted before the name of each team
+	 * member.
 	 * <p>
 	 * A team must be created or updated.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setTeamPrefix(String value) {
 		handle.getStrings().write(2, value);
 	}
 
 	/**
-	 * Set the team suffix. This will be inserted after the name of each team member.
+	 * Set the team suffix. This will be inserted after the name of each team
+	 * member.
 	 * <p>
 	 * A team must be created or updated.
-	 * 
+	 *
 	 * @return The current Team Suffix
 	 */
 	public String getTeamSuffix() {
@@ -150,11 +157,13 @@ public class WrapperPlayServerScoreboardTeam extends AbstractPacket {
 	}
 
 	/**
-	 * Set only if Mode = 0 or 2. This will be after before the name of each team member.
+	 * Set only if Mode = 0 or 2. This will be after before the name of each
+	 * team member.
 	 * <p>
 	 * A team must be created or updated.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setTeamSuffix(String value) {
 		handle.getStrings().write(3, value);
@@ -164,7 +173,7 @@ public class WrapperPlayServerScoreboardTeam extends AbstractPacket {
 	 * Retrieve whether or not friendly fire is enabled.
 	 * <p>
 	 * A team must be created or updated.
-	 * 
+	 *
 	 * @return The current Friendly fire
 	 */
 	public byte getFriendlyFire() {
@@ -175,8 +184,9 @@ public class WrapperPlayServerScoreboardTeam extends AbstractPacket {
 	 * Set whether or not friendly fire is enabled.
 	 * <p>
 	 * A team must be created or updated.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setFriendlyFire(byte value) {
 		handle.getIntegers().write(1, (int) value);
@@ -191,7 +201,7 @@ public class WrapperPlayServerScoreboardTeam extends AbstractPacket {
 	 * <li>{@link Modes#PLAYERS_ADDED}</li>
 	 * <li>{@link Modes#PLAYERS_REMOVED}</li>
 	 * </ul>
-	 * 
+	 *
 	 * @return A list of player names.
 	 */
 	@SuppressWarnings("unchecked")
@@ -208,8 +218,9 @@ public class WrapperPlayServerScoreboardTeam extends AbstractPacket {
 	 * <li>{@link Modes#PLAYERS_ADDED}</li>
 	 * <li>{@link Modes#PLAYERS_REMOVED}</li>
 	 * </ul>
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setPlayers(Collection<String> players) {
 		handle.getSpecificModifier(Collection.class).write(0, players);

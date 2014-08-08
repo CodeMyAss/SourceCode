@@ -26,7 +26,7 @@ public class WrapperPlayServerScoreboardObjective extends AbstractPacket {
 
 	/**
 	 * Enumeration of all the known packet modes.
-	 * 
+	 *
 	 * @author Kristian
 	 */
 	public static class Modes extends IntEnum {
@@ -52,7 +52,7 @@ public class WrapperPlayServerScoreboardObjective extends AbstractPacket {
 
 	/**
 	 * Retrieve an unique name for the objective.
-	 * 
+	 *
 	 * @return The current Objective name
 	 */
 	public String getObjectiveName() {
@@ -61,8 +61,9 @@ public class WrapperPlayServerScoreboardObjective extends AbstractPacket {
 
 	/**
 	 * Set an unique name for the objective.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setObjectiveName(String value) {
 		handle.getStrings().write(0, value);
@@ -70,7 +71,7 @@ public class WrapperPlayServerScoreboardObjective extends AbstractPacket {
 
 	/**
 	 * Retrieve the text to be displayed for the score.
-	 * 
+	 *
 	 * @return The current Objective value
 	 */
 	public String getObjectiveValue() {
@@ -79,8 +80,9 @@ public class WrapperPlayServerScoreboardObjective extends AbstractPacket {
 
 	/**
 	 * Set the text to be displayed for the score.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setObjectiveValue(String value) {
 		handle.getStrings().write(1, value);
@@ -90,7 +92,7 @@ public class WrapperPlayServerScoreboardObjective extends AbstractPacket {
 	 * Retrieve the current packet {@link Modes}.
 	 * <p>
 	 * This determines if the objective is added or removed.
-	 * 
+	 *
 	 * @see {@link WrapperPlayServerScoreboardObjective.Modes}
 	 * @return The current Create/Remove
 	 */
@@ -102,9 +104,10 @@ public class WrapperPlayServerScoreboardObjective extends AbstractPacket {
 	 * Set the current packet {@link Modes}.
 	 * <p>
 	 * This determines if the objective is added or removed.
-	 * 
+	 *
 	 * @see {@link WrapperPlayServerScoreboardObjective.Modes}
-	 * @param value - new value.
+	 * @param value
+	 *            - new value.
 	 */
 	public void setPacketMode(byte value) {
 		handle.getIntegers().write(0, (int) value);

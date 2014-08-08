@@ -40,7 +40,7 @@ public class WrapperPlayClientFlying extends AbstractPacket {
 	 * Retrieve the ground state.
 	 * <p>
 	 * True if the client is on the ground, false otherwise.
-	 * 
+	 *
 	 * @return The current On Ground
 	 */
 	public boolean getOnGround() {
@@ -51,8 +51,9 @@ public class WrapperPlayClientFlying extends AbstractPacket {
 	 * Set the ground state.
 	 * <p>
 	 * True if the client is on the ground, false otherwise.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setOnGround(boolean value) {
 		handle.getSpecificModifier(boolean.class).write(0, value);

@@ -34,7 +34,7 @@ public class WrapperPlayServerCustomPayload extends AbstractPacket {
 
 	/**
 	 * Retrieve name of the "channel" used to send the data..
-	 * 
+	 *
 	 * @return The current Channel
 	 */
 	public String getChannel() {
@@ -43,8 +43,9 @@ public class WrapperPlayServerCustomPayload extends AbstractPacket {
 
 	/**
 	 * Set name of the "channel" used to send the data..
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setChannel(String value) {
 		handle.getStrings().write(0, value);
@@ -52,7 +53,7 @@ public class WrapperPlayServerCustomPayload extends AbstractPacket {
 
 	/**
 	 * Retrieve the custom data that sent in this message.
-	 * 
+	 *
 	 * @return The current data
 	 */
 	public byte[] getData() {
@@ -61,8 +62,9 @@ public class WrapperPlayServerCustomPayload extends AbstractPacket {
 
 	/**
 	 * Set the custom data that is sent.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setData(byte[] value) {
 		handle.getByteArrays().write(0, value);

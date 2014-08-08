@@ -39,7 +39,7 @@ public class WrapperPlayServerStatistics extends AbstractPacket {
 	 * Retrieve a map of every statistic in this packet.
 	 * <p>
 	 * Note that you must write back the map to save any changes.
-	 * 
+	 *
 	 * @return Map of every statistics sent to the player.
 	 */
 	public Map<WrappedStatistic, Integer> getStatistics() {
@@ -48,8 +48,9 @@ public class WrapperPlayServerStatistics extends AbstractPacket {
 
 	/**
 	 * Set every statistic and associated integer value to send to the player.
-	 * 
-	 * @param changes - the changed map of statistics and data.
+	 *
+	 * @param changes
+	 *            - the changed map of statistics and data.
 	 */
 	public void setStatistics(Map<WrappedStatistic, Integer> changes) {
 		handle.getStatisticMaps().write(0, changes);

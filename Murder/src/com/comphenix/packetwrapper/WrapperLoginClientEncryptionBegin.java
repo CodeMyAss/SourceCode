@@ -17,7 +17,7 @@ public class WrapperLoginClientEncryptionBegin extends AbstractPacket {
 
 	/**
 	 * Retrieve the shared secret data.
-	 * 
+	 *
 	 * @return The shared data.
 	 */
 	public byte[] getSharedSecret() {
@@ -26,16 +26,17 @@ public class WrapperLoginClientEncryptionBegin extends AbstractPacket {
 
 	/**
 	 * Set the shared secret data.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
-	public void getSharedSecret(byte[] value) {
+	public void setSharedSecret(byte[] value) {
 		handle.getByteArrays().write(0, value);
 	}
 
 	/**
 	 * Retrieve the token response.
-	 * 
+	 *
 	 * @return The shared data.
 	 */
 	public byte[] getVerifyTokenResponse() {
@@ -44,8 +45,9 @@ public class WrapperLoginClientEncryptionBegin extends AbstractPacket {
 
 	/**
 	 * Set token reponse.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setVerifyTokenResponse(byte[] value) {
 		handle.getByteArrays().write(1, value);

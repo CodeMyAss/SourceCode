@@ -29,7 +29,7 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 	/**
 	 * Enumeration of all the sound effects this packet can send.
-	 * 
+	 *
 	 * @author Kristian
 	 */
 	public static class SoundEffects extends IntEnum {
@@ -65,7 +65,7 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 		/**
 		 * Retrieve an instance of the sound effects enum.
-		 * 
+		 *
 		 * @return Sound effects enum.
 		 */
 		public static SoundEffects getInstance() {
@@ -75,7 +75,7 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 	/**
 	 * Enumeration of all the particle effects this packet can send.
-	 * 
+	 *
 	 * @author Kristian
 	 */
 	public static class ParticleEffects extends IntEnum {
@@ -111,7 +111,7 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 		/**
 		 * Spawn falling particles (added in MC 1.7.2).
-		 * 
+		 *
 		 * @author kangarko
 		 */
 		public static final int					FALL_PARTICLES			= 2006;
@@ -120,7 +120,7 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 		/**
 		 * Retrieve an instance of the particle effects enum.
-		 * 
+		 *
 		 * @return Particle effects enum.
 		 */
 		public static ParticleEffects getInstance() {
@@ -143,7 +143,7 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 		/**
 		 * Retrieve an instance of the smoke direction enum.
-		 * 
+		 *
 		 * @return Smoke direction enum.
 		 */
 		public static SmokeDirections getInstance() {
@@ -162,7 +162,7 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 	/**
 	 * Retrieve the ID of the effect.
-	 * 
+	 *
 	 * @see {@link SoundEffects} and {@link ParticleEffects}.
 	 * @return The current Effect ID
 	 */
@@ -172,9 +172,10 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 	/**
 	 * Set the ID of the effect.
-	 * 
+	 *
 	 * @see {@link SoundEffects} and {@link ParticleEffects}.
-	 * @param value - new value.
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEffectId(int value) {
 		handle.getIntegers().write(0, value);
@@ -182,7 +183,7 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 	/**
 	 * Retrieve the X location of the effect..
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public int getX() {
@@ -191,8 +192,9 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 	/**
 	 * Set the X location of the effect..
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(int value) {
 		handle.getIntegers().write(2, value);
@@ -200,7 +202,7 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 	/**
 	 * Retrieve the Y location of the effect..
-	 * 
+	 *
 	 * @return The current Y
 	 */
 	public int getY() {
@@ -209,8 +211,9 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 	/**
 	 * Set the Y location of the effect..
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(int value) {
 		handle.getIntegers().write(3, value);
@@ -218,7 +221,7 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 	/**
 	 * Retrieve the Z location of the effect..
-	 * 
+	 *
 	 * @return The current Z
 	 */
 	public int getZ() {
@@ -227,8 +230,9 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 	/**
 	 * Set the Z location of the effect..
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(int value) {
 		handle.getIntegers().write(4, value);
@@ -236,8 +240,9 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 	/**
 	 * Retrieve the location of this particle or sound effect.
-	 * 
-	 * @param world - the containing world.
+	 *
+	 * @param world
+	 *            - the containing world.
 	 * @return The location.
 	 */
 	public Location getLocation(World world) {
@@ -246,8 +251,9 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 	/**
 	 * Set the location of this particle or sound effect.
-	 * 
-	 * @param loc - the location.
+	 *
+	 * @param loc
+	 *            - the location.
 	 */
 	public void setLocation(Location loc) {
 		setX(loc.getBlockX());
@@ -257,7 +263,7 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 	/**
 	 * Retrieve extra data for certain effects.
-	 * 
+	 *
 	 * @see {@link SmokeDirections}
 	 * @return The current Data
 	 */
@@ -267,9 +273,10 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 
 	/**
 	 * Set extra data for certain effects.
-	 * 
+	 *
 	 * @see {@link SmokeDirections}
-	 * @param value - new value.
+	 * @param value
+	 *            - new value.
 	 */
 	public void setData(int value) {
 		handle.getIntegers().write(1, value);
@@ -278,8 +285,9 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 	/**
 	 * Retrieve whether or not to ignore the distance of a sound.
 	 * <p>
-	 * If TRUE, the effect will always be played 2 blocks away in the correct direction.
-	 * 
+	 * If TRUE, the effect will always be played 2 blocks away in the correct
+	 * direction.
+	 *
 	 * @return The current Disable relative volume
 	 */
 	public boolean getDisableRelativeVolume() {
@@ -289,9 +297,11 @@ public class WrapperPlayServerWorldEvent extends AbstractPacket {
 	/**
 	 * Set whether or not to ignore the distance of a sound.
 	 * <p>
-	 * If TRUE, the effect will always be played 2 blocks away in the correct direction.
-	 * 
-	 * @param value - TRUE to disable distance, FALSE otherwise.
+	 * If TRUE, the effect will always be played 2 blocks away in the correct
+	 * direction.
+	 *
+	 * @param value
+	 *            - TRUE to disable distance, FALSE otherwise.
 	 */
 	public void setDisableRelativeVolume(boolean value) {
 		handle.getSpecificModifier(boolean.class).write(0, value);

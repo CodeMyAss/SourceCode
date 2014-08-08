@@ -42,7 +42,7 @@ public class WrapperPlayServerEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve entity ID.
-	 * 
+	 *
 	 * @return The current EID
 	 */
 	public int getEntityID() {
@@ -51,8 +51,9 @@ public class WrapperPlayServerEntity extends AbstractPacket {
 
 	/**
 	 * Set entity ID.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityID(int value) {
 		handle.getIntegers().write(0, value);
@@ -60,8 +61,9 @@ public class WrapperPlayServerEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity.
-	 * 
-	 * @param world - the current world of the entity.
+	 *
+	 * @param world
+	 *            - the current world of the entity.
 	 * @return The entity.
 	 */
 	public Entity getEntity(World world) {
@@ -70,8 +72,9 @@ public class WrapperPlayServerEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The entity.
 	 */
 	public Entity getEntity(PacketEvent event) {

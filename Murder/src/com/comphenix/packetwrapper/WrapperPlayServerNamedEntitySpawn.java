@@ -60,7 +60,7 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 
 	/**
 	 * Retrieve player ID.
-	 * 
+	 *
 	 * @return The current EID
 	 */
 	public int getEntityID() {
@@ -69,8 +69,9 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 
 	/**
 	 * Set player ID.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityID(int value) {
 		handle.getIntegers().write(0, value);
@@ -78,8 +79,9 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 
 	/**
 	 * Retrieve the player's entity object.
-	 * 
-	 * @param world - the word the player has joined.
+	 *
+	 * @param world
+	 *            - the word the player has joined.
 	 * @return The player's entity.
 	 */
 	public Entity getEntity(World world) {
@@ -88,8 +90,9 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 
 	/**
 	 * Retrieve the player's entity object.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The player's entity.
 	 */
 	public Entity getEntity(PacketEvent event) {
@@ -100,11 +103,11 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 	 * Retrieve the player name.
 	 * <p>
 	 * Max length of 16.
-	 * 
+	 *
 	 * @return The current player Name, or NULL if not set.
 	 */
 	public String getPlayerName() {
-		WrappedGameProfile profile = getProfile();
+		final WrappedGameProfile profile = getProfile();
 		return profile != null ? profile.getName() : null;
 	}
 
@@ -112,29 +115,30 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 	 * Set the player name.
 	 * <p>
 	 * Max length of 16.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setPlayerName(String value) {
-		if (value != null && value.length() > 16)
-			throw new IllegalArgumentException("Maximum player name lenght is 16 characters.");
+		if (value != null && value.length() > 16) throw new IllegalArgumentException("Maximum player name lenght is 16 characters.");
 		setProfile(new WrappedGameProfile(getPlayerUUID(), value));
 	}
 
 	/**
 	 * Retrieve the UUID of the player.
-	 * 
+	 *
 	 * @return The UUID, or NULL if not set.
 	 */
 	public String getPlayerUUID() {
-		WrappedGameProfile profile = getProfile();
+		final WrappedGameProfile profile = getProfile();
 		return profile != null ? profile.getId() : null;
 	}
 
 	/**
 	 * Set the UUID of the player.
-	 * 
-	 * @param uuid - the UUID.
+	 *
+	 * @param uuid
+	 *            - the UUID.
 	 */
 	public void setPlayerUUID(String uuid) {
 		setProfile(new WrappedGameProfile(uuid, getPlayerName()));
@@ -142,7 +146,7 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 
 	/**
 	 * Retrieve player's full profile.
-	 * 
+	 *
 	 * @return The spawner player's profile.
 	 */
 	public WrappedGameProfile getProfile() {
@@ -151,8 +155,9 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 
 	/**
 	 * Set the spawned player's profile.
-	 * 
-	 * @param value - new profile.
+	 *
+	 * @param value
+	 *            - new profile.
 	 */
 	public void setProfile(WrappedGameProfile value) {
 		handle.getGameProfiles().write(0, value);
@@ -160,7 +165,7 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 
 	/**
 	 * Retrieve the position of the spawned entity as a vector.
-	 * 
+	 *
 	 * @return The position as a vector.
 	 */
 	public Vector getPosition() {
@@ -169,8 +174,9 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 
 	/**
 	 * Set the position of the spawned entity using a vector.
-	 * 
-	 * @param position - the new position.
+	 *
+	 * @param position
+	 *            - the new position.
 	 */
 	public void setPosition(Vector position) {
 		setX(position.getX());
@@ -182,7 +188,7 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 	 * Retrieve the x axis of the position.
 	 * <p>
 	 * Note that the coordinate is rounded off to the nearest 1/32 of a meter.
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public double getX() {
@@ -191,8 +197,9 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 
 	/**
 	 * Set the x axis of the position.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(double value) {
 		handle.getIntegers().write(1, (int) Math.floor(value * 32.0D));
@@ -202,7 +209,7 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 	 * Retrieve the y axis of the position.
 	 * <p>
 	 * Note that the coordinate is rounded off to the nearest 1/32 of a meter.
-	 * 
+	 *
 	 * @return The current y
 	 */
 	public double getY() {
@@ -211,8 +218,9 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 
 	/**
 	 * Set the y axis of the position.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(double value) {
 		handle.getIntegers().write(2, (int) Math.floor(value * 32.0D));
@@ -222,7 +230,7 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 	 * Retrieve the z axis of the new position.
 	 * <p>
 	 * Note that the coordinate is rounded off to the nearest 1/32 of a meter.
-	 * 
+	 *
 	 * @return The current z
 	 */
 	public double getZ() {
@@ -231,8 +239,9 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 
 	/**
 	 * Set the z axis of the new position.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(double value) {
 		handle.getIntegers().write(3, (int) Math.floor(value * 32.0D));
@@ -240,17 +249,18 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 
 	/**
 	 * Retrieve the yaw of the spawned entity.
-	 * 
+	 *
 	 * @return The current Yaw
 	 */
 	public float getYaw() {
-		return (handle.getBytes().read(0) * 360.F) / 256.0F;
+		return handle.getBytes().read(0) * 360.F / 256.0F;
 	}
 
 	/**
 	 * Set the yaw of the spawned entity.
-	 * 
-	 * @param value - new yaw.
+	 *
+	 * @param value
+	 *            - new yaw.
 	 */
 	public void setYaw(float value) {
 		handle.getBytes().write(0, (byte) (value * 256.0F / 360.0F));
@@ -258,17 +268,18 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 
 	/**
 	 * Retrieve the pitch of the spawned entity.
-	 * 
+	 *
 	 * @return The current pitch
 	 */
 	public float getPitch() {
-		return (handle.getBytes().read(1) * 360.F) / 256.0F;
+		return handle.getBytes().read(1) * 360.F / 256.0F;
 	}
 
 	/**
 	 * Set the pitch of the spawned entity.
-	 * 
-	 * @param value - new pitch.
+	 *
+	 * @param value
+	 *            - new pitch.
 	 */
 	public void setPitch(float value) {
 		handle.getBytes().write(1, (byte) (value * 256.0F / 360.0F));
@@ -277,8 +288,9 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 	/**
 	 * Retrieve the item the player is currently holding.
 	 * <p>
-	 * Note that this should be 0 for "no item", unlike -1 used in other packets. A negative value crashes clients.
-	 * 
+	 * Note that this should be 0 for "no item", unlike -1 used in other
+	 * packets. A negative value crashes clients.
+	 *
 	 * @return The current item.
 	 */
 	public short getCurrentItem() {
@@ -288,9 +300,11 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 	/**
 	 * Set the item the player is currently holding.
 	 * <p>
-	 * Note that this should be 0 for "no item", unlike -1 used in other packets. A negative value crashes clients.
-	 * 
-	 * @param value - new value.
+	 * Note that this should be 0 for "no item", unlike -1 used in other
+	 * packets. A negative value crashes clients.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setCurrentItem(short value) {
 		handle.getIntegers().write(4, (int) value);
@@ -299,8 +313,9 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 	/**
 	 * Retrieve the associated metadata object.
 	 * <p>
-	 * Note that the 1.3 client crashes on packets with no metadata, but the server can send any metadata key of 0, 1 or 8 and the client is fine.
-	 * 
+	 * Note that the 1.3 client crashes on packets with no metadata, but the
+	 * server can send any metadata key of 0, 1 or 8 and the client is fine.
+	 *
 	 * @return The current metadata.
 	 */
 	public WrappedDataWatcher getMetadata() {
@@ -310,9 +325,11 @@ public class WrapperPlayServerNamedEntitySpawn extends AbstractPacket {
 	/**
 	 * Set the associated metadata object.
 	 * <p>
-	 * Note that the 1.3 client crashes on packets with no metadata, but the server can send any metadata key of 0, 1 or 8 and the client is fine..
-	 * 
-	 * @param value - new value.
+	 * Note that the 1.3 client crashes on packets with no metadata, but the
+	 * server can send any metadata key of 0, 1 or 8 and the client is fine..
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setMetadata(WrappedDataWatcher value) {
 		handle.getDataWatcherModifier().write(0, value);

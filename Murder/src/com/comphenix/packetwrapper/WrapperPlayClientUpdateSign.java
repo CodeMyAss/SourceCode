@@ -39,7 +39,7 @@ public class WrapperPlayClientUpdateSign extends AbstractPacket {
 
 	/**
 	 * Retrieve block X Coordinate.
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public int getX() {
@@ -48,8 +48,9 @@ public class WrapperPlayClientUpdateSign extends AbstractPacket {
 
 	/**
 	 * Set block X Coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(int value) {
 		handle.getIntegers().write(0, value);
@@ -57,7 +58,7 @@ public class WrapperPlayClientUpdateSign extends AbstractPacket {
 
 	/**
 	 * Retrieve block Y Coordinate.
-	 * 
+	 *
 	 * @return The current Y
 	 */
 	public short getY() {
@@ -66,8 +67,9 @@ public class WrapperPlayClientUpdateSign extends AbstractPacket {
 
 	/**
 	 * Set block Y Coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(short value) {
 		handle.getIntegers().write(1, (int) value);
@@ -75,7 +77,7 @@ public class WrapperPlayClientUpdateSign extends AbstractPacket {
 
 	/**
 	 * Retrieve block Z Coordinate.
-	 * 
+	 *
 	 * @return The current Z
 	 */
 	public int getZ() {
@@ -84,8 +86,9 @@ public class WrapperPlayClientUpdateSign extends AbstractPacket {
 
 	/**
 	 * Set block Z Coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(int value) {
 		handle.getIntegers().write(2, value);
@@ -93,8 +96,9 @@ public class WrapperPlayClientUpdateSign extends AbstractPacket {
 
 	/**
 	 * Retrieve the location of the current particle.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The location.
 	 */
 	public Location getLocation(PacketEvent event) {
@@ -103,12 +107,12 @@ public class WrapperPlayClientUpdateSign extends AbstractPacket {
 
 	/**
 	 * Set the location of the particle to send.
-	 * 
-	 * @param loc - the location.
+	 *
+	 * @param loc
+	 *            - the location.
 	 */
 	public void setLocation(Location loc) {
-		if (loc == null)
-			throw new IllegalArgumentException("Location cannot be NULL.");
+		if (loc == null) throw new IllegalArgumentException("Location cannot be NULL.");
 		setX(loc.getBlockX());
 		setY((short) loc.getBlockY());
 		setZ(loc.getBlockZ());
@@ -116,7 +120,7 @@ public class WrapperPlayClientUpdateSign extends AbstractPacket {
 
 	/**
 	 * Retrieve the lines of text represented by a four-element String array.
-	 * 
+	 *
 	 * @return The current lines.
 	 */
 	public String[] getLines() {
@@ -125,14 +129,13 @@ public class WrapperPlayClientUpdateSign extends AbstractPacket {
 
 	/**
 	 * Set the lines of text represented by a four-element String array..
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setLines(@Nonnull String[] lines) {
-		if (lines == null)
-			throw new IllegalArgumentException("Array cannot be NULL.");
-		if (lines.length != 4)
-			throw new IllegalArgumentException("The lines array must be four elements long.");
+		if (lines == null) throw new IllegalArgumentException("Array cannot be NULL.");
+		if (lines.length != 4) throw new IllegalArgumentException("The lines array must be four elements long.");
 		handle.getStringArrays().write(0, lines);
 	}
 }

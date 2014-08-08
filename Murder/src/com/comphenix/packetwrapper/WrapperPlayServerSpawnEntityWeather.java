@@ -34,7 +34,7 @@ public class WrapperPlayServerSpawnEntityWeather extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity ID of the thunderbolt.
-	 * 
+	 *
 	 * @return The current Entity ID
 	 */
 	public int getEntityId() {
@@ -43,8 +43,9 @@ public class WrapperPlayServerSpawnEntityWeather extends AbstractPacket {
 
 	/**
 	 * Set the entity ID of the thunderbolt.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityId(int value) {
 		handle.getIntegers().write(0, value);
@@ -54,7 +55,7 @@ public class WrapperPlayServerSpawnEntityWeather extends AbstractPacket {
 	 * Retrieve the global entity type.
 	 * <p>
 	 * Currently always 1 for thunderbolt.
-	 * 
+	 *
 	 * @return The current Type
 	 */
 	public byte getType() {
@@ -65,8 +66,9 @@ public class WrapperPlayServerSpawnEntityWeather extends AbstractPacket {
 	 * Set the global entity type.
 	 * <p>
 	 * Currently always 1 for thunderbolt.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setType(byte value) {
 		handle.getIntegers().write(4, (int) value);
@@ -74,7 +76,7 @@ public class WrapperPlayServerSpawnEntityWeather extends AbstractPacket {
 
 	/**
 	 * Retrieve the x coordinate of the thunderbolt.
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public double getX() {
@@ -83,8 +85,9 @@ public class WrapperPlayServerSpawnEntityWeather extends AbstractPacket {
 
 	/**
 	 * Set the x coordinate of the thunderbolt.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(double value) {
 		handle.getIntegers().write(1, (int) (value * 32.0D));
@@ -92,7 +95,7 @@ public class WrapperPlayServerSpawnEntityWeather extends AbstractPacket {
 
 	/**
 	 * Retrieve the y coordinate of the thunderbolt.
-	 * 
+	 *
 	 * @return The current y
 	 */
 	public double getY() {
@@ -101,8 +104,9 @@ public class WrapperPlayServerSpawnEntityWeather extends AbstractPacket {
 
 	/**
 	 * Set the y coordinate of the thunderbolt.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(double value) {
 		handle.getIntegers().write(2, (int) (value * 32.0D));
@@ -110,7 +114,7 @@ public class WrapperPlayServerSpawnEntityWeather extends AbstractPacket {
 
 	/**
 	 * Retrieve the z coordinate of the thunderbolt.
-	 * 
+	 *
 	 * @return The current z
 	 */
 	public double getZ() {
@@ -119,8 +123,9 @@ public class WrapperPlayServerSpawnEntityWeather extends AbstractPacket {
 
 	/**
 	 * Set the z coordinate of the thunderbolt.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(double value) {
 		handle.getIntegers().write(3, (int) (value * 32.0D));

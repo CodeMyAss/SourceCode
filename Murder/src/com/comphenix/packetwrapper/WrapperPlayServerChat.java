@@ -18,7 +18,7 @@ public class WrapperPlayServerChat extends AbstractPacket {
 
 	/**
 	 * Retrieve the chat message.
-	 * 
+	 *
 	 * @return The current JSON Data
 	 */
 	public WrappedChatComponent getMessage() {
@@ -27,8 +27,9 @@ public class WrapperPlayServerChat extends AbstractPacket {
 
 	/**
 	 * Set the chat message.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setMessage(WrappedChatComponent value) {
 		handle.getChatComponents().write(0, value);

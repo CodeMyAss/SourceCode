@@ -17,7 +17,7 @@ public class WrapperStatusClientInPing extends AbstractPacket {
 
 	/**
 	 * Retrieve the random token we are sending.
-	 * 
+	 *
 	 * @return The current random token.
 	 */
 	public long getToken() {
@@ -26,8 +26,9 @@ public class WrapperStatusClientInPing extends AbstractPacket {
 
 	/**
 	 * Set the random token we are sending.
-	 * 
-	 * @param value - new token.
+	 *
+	 * @param value
+	 *            - new token.
 	 */
 	public void setToken(long value) {
 		handle.getLongs().write(0, value);

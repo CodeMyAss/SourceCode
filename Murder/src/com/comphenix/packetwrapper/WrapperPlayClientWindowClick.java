@@ -38,7 +38,7 @@ public class WrapperPlayClientWindowClick extends AbstractPacket {
 	 * Retrieve the id of the window which was clicked.
 	 * <p>
 	 * Use 0 for the player inventory.
-	 * 
+	 *
 	 * @return The current Window id
 	 */
 	public byte getWindowId() {
@@ -49,8 +49,9 @@ public class WrapperPlayClientWindowClick extends AbstractPacket {
 	 * Set the id of the window which was clicked.
 	 * <p>
 	 * Use 0 for the player inventory.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setWindowId(byte value) {
 		handle.getIntegers().write(0, (int) value);
@@ -58,7 +59,7 @@ public class WrapperPlayClientWindowClick extends AbstractPacket {
 
 	/**
 	 * Retrieve the clicked slot index.
-	 * 
+	 *
 	 * @return The current Slot
 	 */
 	public short getSlot() {
@@ -67,8 +68,9 @@ public class WrapperPlayClientWindowClick extends AbstractPacket {
 
 	/**
 	 * Set the clicked slot index.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setSlot(short value) {
 		handle.getIntegers().write(1, (int) value);
@@ -78,7 +80,7 @@ public class WrapperPlayClientWindowClick extends AbstractPacket {
 	 * Retrieve the mouse button that was clicked.
 	 * <p>
 	 * Here zero is left click, one is right click and three is middle click.
-	 * 
+	 *
 	 * @return The current Mouse button
 	 */
 	public byte getMouseButton() {
@@ -89,16 +91,18 @@ public class WrapperPlayClientWindowClick extends AbstractPacket {
 	 * Set the mouse button that was clicked.
 	 * <p>
 	 * Here zero is left click, one is right click and three is middle click.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setMouseButton(byte value) {
 		handle.getIntegers().write(2, (int) value);
 	}
 
 	/**
-	 * Retrieve a unique number for the action, used for transaction handling (See the Transaction packet)..
-	 * 
+	 * Retrieve a unique number for the action, used for transaction handling
+	 * (See the Transaction packet)..
+	 *
 	 * @return The current Action number
 	 */
 	public short getActionNumber() {
@@ -106,9 +110,11 @@ public class WrapperPlayClientWindowClick extends AbstractPacket {
 	}
 
 	/**
-	 * Set a unique number for the action, used for transaction handling (See the Transaction packet)..
-	 * 
-	 * @param value - new value.
+	 * Set a unique number for the action, used for transaction handling (See
+	 * the Transaction packet)..
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setActionNumber(short value) {
 		handle.getShorts().write(0, value);
@@ -117,8 +123,9 @@ public class WrapperPlayClientWindowClick extends AbstractPacket {
 	/**
 	 * Retrieve the click mode.
 	 * <p>
-	 * See <a href="http://wiki.vg/Protocol#Click_Window">Click Window</a> for more details.
-	 * 
+	 * See <a href="http://wiki.vg/Protocol#Click_Window">Click Window</a> for
+	 * more details.
+	 *
 	 * @return The current mode.
 	 */
 	public int getMode() {
@@ -128,9 +135,11 @@ public class WrapperPlayClientWindowClick extends AbstractPacket {
 	/**
 	 * Set the click mode.
 	 * <p>
-	 * See <a href="http://wiki.vg/Protocol#Click_Window">Click Window</a> for more details.
-	 * 
-	 * @param value - new value.
+	 * See <a href="http://wiki.vg/Protocol#Click_Window">Click Window</a> for
+	 * more details.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setMode(int mode) {
 		handle.getIntegers().write(3, mode);
@@ -138,7 +147,7 @@ public class WrapperPlayClientWindowClick extends AbstractPacket {
 
 	/**
 	 * Retrieve the item that was clicked in the inventory.
-	 * 
+	 *
 	 * @return The current Clicked item
 	 */
 	public ItemStack getClickedItem() {
@@ -147,8 +156,9 @@ public class WrapperPlayClientWindowClick extends AbstractPacket {
 
 	/**
 	 * Set the item that was clicked in the inventory.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setClickedItem(ItemStack value) {
 		handle.getItemModifier().write(0, value);

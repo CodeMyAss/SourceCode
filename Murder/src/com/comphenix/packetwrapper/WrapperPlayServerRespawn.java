@@ -38,7 +38,7 @@ public class WrapperPlayServerRespawn extends AbstractPacket {
 
 	/**
 	 * Retrieve -1: The Nether, 0: The Overworld, 1: The End.
-	 * 
+	 *
 	 * @return The current Dimension
 	 */
 	public int getDimension() {
@@ -47,8 +47,9 @@ public class WrapperPlayServerRespawn extends AbstractPacket {
 
 	/**
 	 * Set -1: The Nether, 0: The Overworld, 1: The End.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setDimension(int value) {
 		handle.getIntegers().write(0, value);
@@ -56,7 +57,7 @@ public class WrapperPlayServerRespawn extends AbstractPacket {
 
 	/**
 	 * Retrieve the difficulty level.
-	 * 
+	 *
 	 * @return The current Difficulty
 	 */
 	public Difficulty getDifficulty() {
@@ -65,8 +66,9 @@ public class WrapperPlayServerRespawn extends AbstractPacket {
 
 	/**
 	 * Set the difficulty level.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setDifficulty(Difficulty value) {
 		handle.getDifficulties().write(0, value);
@@ -74,7 +76,7 @@ public class WrapperPlayServerRespawn extends AbstractPacket {
 
 	/**
 	 * Retrieve the game mode of the current player.
-	 * 
+	 *
 	 * @return The current game mode
 	 */
 	public NativeGameMode getGameMode() {
@@ -83,8 +85,9 @@ public class WrapperPlayServerRespawn extends AbstractPacket {
 
 	/**
 	 * Set the game mode of the current player.
-	 * 
-	 * @param mode - new value.
+	 *
+	 * @param mode
+	 *            - new value.
 	 */
 	public void setGameMode(NativeGameMode mode) {
 		handle.getGameModes().write(0, mode);
@@ -92,7 +95,7 @@ public class WrapperPlayServerRespawn extends AbstractPacket {
 
 	/**
 	 * Retrieve the current level type.
-	 * 
+	 *
 	 * @return The current level type
 	 */
 	public WorldType getLevelType() {
@@ -101,8 +104,9 @@ public class WrapperPlayServerRespawn extends AbstractPacket {
 
 	/**
 	 * Set see 0x01 login.
-	 * 
-	 * @param value - new world type.
+	 *
+	 * @param value
+	 *            - new world type.
 	 */
 	public void setLevelType(WorldType value) {
 		handle.getWorldTypeModifier().write(0, value);

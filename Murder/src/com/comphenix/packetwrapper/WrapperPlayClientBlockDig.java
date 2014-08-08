@@ -25,16 +25,16 @@ public class WrapperPlayClientBlockDig extends AbstractPacket {
 	public static final PacketType	TYPE	= PacketType.Play.Client.BLOCK_DIG;
 
 	public enum Status {
-		STARTED_DIGGING,    // 0
-		CANCELLED_DIGGING,  // 1
-		FINISHED_DIGGING,   // 2
-		DROP_ITEM_STACK,    // 3
-		DROP_ITEM, 	        // 4
+		STARTED_DIGGING, // 0
+		CANCELLED_DIGGING, // 1
+		FINISHED_DIGGING, // 2
+		DROP_ITEM_STACK, // 3
+		DROP_ITEM, // 4
 
 		/**
 		 * Shooting arrows or finishing eating.
 		 */
-		SHOOT_ARROW 	    // 5
+		SHOOT_ARROW // 5
 	}
 
 	public static class BlockSide extends IntEnum {
@@ -87,7 +87,7 @@ public class WrapperPlayClientBlockDig extends AbstractPacket {
 
 		/**
 		 * Retrieve an instance of the BlockSide enum.
-		 * 
+		 *
 		 * @return BlockSide enum.
 		 */
 		public static BlockSide getInstance() {
@@ -127,7 +127,7 @@ public class WrapperPlayClientBlockDig extends AbstractPacket {
 
 	/**
 	 * Retrieve the action the player is taking against the block.
-	 * 
+	 *
 	 * @return The current Status
 	 */
 	public Status getStatus() {
@@ -136,8 +136,9 @@ public class WrapperPlayClientBlockDig extends AbstractPacket {
 
 	/**
 	 * Set the action the player is taking against the block.
-	 * 
-	 * @param value - new action.
+	 *
+	 * @param value
+	 *            - new action.
 	 */
 	public void setStatus(Status value) {
 		handle.getIntegers().write(4, value.ordinal());
@@ -145,7 +146,7 @@ public class WrapperPlayClientBlockDig extends AbstractPacket {
 
 	/**
 	 * Retrieve block position.
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public int getX() {
@@ -154,8 +155,9 @@ public class WrapperPlayClientBlockDig extends AbstractPacket {
 
 	/**
 	 * Set block position.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(int value) {
 		handle.getIntegers().write(0, value);
@@ -163,7 +165,7 @@ public class WrapperPlayClientBlockDig extends AbstractPacket {
 
 	/**
 	 * Retrieve block position.
-	 * 
+	 *
 	 * @return The current Y
 	 */
 	public byte getY() {
@@ -172,8 +174,9 @@ public class WrapperPlayClientBlockDig extends AbstractPacket {
 
 	/**
 	 * Set block position.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(byte value) {
 		handle.getIntegers().write(1, (int) value);
@@ -181,7 +184,7 @@ public class WrapperPlayClientBlockDig extends AbstractPacket {
 
 	/**
 	 * Retrieve block position.
-	 * 
+	 *
 	 * @return The current Z
 	 */
 	public int getZ() {
@@ -190,16 +193,18 @@ public class WrapperPlayClientBlockDig extends AbstractPacket {
 
 	/**
 	 * Set block position.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(int value) {
 		handle.getIntegers().write(2, value);
 	}
 
 	/**
-	 * Retrieve the face being hit. See {@link Packet0EPlayerDigging.BlockSide BlockSide}.
-	 * 
+	 * Retrieve the face being hit. See {@link Packet0EPlayerDigging.BlockSide
+	 * BlockSide}.
+	 *
 	 * @return The current block side.
 	 */
 	public int getFace() {
@@ -207,9 +212,11 @@ public class WrapperPlayClientBlockDig extends AbstractPacket {
 	}
 
 	/**
-	 * Set the face being hit. See {@link Packet0EPlayerDigging.BlockSide BlockSide}.
-	 * 
-	 * @param value - new value.
+	 * Set the face being hit. See {@link Packet0EPlayerDigging.BlockSide
+	 * BlockSide}.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setFace(int value) {
 		handle.getIntegers().write(3, value);

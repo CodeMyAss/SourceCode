@@ -17,7 +17,7 @@ public class WrapperPlayClientCustomPayload extends AbstractPacket {
 
 	/**
 	 * Retrieve name of the "channel" used to send the data..
-	 * 
+	 *
 	 * @return The current Channel
 	 */
 	public String getChannel() {
@@ -26,8 +26,9 @@ public class WrapperPlayClientCustomPayload extends AbstractPacket {
 
 	/**
 	 * Set name of the "channel" used to send the data..
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setChannel(String value) {
 		handle.getStrings().write(0, value);
@@ -35,7 +36,7 @@ public class WrapperPlayClientCustomPayload extends AbstractPacket {
 
 	/**
 	 * Retrieve length of the following byte array.
-	 * 
+	 *
 	 * @return The current Length
 	 */
 	public short getLength() {
@@ -44,8 +45,9 @@ public class WrapperPlayClientCustomPayload extends AbstractPacket {
 
 	/**
 	 * Set length of the following byte array.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setLength(short value) {
 		handle.getIntegers().write(0, (int) value);
@@ -53,7 +55,7 @@ public class WrapperPlayClientCustomPayload extends AbstractPacket {
 
 	/**
 	 * Retrieve any data..
-	 * 
+	 *
 	 * @return The current Data
 	 */
 	public byte[] getData() {
@@ -64,8 +66,9 @@ public class WrapperPlayClientCustomPayload extends AbstractPacket {
 	 * Set the data to sent.
 	 * <p>
 	 * This will automatically update the length.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setData(byte[] value) {
 		setLength((short) value.length);

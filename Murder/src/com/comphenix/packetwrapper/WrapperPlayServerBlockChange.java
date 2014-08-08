@@ -38,7 +38,7 @@ public class WrapperPlayServerBlockChange extends AbstractPacket {
 
 	/**
 	 * Retrieve block X Coordinate.
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public int getX() {
@@ -47,8 +47,9 @@ public class WrapperPlayServerBlockChange extends AbstractPacket {
 
 	/**
 	 * Set block X Coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(int value) {
 		handle.getIntegers().write(0, value);
@@ -56,7 +57,7 @@ public class WrapperPlayServerBlockChange extends AbstractPacket {
 
 	/**
 	 * Retrieve block Y Coordinate.
-	 * 
+	 *
 	 * @return The current Y
 	 */
 	public int getY() {
@@ -65,8 +66,9 @@ public class WrapperPlayServerBlockChange extends AbstractPacket {
 
 	/**
 	 * Set block Y Coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(int value) {
 		handle.getIntegers().write(1, value);
@@ -74,7 +76,7 @@ public class WrapperPlayServerBlockChange extends AbstractPacket {
 
 	/**
 	 * Retrieve block Z Coordinate.
-	 * 
+	 *
 	 * @return The current Z
 	 */
 	public int getZ() {
@@ -83,8 +85,9 @@ public class WrapperPlayServerBlockChange extends AbstractPacket {
 
 	/**
 	 * Set block Z Coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(int value) {
 		handle.getIntegers().write(2, value);
@@ -92,8 +95,9 @@ public class WrapperPlayServerBlockChange extends AbstractPacket {
 
 	/**
 	 * Retrieve the location of the block that is changing.
-	 * 
-	 * @param event - the parent event.
+	 *
+	 * @param event
+	 *            - the parent event.
 	 * @return The location.
 	 */
 	public Location getLocation(PacketEvent event) {
@@ -102,8 +106,9 @@ public class WrapperPlayServerBlockChange extends AbstractPacket {
 
 	/**
 	 * Set the location of the block that is changing.
-	 * 
-	 * @param loc - the new location.
+	 *
+	 * @param loc
+	 *            - the new location.
 	 */
 	public void setLocation(Location loc) {
 		setX(loc.getBlockX());
@@ -113,7 +118,7 @@ public class WrapperPlayServerBlockChange extends AbstractPacket {
 
 	/**
 	 * Retrieve the new type of the block.
-	 * 
+	 *
 	 * @return The current Block ID
 	 */
 	public Material getBlockType() {
@@ -122,8 +127,9 @@ public class WrapperPlayServerBlockChange extends AbstractPacket {
 
 	/**
 	 * Set the new type of the block.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setBlockType(Material value) {
 		handle.getBlocks().write(0, value);
@@ -131,7 +137,7 @@ public class WrapperPlayServerBlockChange extends AbstractPacket {
 
 	/**
 	 * Retrieve the new Metadata for the block.
-	 * 
+	 *
 	 * @return The current Block Metadata
 	 */
 	public byte getBlockMetadata() {
@@ -140,8 +146,9 @@ public class WrapperPlayServerBlockChange extends AbstractPacket {
 
 	/**
 	 * Set the new Metadata for the block.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setBlockMetadata(byte value) {
 		handle.getIntegers().write(3, (int) value);

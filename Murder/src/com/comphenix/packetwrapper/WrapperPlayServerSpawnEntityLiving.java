@@ -56,7 +56,7 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Retrieve entity ID.
-	 * 
+	 *
 	 * @return The current EID
 	 */
 	public int getEntityID() {
@@ -65,8 +65,9 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity that will be spawned.
-	 * 
-	 * @param world - the current world of the entity.
+	 *
+	 * @param world
+	 *            - the current world of the entity.
 	 * @return The spawned entity.
 	 */
 	public Entity getEntity(World world) {
@@ -75,8 +76,9 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity that will be spawned.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The spawned entity.
 	 */
 	public Entity getEntity(PacketEvent event) {
@@ -85,8 +87,9 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Set entity ID.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityID(int value) {
 		handle.getIntegers().write(0, value);
@@ -94,7 +97,7 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Retrieve the type of mob.
-	 * 
+	 *
 	 * @return The current Type
 	 */
 	@SuppressWarnings("deprecation")
@@ -104,8 +107,9 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Set the type of mob.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	@SuppressWarnings("deprecation")
 	public void setType(EntityType value) {
@@ -116,7 +120,7 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 	 * Retrieve the x position of the object.
 	 * <p>
 	 * Note that the coordinate is rounded off to the nearest 1/32 of a meter.
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public double getX() {
@@ -125,8 +129,9 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Set the x position of the object.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(double value) {
 		handle.getIntegers().write(2, (int) Math.floor(value * 32.0D));
@@ -136,7 +141,7 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 	 * Retrieve the y position of the object.
 	 * <p>
 	 * Note that the coordinate is rounded off to the nearest 1/32 of a meter.
-	 * 
+	 *
 	 * @return The current y
 	 */
 	public double getY() {
@@ -145,8 +150,9 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Set the y position of the object.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(double value) {
 		handle.getIntegers().write(3, (int) Math.floor(value * 32.0D));
@@ -156,7 +162,7 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 	 * Retrieve the z position of the object.
 	 * <p>
 	 * Note that the coordinate is rounded off to the nearest 1/32 of a meter.
-	 * 
+	 *
 	 * @return The current z
 	 */
 	public double getZ() {
@@ -165,8 +171,9 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Set the z position of the object.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(double value) {
 		handle.getIntegers().write(4, (int) Math.floor(value * 32.0D));
@@ -174,17 +181,18 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Retrieve the yaw.
-	 * 
+	 *
 	 * @return The current Yaw
 	 */
 	public float getYaw() {
-		return (handle.getBytes().read(0) * 360.F) / 256.0F;
+		return handle.getBytes().read(0) * 360.F / 256.0F;
 	}
 
 	/**
 	 * Set the yaw of the spawned mob.
-	 * 
-	 * @param value - new yaw.
+	 *
+	 * @param value
+	 *            - new yaw.
 	 */
 	public void setYaw(float value) {
 		handle.getBytes().write(0, (byte) (value * 256.0F / 360.0F));
@@ -192,17 +200,18 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Retrieve the pitch.
-	 * 
+	 *
 	 * @return The current pitch
 	 */
 	public float getHeadPitch() {
-		return (handle.getBytes().read(1) * 360.F) / 256.0F;
+		return handle.getBytes().read(1) * 360.F / 256.0F;
 	}
 
 	/**
 	 * Set the pitch of the spawned mob.
-	 * 
-	 * @param value - new pitch.
+	 *
+	 * @param value
+	 *            - new pitch.
 	 */
 	public void setHeadPitch(float value) {
 		handle.getBytes().write(1, (byte) (value * 256.0F / 360.0F));
@@ -210,17 +219,18 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Retrieve the yaw of the mob's head.
-	 * 
+	 *
 	 * @return The current yaw.
 	 */
 	public float getHeadYaw() {
-		return (handle.getBytes().read(2) * 360.F) / 256.0F;
+		return handle.getBytes().read(2) * 360.F / 256.0F;
 	}
 
 	/**
 	 * Set the yaw of the mob's head.
-	 * 
-	 * @param value - new yaw.
+	 *
+	 * @param value
+	 *            - new yaw.
 	 */
 	public void setHeadYaw(float value) {
 		handle.getBytes().write(2, (byte) (value * 256.0F / 360.0F));
@@ -228,7 +238,7 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Retrieve the velocity in the x axis.
-	 * 
+	 *
 	 * @return The current velocity X
 	 */
 	public double getVelocityX() {
@@ -237,8 +247,9 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Set the velocity in the x axis.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setVelocityX(double value) {
 		handle.getIntegers().write(5, (int) (value * 8000.0D));
@@ -246,7 +257,7 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Retrieve the velocity in the y axis.
-	 * 
+	 *
 	 * @return The current velocity y
 	 */
 	public double getVelocityY() {
@@ -255,8 +266,9 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Set the velocity in the y axis.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setVelocityY(double value) {
 		handle.getIntegers().write(6, (int) (value * 8000.0D));
@@ -264,7 +276,7 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Retrieve the velocity in the z axis.
-	 * 
+	 *
 	 * @return The current velocity z
 	 */
 	public double getVelocityZ() {
@@ -273,8 +285,9 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Set the velocity in the z axis.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setVelocityZ(double value) {
 		handle.getIntegers().write(7, (int) (value * 8000.0D));
@@ -284,7 +297,7 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 	 * Retrieve the data watcher.
 	 * <p>
 	 * Content varies by mob, see Entities.
-	 * 
+	 *
 	 * @return The current Metadata
 	 */
 	public WrappedDataWatcher getMetadata() {
@@ -293,8 +306,9 @@ public class WrapperPlayServerSpawnEntityLiving extends AbstractPacket {
 
 	/**
 	 * Set the data watcher.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setMetadata(WrappedDataWatcher value) {
 		handle.getDataWatcherModifier().write(0, value);

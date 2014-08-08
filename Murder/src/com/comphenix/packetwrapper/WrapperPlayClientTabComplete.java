@@ -5,7 +5,7 @@ import com.comphenix.protocol.events.PacketContainer;
 
 /**
  * Sent when the user presses [tab] while writing text.
- * 
+ *
  * @author Kristian
  */
 public class WrapperPlayClientTabComplete extends AbstractPacket {
@@ -22,7 +22,7 @@ public class WrapperPlayClientTabComplete extends AbstractPacket {
 
 	/**
 	 * Retrieve all the text currently behind the cursor.
-	 * 
+	 *
 	 * @return The current Text
 	 */
 	public String getText() {
@@ -31,8 +31,9 @@ public class WrapperPlayClientTabComplete extends AbstractPacket {
 
 	/**
 	 * Set all the text currently behind the cursor.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setText(String value) {
 		handle.getStrings().write(0, value);

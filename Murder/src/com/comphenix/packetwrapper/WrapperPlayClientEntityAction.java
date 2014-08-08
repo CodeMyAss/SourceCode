@@ -30,7 +30,7 @@ public class WrapperPlayClientEntityAction extends AbstractPacket {
 
 	/**
 	 * Enumeration of all the entity actions.
-	 * 
+	 *
 	 * @author Kristian
 	 */
 	public static class Action extends IntEnum {
@@ -58,7 +58,7 @@ public class WrapperPlayClientEntityAction extends AbstractPacket {
 
 	/**
 	 * Retrieve player ID.
-	 * 
+	 *
 	 * @return The current EID
 	 */
 	public int getEntityID() {
@@ -67,8 +67,9 @@ public class WrapperPlayClientEntityAction extends AbstractPacket {
 
 	/**
 	 * Set player ID.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityID(int value) {
 		handle.getIntegers().write(0, value);
@@ -76,8 +77,9 @@ public class WrapperPlayClientEntityAction extends AbstractPacket {
 
 	/**
 	 * Retrieve the player's entity object.
-	 * 
-	 * @param world - the word the player has joined.
+	 *
+	 * @param world
+	 *            - the word the player has joined.
 	 * @return The player's entity.
 	 */
 	public Entity getEntity(World world) {
@@ -86,8 +88,9 @@ public class WrapperPlayClientEntityAction extends AbstractPacket {
 
 	/**
 	 * Retrieve the player's entity object.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The player's entity.
 	 */
 	public Entity getEntity(PacketEvent event) {
@@ -96,7 +99,7 @@ public class WrapperPlayClientEntityAction extends AbstractPacket {
 
 	/**
 	 * Retrieve the ID of the action.
-	 * 
+	 *
 	 * @see {@link WrapperPlayClientEntityAction.Action}
 	 * @return The current Action ID
 	 */
@@ -106,9 +109,10 @@ public class WrapperPlayClientEntityAction extends AbstractPacket {
 
 	/**
 	 * Set the ID of the action, see below.
-	 * 
+	 *
 	 * @see {@link WrapperPlayClientEntityAction.Action}
-	 * @param value - new value.
+	 * @param value
+	 *            - new value.
 	 */
 	public void setActionId(byte value) {
 		handle.getIntegers().write(1, (int) value);
@@ -116,7 +120,7 @@ public class WrapperPlayClientEntityAction extends AbstractPacket {
 
 	/**
 	 * Retrieve horse jump boost. Ranged from 0 -> 100..
-	 * 
+	 *
 	 * @return The current Jump Boost
 	 */
 	public int getJumpBoost() {
@@ -125,8 +129,9 @@ public class WrapperPlayClientEntityAction extends AbstractPacket {
 
 	/**
 	 * Set horse jump boost. Ranged from 0 -> 100..
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setJumpBoost(int value) {
 		handle.getIntegers().write(2, value);

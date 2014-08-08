@@ -1,45 +1,28 @@
-package de.inventivegames.Murder;
+package de.inventivegames.murder;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class ResourcePack {
-
-	private static Class<?>	nmsChatSerializer		= Reflection.getNMSClass("ChatSerializer");
-	private static Class<?>	nmsPacketPlayOutChat	= Reflection.getNMSClass("PacketPlayOutChat");
-
-	public static void setResourcePack(final Player p, String version) {
-		Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
-
+	public static void setResourcePack(final Player p) {
+		final MurderPlayer mp = MurderPlayer.getPlayer(p);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 			@Override
 			public void run() {
 				try {
 					p.sendMessage(Murder.prefix + "§6Downloading Custom Resources...");
-					p.setResourcePack("https://dl.dropboxusercontent.com/s/sbqllqe98huhrv1/MurderResourcePack%20256x%20%28V2.1%29.zip?dl=1");
+					p.setResourcePack("https://dl.dropboxusercontent.com/s/i1u2a3dsbxjm2hv/MurderResourcePack%20256x%20%28V2.2%29.zip?dl=1");
 					p.sendMessage("§6If the ResourcePack isn't downloading,");
-
-					try {
-						Object handle = Reflection.getHandle(p);
-						Object connection = Reflection.getField(handle.getClass(), "playerConnection").get(handle);
-						Object serialized = Reflection.getMethod(nmsChatSerializer, "a", String.class).invoke(null, "{\"text\":\"\",\"extra\":[{\"text\":\"make sure you have \",\"color\":\"gold\"},{\"translate\":\"options.serverTextures\",\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§7Options/Video Settings/Server Textures\"}},{\"text\":\" enabled.\",\"color\":\"gold\"}]}");
-						Object packet = nmsPacketPlayOutChat.getConstructor(Reflection.getNMSClass("IChatBaseComponent")).newInstance(serialized);
-						Reflection.getMethod(connection.getClass(), "sendPacket").invoke(connection, packet);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				} catch (Exception e) {
-					p.sendMessage("§6make sure you have §2Server-Textures §6enabled");
+					mp.sendRawMessage("{\"text\":\"\",\"extra\":[{\"text\":\"make sure you have \",\"color\":\"gold\"},{\"translate\":\"options.serverTextures\",\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§7Options/Video Settings/Server Textures\"}},{\"text\":\" enabled.\",\"color\":\"gold\"}]}");
+					return;
+				} catch (final Exception e) {
 					e.printStackTrace();
 				}
-
 			}
-
-		}, 10L);
+		}, 5L);
 	}
 
 	public static void resetResourcePack(Player p) {
-
 		p.setResourcePack("https://dl.dropboxusercontent.com/s/99udm9shqq98hlc/MurderDefault.zip?dl=1");
-
 	}
-
 }

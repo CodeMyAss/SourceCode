@@ -55,7 +55,7 @@ public class WrapperPlayServerSpawnEntityPainting extends AbstractPacket {
 
 	/**
 	 * Retrieve unique entity ID.
-	 * 
+	 *
 	 * @return The current Entity ID
 	 */
 	public int getEntityId() {
@@ -64,8 +64,9 @@ public class WrapperPlayServerSpawnEntityPainting extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity of the painting that will be spawned.
-	 * 
-	 * @param world - the current world of the entity.
+	 *
+	 * @param world
+	 *            - the current world of the entity.
 	 * @return The spawned entity.
 	 */
 	public Entity getEntity(World world) {
@@ -74,8 +75,9 @@ public class WrapperPlayServerSpawnEntityPainting extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity of the painting that will be spawned.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The spawned entity.
 	 */
 	public Entity getEntity(PacketEvent event) {
@@ -84,8 +86,9 @@ public class WrapperPlayServerSpawnEntityPainting extends AbstractPacket {
 
 	/**
 	 * Set unique entity ID.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityId(int value) {
 		handle.getIntegers().write(0, value);
@@ -93,7 +96,7 @@ public class WrapperPlayServerSpawnEntityPainting extends AbstractPacket {
 
 	/**
 	 * Retrieve name of the painting; max length 13 (length of "SkullAndRoses").
-	 * 
+	 *
 	 * @return The current Title
 	 */
 	public String getTitle() {
@@ -102,8 +105,9 @@ public class WrapperPlayServerSpawnEntityPainting extends AbstractPacket {
 
 	/**
 	 * Set name of the painting; max length 13 (length of "SkullAndRoses").
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setTitle(String value) {
 		handle.getStrings().write(0, value);
@@ -111,7 +115,7 @@ public class WrapperPlayServerSpawnEntityPainting extends AbstractPacket {
 
 	/**
 	 * Retrieve center X coordinate.
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public int getX() {
@@ -120,8 +124,9 @@ public class WrapperPlayServerSpawnEntityPainting extends AbstractPacket {
 
 	/**
 	 * Set center X coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(int value) {
 		handle.getIntegers().write(1, value);
@@ -129,7 +134,7 @@ public class WrapperPlayServerSpawnEntityPainting extends AbstractPacket {
 
 	/**
 	 * Retrieve center Y coordinate.
-	 * 
+	 *
 	 * @return The current Y
 	 */
 	public int getY() {
@@ -138,8 +143,9 @@ public class WrapperPlayServerSpawnEntityPainting extends AbstractPacket {
 
 	/**
 	 * Set center Y coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(int value) {
 		handle.getIntegers().write(2, value);
@@ -147,7 +153,7 @@ public class WrapperPlayServerSpawnEntityPainting extends AbstractPacket {
 
 	/**
 	 * Retrieve center Z coordinate.
-	 * 
+	 *
 	 * @return The current Z
 	 */
 	public int getZ() {
@@ -156,8 +162,9 @@ public class WrapperPlayServerSpawnEntityPainting extends AbstractPacket {
 
 	/**
 	 * Set center Z coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(int value) {
 		handle.getIntegers().write(3, value);
@@ -167,7 +174,7 @@ public class WrapperPlayServerSpawnEntityPainting extends AbstractPacket {
 	 * Retrieve direction the painting faces.
 	 * <p>
 	 * Here zero is -z, one is -x, two is +z and three is +x.
-	 * 
+	 *
 	 * @return The current Direction
 	 */
 	public int getDirection() {
@@ -178,8 +185,9 @@ public class WrapperPlayServerSpawnEntityPainting extends AbstractPacket {
 	 * Set direction the painting faces.
 	 * <p>
 	 * Here zero is -z, one is -x, two is +z and three is +x.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setDirection(int value) {
 		handle.getIntegers().write(4, value);

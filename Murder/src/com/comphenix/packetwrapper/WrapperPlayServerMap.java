@@ -36,7 +36,7 @@ public class WrapperPlayServerMap extends AbstractPacket {
 
 	/**
 	 * Retrieve the damage value of the map being modified.
-	 * 
+	 *
 	 * @return The current damage value.
 	 */
 	public int getItemDamage() {
@@ -45,8 +45,9 @@ public class WrapperPlayServerMap extends AbstractPacket {
 
 	/**
 	 * Set the damage value of the item being modified.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setItemDamage(int value) {
 		handle.getIntegers().write(0, value);
@@ -54,7 +55,7 @@ public class WrapperPlayServerMap extends AbstractPacket {
 
 	/**
 	 * Retrieve length of following byte array.
-	 * 
+	 *
 	 * @return The current Text length
 	 */
 	public byte[] getData() {
@@ -63,12 +64,12 @@ public class WrapperPlayServerMap extends AbstractPacket {
 
 	/**
 	 * Set length of following byte array.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setData(@Nonnull byte[] value) {
-		if (value == null)
-			throw new IllegalArgumentException("Array cannot be NULL.");
+		if (value == null) throw new IllegalArgumentException("Array cannot be NULL.");
 		handle.getByteArrays().write(0, value);
 	}
 }

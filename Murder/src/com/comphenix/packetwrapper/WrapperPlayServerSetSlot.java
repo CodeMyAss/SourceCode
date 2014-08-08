@@ -37,9 +37,11 @@ public class WrapperPlayServerSetSlot extends AbstractPacket {
 	/**
 	 * Retrieve the window which is being updated.
 	 * <p>
-	 * Use 0 for the player inventory. This packet will only be sent for the currently opened window while the player is performing actions, even if it affects the player
-	 * inventory. After the window is closed, a number of these packets are sent to update the player's inventory window.
-	 * 
+	 * Use 0 for the player inventory. This packet will only be sent for the
+	 * currently opened window while the player is performing actions, even if
+	 * it affects the player inventory. After the window is closed, a number of
+	 * these packets are sent to update the player's inventory window.
+	 *
 	 * @return The current Window id
 	 */
 	public byte getWindowId() {
@@ -49,10 +51,13 @@ public class WrapperPlayServerSetSlot extends AbstractPacket {
 	/**
 	 * Set the window which is being updated.
 	 * <p>
-	 * Use 0 for the player inventory. This packet will only be sent for the currently opened window while the player is performing actions, even if it affects the player
-	 * inventory. After the window is closed, a number of these packets are sent to update the player's inventory window.
-	 * 
-	 * @param value - new value.
+	 * Use 0 for the player inventory. This packet will only be sent for the
+	 * currently opened window while the player is performing actions, even if
+	 * it affects the player inventory. After the window is closed, a number of
+	 * these packets are sent to update the player's inventory window.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setWindowId(byte value) {
 		handle.getIntegers().write(0, (int) value);
@@ -60,7 +65,7 @@ public class WrapperPlayServerSetSlot extends AbstractPacket {
 
 	/**
 	 * Retrieve the index of the slot that should be changed.
-	 * 
+	 *
 	 * @return The current slot
 	 */
 	public short getSlot() {
@@ -69,8 +74,9 @@ public class WrapperPlayServerSetSlot extends AbstractPacket {
 
 	/**
 	 * Set the index of the slot that should be changed.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setSlot(short value) {
 		handle.getIntegers().write(1, (int) value);
@@ -78,7 +84,7 @@ public class WrapperPlayServerSetSlot extends AbstractPacket {
 
 	/**
 	 * Retrieve the new updated item stack.
-	 * 
+	 *
 	 * @return The current Slot data
 	 */
 	public ItemStack getSlotData() {
@@ -87,8 +93,9 @@ public class WrapperPlayServerSetSlot extends AbstractPacket {
 
 	/**
 	 * Set the new item stack.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setSlotData(ItemStack value) {
 		handle.getItemModifier().write(0, value);

@@ -1,136 +1,86 @@
-package de.inventivegames.Murder;
+package de.inventivegames.murder;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.MetricsLite;
 
+import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.wrappers.WrappedWatchableObject;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 
-import de.inventivegames.Murder.Updater.UpdateResult;
-import de.inventivegames.Murder.BungeeCord.BungeeListener;
+import de.inventivegames.murder.commands.CommandHandler;
+import de.inventivegames.murder.listeners.PlayerListener;
+import de.inventivegames.murder.listeners.WorldListener;
+import de.inventivegames.murder.loggers.KillLogger;
 import de.inventivegames.utils.IGUtils;
+import de.inventivegames.utils.fakeequipment.FakeEquipment;
+import de.inventivegames.utils.skin.PlayerDisplayModifier;
 
 public class Murder extends JavaPlugin implements Listener {
 
-	public static String						prefix					= "§1[§4Murder§1] ";
-	public static ConsoleCommandSender			console					= Bukkit.getServer().getConsoleSender();
-	public static Murder						instance;
-	static File									configFile				= new File("plugins/Murder/config.yml");
+	public static String				permBase					= "murder.";
+	public static String				prefix						= "§1[§4Murder§1] ";
+	public static ConsoleCommandSender	console						= Bukkit.getServer().getConsoleSender();
+	public static Murder				instance;
+	static File							configFile					= new File("plugins/Murder/config.yml");
+	static File							playerFile					= new File("plugins/Murder/players.yml");
+	public static Random				rd							= new Random();
+	public static String				serverVersion;
+	public static String[]				nameTags					= { "Alfa ", "Bravo ", "Charlie ", "Delta ", "Echo ", "Foxtrot ", "Golf ", "Hotel ", "India ", "Juliett ", "Kilo ", "Lima ", "Miko ", "November ", "Oscar ", "Papa ", "Quebec ", "Romeo ", "Sierra ", "Tango ", "Uniform ", "Victor ", "Whiskey ", "X-ray ", "Yankee ", "Zulu " };
+	public static String[]				colorCode					= { "§1 ", "§2 ", "§3 ", "§4 ", "§5 ", "§6 ", "§7 ", "§8 ", "§9 ", "§a ", "§b ", "§c ", "§d ", "§e " };
+	public static String				SKIN_NAME					= "Janiboy554";
+	public static String				CORPSE_SKIN_NAME			= "Janiboy554";
+	public static int					minPlayers					= -1;
+	public static int					maxPlayers					= -1;
+	public static int					smokeTimer					= -1;
+	public static int					lobbyCountdown				= -1;
+	public static int					countdown					= -1;
 
-	public static List<Player>					playersInLobby			= new ArrayList<Player>();
-	public static List<Player>					playersInGame			= new ArrayList<Player>();
-	public static List<Player>					playersInSpectate		= new ArrayList<Player>();
-	public static List<Integer>					gameStarted				= new ArrayList<Integer>();
-	public static List<Integer>					peacePeriod				= new ArrayList<Integer>();
+	public static int					POINTS_PLUS					= 2;																																																																				// MurdererKill
+	public static int					POINTS_MINUS				= 20;																																																																				// KilledInnocent
+	public static int					POINTS_MURDERER_WIN			= 40;																																																																				// MurdererWon
+	public static int					POINTS_BYSTANDER_WIN_WEAPON	= 40;																																																																				// KilledMurderer
+	public static int					POINTS_BYSTANDER_WIN		= 2;																																																																				// BystandersWon
 
-	public static ArrayList<Player>				Murderers				= new ArrayList<Player>();
-	public static ArrayList<Player>				Bystanders				= new ArrayList<Player>();
+	public static WorldEditPlugin		worldEdit;
 
-	public static HashMap<Player, ItemStack[]>	InventoryContent		= new HashMap<Player, ItemStack[]>();
-	public static HashMap<Player, ItemStack[]>	InventoryArmorContent	= new HashMap<Player, ItemStack[]>();
-	public static HashMap<Player, Location>		prevLocation			= new HashMap<Player, Location>();
-	public static HashMap<Player, GameMode>		prevGamemode			= new HashMap<Player, GameMode>();
-	public static HashMap<Player, Integer>		prevLevel				= new HashMap<Player, Integer>();
-	public static HashMap<Player, Float>		prevExp					= new HashMap<Player, Float>();
-	public static HashMap<Player, Double>		prevHealth				= new HashMap<Player, Double>();
-	public static HashMap<Player, Integer>		prevFood				= new HashMap<Player, Integer>();
+	public static CommandHandler		cmdHandler;
 
-	public static HashMap<Player, Integer>		playerInLobby			= new HashMap<Player, Integer>();
-	public static HashMap<Player, Integer>		playerInGame			= new HashMap<Player, Integer>();
-	public static HashMap<Player, Integer>		playerInSpectate		= new HashMap<Player, Integer>();
-	public static HashMap<Integer, Integer>		playerAmount			= new HashMap<Integer, Integer>();
-	public static HashMap<Player, Integer>		playerType				= new HashMap<Player, Integer>();
+	public static PlayerDisplayModifier	mod;
+	public static ProtocolManager		manager;
 
-	public static HashMap<Player, Zombie>		zombieMap;
+	public static IGUtils				utils;
 
-	public static HashMap<Player, String>		nameTag					= new HashMap<Player, String>();
-
-	public static ArrayList<Player>				invisibleTags			= new ArrayList<Player>();
-
-	public static ArrayList<Player>				hasTag					= new ArrayList<Player>();
-
-	public static String						serverVersion;
-
-	public static String[]						nameTags				= { "Alfa ", "Bravo ", "Charlie ", "Delta ", "Echo ", "Foxtrot ", "Golf ", "Hotel ", "India ", "Juliett ", "Kilo ", "Lima ", "Miko ", "November ", "Oscar ", "Papa ", "Quebec ", "Romeo ", "Sierra ", "Tango ", "Uniform ", "Victor ", "Whiskey ", "X-ray ", "Yankee ", "Zulu " };
-
-	public static String[]						colorCode				= { "§1 ", "§2 ", "§3 ", "§4 ", "§5 ", "§6 ", "§7 ", "§8 ", "§9 ", "§a ", "§b ", "§c ", "§d ", "§e " };
-
-	public static ArrayList<String>				inGame					= new ArrayList<String>();
-
-	public static int[]							playersAmount			= new int[25];
-
-	public static Player[][]					players					= new Player[25][25];
-	public static Player[][]					murderers				= new Player[25][25];
-	public static Player[][]					bystanders				= new Player[25][25];
-	public static Player[][]					weaponBystanders		= new Player[25][25];
-
-	public static int[]							bystanderAmount			= new int[29];
-	public static Item[][]						Loot					= new Item[29][99];
-	public static Item[][]						Items					= new Item[29][99];
-	public static int[]							ItemAmount				= new int[29];
-
-	public static Random						rd						= new Random();
-
-	public static int							minPlayers				= -1;
-	public static int							maxPlayers				= -1;
-	public static int							smokeTimer				= -1;
-
-	public static int							lobbyCountdown			= -1;
-	public static int							countdown				= -1;
-
-	private static File							arenaFile;
-
-	public static Updater						updater;
-	public static boolean						updateNeeded;
-
-	private static Class<?>						nmsChatSerializer		= Reflection.getNMSClass("ChatSerializer");
-	private static Class<?>						nmsPacketPlayOutChat	= Reflection.getNMSClass("PacketPlayOutChat");
-
-	public static int							requiredMoney			= 10;
-
-	public static boolean						useEconomy				= false;
-	public static boolean						checkEconomy			= false;
-
-	public static int							deposit					= 10;
-	public static int							withdraw				= 5;
-
-	public static IGUtils						utils;
+	public static ArrayList<Game>		games						= new ArrayList<Game>();
 
 	@Override
 	public void onEnable() {
 		instance = this;
 
-		console = Bukkit.getServer().getConsoleSender();
-
-		if (instance.getServer().getPluginManager().isPluginEnabled("TagAPI")) {
-			console.sendMessage(prefix + "§2Successfully hooked into TagAPI!");
-		} else {
-			console.sendMessage(prefix + "§cCould not hook into TagAPI! Please download it here:§a http://dev.bukkit.org/bukkit-plugins/tag/");
-			console.sendMessage("§cDisabling...");
-			instance.getServer().getPluginManager().disablePlugin(instance);
-			return;
-		}
+		cmdHandler = new CommandHandler();
+		registerEvents(instance, new PlayerListener(), new WorldListener(), new Signs(), new Spectate(), new Corpses(), new ChatManager(), new KillLogger(), cmdHandler);
+		console = instance.getServer().getConsoleSender();
 
 		if (instance.getServer().getPluginManager().isPluginEnabled("ProtocolLib")) {
 			console.sendMessage(prefix + "§2Successfully hooked into ProtocolLib!");
@@ -140,356 +90,204 @@ public class Murder extends JavaPlugin implements Listener {
 			instance.getServer().getPluginManager().disablePlugin(instance);
 			return;
 		}
+		// if
+		// (instance.getServer().getPluginManager().isPluginEnabled("WorldEdit"))
+		// {
+		// console.sendMessage(prefix +
+		// "§2Successfully hooked into WorldEdit!");
+		// worldEdit = (WorldEditPlugin)
+		// instance.getServer().getPluginManager().getPlugin("WorldEdit");
+		// } else {
+		// console.sendMessage(prefix +
+		// "§cCould not hook into WorldEdit! Please download it here:§a http://dev.bukkit.org/bukkit-plugins/worldedit/");
+		// console.sendMessage("§cDisabling...");
+		// instance.getServer().getPluginManager().disablePlugin(instance);
+		// return;
+		// }
 
-		if (instance.getServer().getPluginManager().isPluginEnabled("Vault")) {
-			console.sendMessage(prefix + "§2Successfully hooked into Vault!");
-			checkEconomy = true;
-		}
+		manager = ProtocolLibrary.getProtocolManager();
+
+		instance.getCommand("murder").setExecutor(cmdHandler);
 
 		Messages.Manager();
-
-		Murder.minPlayers = instance.getConfig().getInt("MinPlayers");
-		Murder.maxPlayers = instance.getConfig().getInt("MaxPlayers");
-		Murder.smokeTimer = instance.getConfig().getInt("SmokeDelay");
-
-		Murder.lobbyCountdown = instance.getConfig().getInt("lobbyCountdown");
-		Murder.countdown = instance.getConfig().getInt("countdown");
-
-		Bukkit.getServer().getPluginManager().registerEvents(instance, instance);
-		instance.getCommand("murder").setExecutor(new Commands());
-
-		Corpses.manager = ProtocolLibrary.getProtocolManager();
-
 		Config.Manager();
-		registerEvents(this, new Players());
-		registerEvents(this, new Signs());
-		registerEvents(this, new Commands());
-		registerEvents(this, new Chat());
-		registerEvents(this, new Corpses());
+		initPlayerConfig();
 
-		if (instance.getConfig().getBoolean("useBungeeCord")) {
-			registerEvents(this, new BungeeListener());
-		}
+		minPlayers = instance.getConfig().getInt("MinPlayers");
+		maxPlayers = instance.getConfig().getInt("MaxPlayers");
+		smokeTimer = instance.getConfig().getInt("SmokeDelay");
 
-		Murder.zombieMap = new HashMap<Player, Zombie>();
+		lobbyCountdown = instance.getConfig().getInt("lobbyCountdown");
+		countdown = instance.getConfig().getInt("countdown");
 
-		setupMetrics();
-
-		
-		try {
-			utils = new IGUtils(instance);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+		utils = new IGUtils(instance);
 
 		serverVersion = instance.getServer().getBukkitVersion().toString();
-
-		if ((serverVersion != null) && (serverVersion.contains("1.7.9"))) {
-			Corpses.oldSpawns = true;
-			console.sendMessage(Murder.prefix + "§cIncompatible Server Version (" + serverVersion + ")! Using old Corpse spawns...");
+		// if (serverVersion != null && serverVersion.contains("1.7.9")) {
+		// Corpses.oldSpawns = true;
+		// console.sendMessage(prefix + "§cIncompatible Server Version (" +
+		// serverVersion + ")! Using old Corpse spawns...");
+		// }
+		if (instance.getConfig().getBoolean("forceNewCorpses")) {
+			Corpses.oldSpawns = false;
 		}
 
-		for (int i = 0; i < 24; i++) {
-			Game.BystanderSelected[i] = false;
-			Game.MurdererSelected[i] = false;
-			Game.rolesSelected[i] = false;
-		}
+		ArenaManager.loadArenas();
 
-		if (getConfig().getBoolean("checkForUpdates")) {
-			updater = new Updater(this, 72593, this.getFile(), Updater.UpdateType.NO_DOWNLOAD, true);
-			if (updater.getResult() == UpdateResult.UPDATE_AVAILABLE) {
-				updateNeeded = true;
+		initProtocolListener();
+
+		mod = new PlayerDisplayModifier(instance, manager);
+	}
+
+	public static void initPlayerConfig() {
+		final YamlConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
+		config.options().copyDefaults(true);
+		config.addDefault("Players", null);
+		try {
+			config.save(playerFile);
+		} catch (final IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void initProtocolListener() {
+		new FakeEquipment(instance) {
+			@Override
+			protected boolean onEquipmentSending(FakeEquipment.EquipmentSendingEvent equipmentEvent) {
+				if (equipmentEvent.getSlot() == FakeEquipment.EquipmentSlot.HELD) {
+					if (equipmentEvent.getEquipment() != null && equipmentEvent.getEquipment().getType() != Material.AIR) {
+						if (equipmentEvent.getEquipment().equals(Items.SpeedBoost()) || equipmentEvent.getEquipment().equals(Items.Bullet()) || equipmentEvent.getEquipment().getType().equals(Material.NAME_TAG)) {
+							equipmentEvent.setEquipment(new ItemStack(Material.AIR));
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+
+			@Override
+			protected void onEntitySpawn(Player client, LivingEntity visibleEntity) {
+				if (FakeEquipment.EquipmentSlot.HELD.isEmpty(visibleEntity)) {
+					updateSlot(client, visibleEntity, FakeEquipment.EquipmentSlot.HELD);
+				}
+			}
+		};
+		manager.addPacketListener(new PacketAdapter(instance, new PacketType[] { PacketType.Play.Server.ENTITY_METADATA }) {
+			@Override
+			public void onPacketSending(PacketEvent event) {
+				final Player p = event.getPlayer();
+				final MurderPlayer mp = MurderPlayer.getPlayer(p);
+				final Entity entity = event.getPacket().getEntityModifier(event).read(0);
+				if (event.getPlayer().equals(entity)) {
+					if (mp.playing()) {
+						Murder.modifyWatchable(event, 7, 0);
+					}
+				}
+			}
+		});
+		manager.addPacketListener(new PacketAdapter(Murder.instance, new PacketType[] { PacketType.Play.Server.NAMED_SOUND_EFFECT }) {
+			@Override
+			public void onPacketSending(PacketEvent event) {
+				final PacketContainer packet = event.getPacket();
+				final World world = event.getPlayer().getWorld();
+				if (!MurderPlayer.getPlayer(event.getPlayer()).inSpectate()) return;
+
+				final String soundName = packet.getStrings().read(0);
+				final double x = packet.getIntegers().read(0) / 8.0;
+				final double y = packet.getIntegers().read(1) / 8.0;
+				final double z = packet.getIntegers().read(2) / 8.0;
+				final Location loc = new Location(world, x, y, z);
+
+				if (soundName.startsWith("step.")) {
+					Player closest = null;
+					double bestDistance = Double.MAX_VALUE;
+
+					// Find the player closest to the sound
+					for (final Player player : world.getPlayers()) {
+						final double distance = player.getLocation().distance(loc);
+
+						if (distance < bestDistance) {
+							bestDistance = distance;
+							closest = player;
+						}
+					}
+
+					// System.out.println("Cancelled " + soundName +
+					// " caused by " + closest);
+					event.setCancelled(true);
+				}
+			}
+		});
+
+	}
+
+	private static void modifyWatchable(PacketEvent event, int index, Object value) {
+		if (hasIndex(getWatchable(event), index)) {
+			event.setPacket(event.getPacket().deepClone());
+			for (final WrappedWatchableObject object : getWatchable(event)) {
+				if (object.getIndex() == index) {
+					object.setValue(value);
+				}
 			}
 		}
+	}
 
+	private static List<WrappedWatchableObject> getWatchable(PacketEvent event) {
+		return event.getPacket().getWatchableCollectionModifier().read(0);
+	}
+
+	private static boolean hasIndex(List<WrappedWatchableObject> list, int index) {
+		for (final WrappedWatchableObject object : list) {
+			if (object.getIndex() == index) return true;
+		}
+		return false;
 	}
 
 	@Override
 	public void onDisable() {
-		if (zombieMap != null) {
-			for (Zombie controlledZombie : Murder.zombieMap.values()) {
-				controlledZombie.remove();
-			}
-			Murder.zombieMap.clear();
-			Murder.zombieMap = null;
-		}
-
-		players = null;
-		playerAmount.clear();
-		playerInGame.clear();
-		playerInLobby.clear();
-		playerInSpectate.clear();
-		playersAmount = null;
-		playersInGame.clear();
-		playersInLobby.clear();
-		playersInSpectate.clear();
-		bystanderAmount = null;
-		Bystanders.clear();
-		bystanders = null;
-		gameStarted.clear();
-		hasTag.clear();
-		inGame.clear();
-		invisibleTags.clear();
-		Loot = null;
-		Murderers.clear();
-		murderers = null;
-		playerType.clear();
-		weaponBystanders = null;
-
-		instance.getServer().getPluginManager().disablePlugin(instance);
-
+		Bukkit.getScheduler().cancelTasks(Murder.instance);
+		ArenaManager.saveArenas();
 	}
 
-	public static void checkEconomy() {
-		if (instance.getConfig().getBoolean("useEconomy")) {
-			useEconomy = true;
+	public static void reload() {
+		ArenaManager.saveArenas();
 
-			Rewards.setupEconomy();
+		ArenaManager.unloadArenas();
+
+		Messages.Manager();
+		Config.Manager();
+
+		minPlayers = instance.getConfig().getInt("MinPlayers");
+		maxPlayers = instance.getConfig().getInt("MaxPlayers");
+		smokeTimer = instance.getConfig().getInt("SmokeDelay");
+
+		lobbyCountdown = instance.getConfig().getInt("lobbyCountdown");
+		countdown = instance.getConfig().getInt("countdown");
+
+		Bukkit.getScheduler().cancelTasks(Murder.instance);
+
+		ArenaManager.loadArenas();
+	}
+
+	public static void addName(String name) {
+		if ((name.length() + 2) > 16) return;
+
+		final int length = nameTags.length;
+		final String[] New = new String[length + 1];
+		for (int i = 0; i < length; i++) {
+			New[i] = nameTags[i];
+		}
+		nameTags = null;
+		New[length] = name;
+		nameTags = new String[length + 1];
+		for (int i = 0; i < length + 1; i++) {
+			nameTags[i] = New[i];
 		}
 	}
 
-	@EventHandler
-	public void onJoin(PlayerJoinEvent e) {
-		if (updateNeeded) {
-			if (e.getPlayer().isOp()) {
-				String message = "[{\"text\":\"A new Version is Available. Download it here: \",\"color\":\"white\"},{\"text\":\"[" + updater.getLatestName() + "]\",\"color\":\"gold\",\"bold\":\"false\",\"italic\":\"false\",\"underlined\":\"false\",\"strikethrough\":\"false\",\"obfuscated\":\"false\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + updater.getLatestFileLink() + "\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§7Click here to download the Latest Version.\"}}]";
-				sendRawMessage(e.getPlayer(), message);
-			}
-		}
-	}
-
-	public static void sendArenaMessage(String message, int arena) {
-		for (int i = 0; i < maxPlayers; i++) {
-
-			if (players[arena][i] != null) {
-				players[arena][i].sendMessage(message);
-			}
-		}
-	}
-
-	public static void sendSpectatorMessage(String message, int arena) {
-		for (Player spec : Murder.playersInSpectate) {
-			if (Murder.getArena(spec) == arena) {
-				spec.sendMessage(message);
-			}
-		}
-	}
-
-	public static void sendArenaAdminMessage(String message, int arena) {
-		for (int i = 0; i < maxPlayers; i++) {
-			if (players[arena][i] != null) {
-				if (players[arena][i].hasPermission("murder.admin")) {
-					players[arena][i].sendMessage(message);
-				}
-			}
-		}
-	}
-
-	public static int getArena(Player p) {
-		int arena = 0;
-
-		for (int i = 0; i < 25; i++) {
-			for (int m = 0; m < 25; m++) {
-				if ((players[i][m] != null) && (players[i][m] == p)) {
-					arena = i;
-				}
-			}
-		}
-
-		return arena;
-	}
-
-	public static int getPlayerNumber(Player p, int arena) {
-		for (int i = 0; i < 25; i++) {
-			for (int m = 0; m < 25; m++) {
-				if ((players[i][m] != null) && (players[i][m] == p))
-					return m;
-			}
-		}
-		return 0;
-	}
-
-	public static Player getMurderer(int arena) {
-		int i = arena;
-		{
-			for (int m = 0; m < 25; m++) {
-				if ((players[i][m] != null) && (players[i][m] == murderers[i][m]))
-					return murderers[i][m];
-			}
-		}
-		return null;
-	}
-
-	public static boolean isMurderer(Player p) {
-		int i = Murder.getArena(p);
-		int m = getPlayerNumber(p, Murder.getArena(p));
-
-		if ((players[i][m] != null) && (players[i][m] == murderers[i][m]))
-			return true;
-
-		return false;
-	}
-
-	public static boolean isBystander(Player p) {
-		int i = Murder.getArena(p);
-		int m = getPlayerNumber(p, Murder.getArena(p));
-
-		if ((players[i][m] != null) && (players[i][m] == bystanders[i][m]))
-			return true;
-
-		return false;
-	}
-
-	public static boolean isWeaponBystander(Player p) {
-		int i = Murder.getArena(p);
-		int m = getPlayerNumber(p, Murder.getArena(p));
-
-		if ((players[i][m] != null) && (players[i][m] == weaponBystanders[i][m]))
-			return true;
-
-		return false;
-	}
-
-	public static boolean isPlaying(Player p) {
-		for (int i = 0; i < 25; i++) {
-			for (int m = 0; m < 25; m++) {
-				if ((players[i][m] != null) && (players[i][m] == p))
-					return true;
-			}
-		}
-		return false;
-	}
-
-	public static boolean isSpectator(Player p) {
-		if (Murder.playersInSpectate.contains(p))
-			return true;
-		return false;
-	}
-
-	public static Player getPlayerName(int arena, int m) {
-		if ((players[arena][m] != null))
-			return players[arena][m];
-		return null;
-	}
-
-	public static boolean ArenaExists(int arena) {
-		arenaFile = new File("plugins/Murder/Arenas/" + arena + "/arena.yml");
-		if (arenaFile.exists())
-			return true;
-		else
-			return false;
-	}
-
-	public static String getStatus(int arena)
-
-	{
-		if ((playersAmount[arena] < maxPlayers) && (playersAmount[arena] >= 0) && (!inGame.contains(Integer.valueOf(arena))))
-			return "§2" + playersAmount[arena] + " / " + (maxPlayers);
-		if (playersAmount[arena] == maxPlayers)
-			return "§c§l[Full]";
-		if (inGame.contains("" + arena))
-			return "§c§l[InGame]";
-		return "§4[ERROR]";
-	}
-
-	public static String getNameTag(Player p) {
-		String tag = nameTag.get(p);
-		return tag;
-	}
-
-	public static ItemStack Knife() {
-		ItemStack Knife = new ItemStack(Material.IRON_SWORD);
-		ItemMeta knifeMeta = Knife.getItemMeta();
-		knifeMeta.setDisplayName("§c§l" + Messages.getMessage("knife"));
-		knifeMeta.addEnchant(Enchantment.DAMAGE_ALL, 4, true);
-		Knife.setItemMeta(knifeMeta);
-
-		return Knife;
-
-	}
-
-	public static ItemStack Gun() {
-		ItemStack Gun = new ItemStack(Material.DIAMOND_HOE);
-		ItemMeta gunMeta = Gun.getItemMeta();
-		gunMeta.setDisplayName("§1§l" + Messages.getMessage("gun"));
-		gunMeta.addEnchant(Enchantment.ARROW_DAMAGE, 1, true);
-		Gun.setItemMeta(gunMeta);
-
-		return Gun;
-
-	}
-
-	public static ItemStack Bullet() {
-		ItemStack Bullet = new ItemStack(Material.ARROW);
-		ItemMeta bulletMeta = Bullet.getItemMeta();
-		bulletMeta.setDisplayName("§8" + Messages.getMessage("bullet"));
-		Bullet.setItemMeta(bulletMeta);
-
-		return Bullet;
-
-	}
-
-	public static ItemStack Loot() {
-		ItemStack Loot = new ItemStack(Material.DIAMOND);
-		ItemMeta lootMeta = Loot.getItemMeta();
-		lootMeta.setDisplayName("§6" + Messages.getMessage("loot"));
-		lootMeta.addEnchant(Enchantment.DURABILITY, 1, true);
-		Loot.setItemMeta(lootMeta);
-
-		return Loot;
-
-	}
-
-	public static ItemStack NameInfo(Player p) {
-		ItemStack Loot = new ItemStack(Material.NAME_TAG);
-		ItemMeta lootMeta = Loot.getItemMeta();
-		lootMeta.setDisplayName("§l" + (nameTag.get(p) != null ? nameTag.get(p) : "§r§cUnable to get NameTag!"));
-		lootMeta.addEnchant(Enchantment.DURABILITY, 1, true);
-		Loot.setItemMeta(lootMeta);
-
-		return Loot;
-
-	}
-
-	public static void sendRawMessage(Player player, String message) {
-		try {
-			Object handle = Reflection.getHandle(player);
-			Object connection = Reflection.getField(handle.getClass(), "playerConnection").get(handle);
-			Object serialized = Reflection.getMethod(nmsChatSerializer, "a", String.class).invoke(null, message);
-			Object packet = nmsPacketPlayOutChat.getConstructor(Reflection.getNMSClass("IChatBaseComponent")).newInstance(serialized);
-			Reflection.getMethod(connection.getClass(), "sendPacket").invoke(connection, packet);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static Server getBukkit() {
-		return Murder.instance.getServer();
-	}
-
-	public void setupMetrics() {
-		try {
-			MetricsLite metrics = new MetricsLite(this);
-			metrics.start();
-		} catch (IOException e) {
-		}
-	}
-
-	public static void DEBUG() {
-		System.out.println("" + "\n" + Murder.maxPlayers + "\n" + Murder.minPlayers + "\n" + Murder.prefix + "\n" + Murder.serverVersion + "\n" + Murder.arenaFile + "\n" + Murder.bystanderAmount + "\n" + Murder.Bystanders + "\n" + Murder.bystanders + "\n" + Murder.gameStarted + "\n" + Murder.hasTag + "\n" + Murder.inGame + "\n" + Murder.InventoryArmorContent + "\n" + Murder.InventoryContent + "\n" + Murder.invisibleTags + "\n" + Murder.Murderers + "\n" + Murder.nameTag + "\n" + Murder.playersInGame + "\n" + Murder.zombieMap + "\n" + "" + "\n" + Players.knifeTimer + "\n" + Players.murdererDisguise + "\n");
-	}
-
-	public static void PlayerDEBUG(Player p) {
-		System.out.println(p.getName());
-		System.out.println("murder.players -- " + (p.hasPermission("murder.player") ? "true" : "false"));
-		System.out.println("murder.admin -- " + (p.hasPermission("murder.admin") ? "true" : "false"));
-	}
-
-	public static void registerEvents(org.bukkit.plugin.Plugin plugin, Listener... listeners) {
-		for (Listener listener : listeners) {
+	public static void registerEvents(Plugin plugin, Listener... listeners) {
+		for (final Listener listener : listeners) {
 			Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
 		}
 	}
-
 }

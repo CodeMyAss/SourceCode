@@ -8,7 +8,7 @@ import com.comphenix.protocol.events.PacketEvent;
 
 /**
  * Sent by the server to trigger the edit sign UI.
- * 
+ *
  * @author Kristian
  */
 public class WrapperPlayServerOpenSignEntity extends AbstractPacket {
@@ -25,7 +25,7 @@ public class WrapperPlayServerOpenSignEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve the x coordinate of the sign to edit.
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public int getX() {
@@ -34,8 +34,9 @@ public class WrapperPlayServerOpenSignEntity extends AbstractPacket {
 
 	/**
 	 * Set the x coordinate of the sign to edit.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(int value) {
 		handle.getIntegers().write(0, value);
@@ -43,7 +44,7 @@ public class WrapperPlayServerOpenSignEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve the y coordinate of the sign to edit.
-	 * 
+	 *
 	 * @return The current Y
 	 */
 	public int getY() {
@@ -52,8 +53,9 @@ public class WrapperPlayServerOpenSignEntity extends AbstractPacket {
 
 	/**
 	 * Set the y coordinate of the sign to edit.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(int value) {
 		handle.getIntegers().write(1, value);
@@ -61,7 +63,7 @@ public class WrapperPlayServerOpenSignEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve the z coordinate of the sign to edit.
-	 * 
+	 *
 	 * @return The current Z
 	 */
 	public int getZ() {
@@ -70,8 +72,9 @@ public class WrapperPlayServerOpenSignEntity extends AbstractPacket {
 
 	/**
 	 * Set the z coordinate of the sign to edit.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(int value) {
 		handle.getIntegers().write(2, value);
@@ -79,8 +82,9 @@ public class WrapperPlayServerOpenSignEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve the location of the sign.
-	 * 
-	 * @param event - the parent event.
+	 *
+	 * @param event
+	 *            - the parent event.
 	 * @return The location.
 	 */
 	public Location getLocation(PacketEvent event) {
@@ -89,8 +93,9 @@ public class WrapperPlayServerOpenSignEntity extends AbstractPacket {
 
 	/**
 	 * Set the location of the sign.
-	 * 
-	 * @param loc - the new location.
+	 *
+	 * @param loc
+	 *            - the new location.
 	 */
 	public void setLocation(Location loc) {
 		setX(loc.getBlockX());

@@ -22,8 +22,9 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.EnumWrappers.ClientCommand;
 
 /**
- * Sent when the client is ready to complete login and when the client is ready to respawn after death.
- * 
+ * Sent when the client is ready to complete login and when the client is ready
+ * to respawn after death.
+ *
  * @author Kristian
  */
 public class WrapperPlayClientClientCommand extends AbstractPacket {
@@ -40,7 +41,7 @@ public class WrapperPlayClientClientCommand extends AbstractPacket {
 
 	/**
 	 * Retrieve whether or not we're logging in or respawning.
-	 * 
+	 *
 	 * @return The current command
 	 */
 	public ClientCommand getCommand() {
@@ -49,8 +50,9 @@ public class WrapperPlayClientClientCommand extends AbstractPacket {
 
 	/**
 	 * Set whether or not we're logging in or respawning.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setCommand(ClientCommand value) {
 		handle.getClientCommands().write(0, value);

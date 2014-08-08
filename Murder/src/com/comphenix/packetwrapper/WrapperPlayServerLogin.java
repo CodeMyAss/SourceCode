@@ -24,7 +24,7 @@ public class WrapperPlayServerLogin extends AbstractPacket {
 
 	/**
 	 * Retrieve the player's Entity ID.
-	 * 
+	 *
 	 * @return The current Entity ID
 	 */
 	public int getEntityId() {
@@ -33,8 +33,9 @@ public class WrapperPlayServerLogin extends AbstractPacket {
 
 	/**
 	 * Set the player's Entity ID.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityId(int value) {
 		handle.getIntegers().write(0, value);
@@ -42,8 +43,9 @@ public class WrapperPlayServerLogin extends AbstractPacket {
 
 	/**
 	 * Retrieve the player's entity object.
-	 * 
-	 * @param world - the word the player has joined.
+	 *
+	 * @param world
+	 *            - the word the player has joined.
 	 * @return The player's entity.
 	 */
 	public Entity getEntity(World world) {
@@ -52,8 +54,9 @@ public class WrapperPlayServerLogin extends AbstractPacket {
 
 	/**
 	 * Retrieve the player's entity object.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The player's entity.
 	 */
 	public Entity getEntity(PacketEvent event) {
@@ -62,7 +65,7 @@ public class WrapperPlayServerLogin extends AbstractPacket {
 
 	/**
 	 * Retrieve the game mode of the initial world.
-	 * 
+	 *
 	 * @return The current gamemode.
 	 */
 	public NativeGameMode getGamemode() {
@@ -71,8 +74,9 @@ public class WrapperPlayServerLogin extends AbstractPacket {
 
 	/**
 	 * Set the game mode of the initial world.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setGamemode(NativeGameMode value) {
 		handle.getGameModes().write(0, value);
@@ -80,7 +84,7 @@ public class WrapperPlayServerLogin extends AbstractPacket {
 
 	/**
 	 * Retrieve whether or not this is a hardcore world.
-	 * 
+	 *
 	 * @return TRUE if it is, FALSE otherwise.
 	 */
 	public boolean isHardcore() {
@@ -89,8 +93,9 @@ public class WrapperPlayServerLogin extends AbstractPacket {
 
 	/**
 	 * Set whether or not this is a hardcore world.
-	 * 
-	 * @param value - TRUE if it is, FALSE otherwise.
+	 *
+	 * @param value
+	 *            - TRUE if it is, FALSE otherwise.
 	 */
 	public void setHardcore(boolean value) {
 		handle.getBooleans().write(0, value);
@@ -98,7 +103,7 @@ public class WrapperPlayServerLogin extends AbstractPacket {
 
 	/**
 	 * Retrieve -1: nether, 0: overworld, 1: end.
-	 * 
+	 *
 	 * @return The current Dimension
 	 */
 	public int getDimension() {
@@ -107,8 +112,9 @@ public class WrapperPlayServerLogin extends AbstractPacket {
 
 	/**
 	 * Set -1: nether, 0: overworld, 1: end.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setDimension(int value) {
 		handle.getIntegers().write(1, value);
@@ -116,7 +122,7 @@ public class WrapperPlayServerLogin extends AbstractPacket {
 
 	/**
 	 * Retrieve the difficulty of the initial world.
-	 * 
+	 *
 	 * @return The current difficulty
 	 */
 	public Difficulty getDifficulty() {
@@ -125,8 +131,9 @@ public class WrapperPlayServerLogin extends AbstractPacket {
 
 	/**
 	 * Set the difficulty of the initial world.
-	 * 
-	 * @param value - new difficulty.
+	 *
+	 * @param value
+	 *            - new difficulty.
 	 */
 	public void setDifficulty(Difficulty difficulty) {
 		handle.getDifficulties().write(0, difficulty);
@@ -136,7 +143,7 @@ public class WrapperPlayServerLogin extends AbstractPacket {
 	 * Retrieve the maximum number of players.
 	 * <p>
 	 * This is used by the client to draw the player list.
-	 * 
+	 *
 	 * @return The current max players.
 	 */
 	public byte getMaxPlayers() {
@@ -145,8 +152,9 @@ public class WrapperPlayServerLogin extends AbstractPacket {
 
 	/**
 	 * Set used by the client to draw the player list.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setMaxPlayers(byte value) {
 		handle.getIntegers().write(2, (int) value);
@@ -155,8 +163,9 @@ public class WrapperPlayServerLogin extends AbstractPacket {
 	/**
 	 * Retrieve the world type.
 	 * <p>
-	 * This is the level-type settign (default, flat, or largeBiomes) in server.properties.
-	 * 
+	 * This is the level-type settign (default, flat, or largeBiomes) in
+	 * server.properties.
+	 *
 	 * @return The current world type.
 	 */
 	public WorldType getLevelType() {
@@ -166,9 +175,11 @@ public class WrapperPlayServerLogin extends AbstractPacket {
 	/**
 	 * Set the world type.
 	 * <p>
-	 * This is the level-type settign (default, flat, or largeBiomes) in server.properties.
-	 * 
-	 * @param value - new value.
+	 * This is the level-type settign (default, flat, or largeBiomes) in
+	 * server.properties.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setLevelType(WorldType type) {
 		handle.getWorldTypeModifier().write(0, type);

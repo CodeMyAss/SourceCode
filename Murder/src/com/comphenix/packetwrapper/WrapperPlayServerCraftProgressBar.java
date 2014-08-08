@@ -25,7 +25,7 @@ public class WrapperPlayServerCraftProgressBar extends AbstractPacket {
 
 	/**
 	 * List of properties for furnaces.
-	 * 
+	 *
 	 * @author Kristian
 	 */
 	public static class FurnaceProperties {
@@ -57,7 +57,7 @@ public class WrapperPlayServerCraftProgressBar extends AbstractPacket {
 
 	/**
 	 * Retrieve the id of the window to update.
-	 * 
+	 *
 	 * @return The current Window id
 	 */
 	public byte getWindowId() {
@@ -66,8 +66,9 @@ public class WrapperPlayServerCraftProgressBar extends AbstractPacket {
 
 	/**
 	 * Set the id of the window to update.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setWindowId(byte value) {
 		handle.getIntegers().write(0, (int) value);
@@ -77,7 +78,7 @@ public class WrapperPlayServerCraftProgressBar extends AbstractPacket {
 	 * Retrieve which property should be updated.
 	 * <p>
 	 * For the enchantment table, this is the slot ID.
-	 * 
+	 *
 	 * @see {@link FurnaceProperties}
 	 * @return The current Property
 	 */
@@ -89,9 +90,10 @@ public class WrapperPlayServerCraftProgressBar extends AbstractPacket {
 	 * Set which property should be updated.
 	 * <p>
 	 * For the enchantment table, this is the slot ID.
-	 * 
+	 *
 	 * @see {@link FurnaceProperties}
-	 * @param value - new value.
+	 * @param value
+	 *            - new value.
 	 */
 	public void setProperty(short value) {
 		handle.getIntegers().write(1, (int) value);
@@ -100,8 +102,9 @@ public class WrapperPlayServerCraftProgressBar extends AbstractPacket {
 	/**
 	 * Retrieve the new value for the property.
 	 * <p>
-	 * For the enchantment table, this is the enchanting level in the given slot.
-	 * 
+	 * For the enchantment table, this is the enchanting level in the given
+	 * slot.
+	 *
 	 * @return The current Value
 	 */
 	public short getValue() {
@@ -111,9 +114,11 @@ public class WrapperPlayServerCraftProgressBar extends AbstractPacket {
 	/**
 	 * Set the new value for the property.
 	 * <p>
-	 * For the enchantment table, this is the enchanting level in the given slot.
-	 * 
-	 * @param value - new value.
+	 * For the enchantment table, this is the enchanting level in the given
+	 * slot.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setValue(short value) {
 		handle.getIntegers().write(2, (int) value);

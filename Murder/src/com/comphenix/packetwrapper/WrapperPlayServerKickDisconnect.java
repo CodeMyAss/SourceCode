@@ -17,8 +17,9 @@ public class WrapperPlayServerKickDisconnect extends AbstractPacket {
 	}
 
 	/**
-	 * Retrieve the reason that is displayed to the client when the connection terminates.
-	 * 
+	 * Retrieve the reason that is displayed to the client when the connection
+	 * terminates.
+	 *
 	 * @return The current Reason
 	 */
 	public WrappedChatComponent getReason() {
@@ -26,9 +27,11 @@ public class WrapperPlayServerKickDisconnect extends AbstractPacket {
 	}
 
 	/**
-	 * Set the reason that is displayed to the client when the connection terminates.
-	 * 
-	 * @param value - new reason.
+	 * Set the reason that is displayed to the client when the connection
+	 * terminates.
+	 *
+	 * @param value
+	 *            - new reason.
 	 */
 	public void setReason(WrappedChatComponent value) {
 		handle.getChatComponents().write(0, value);

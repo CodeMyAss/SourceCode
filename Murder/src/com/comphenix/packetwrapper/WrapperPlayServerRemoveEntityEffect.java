@@ -39,7 +39,7 @@ public class WrapperPlayServerRemoveEntityEffect extends AbstractPacket {
 
 	/**
 	 * Retrieve entity ID of a player.
-	 * 
+	 *
 	 * @return The current Entity ID
 	 */
 	public int getEntityId() {
@@ -48,8 +48,9 @@ public class WrapperPlayServerRemoveEntityEffect extends AbstractPacket {
 
 	/**
 	 * Set entity ID of a player.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityId(int value) {
 		handle.getIntegers().write(0, value);
@@ -57,8 +58,9 @@ public class WrapperPlayServerRemoveEntityEffect extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity.
-	 * 
-	 * @param world - the current world of the entity.
+	 *
+	 * @param world
+	 *            - the current world of the entity.
 	 * @return The entity.
 	 */
 	public Entity getEntity(World world) {
@@ -67,8 +69,9 @@ public class WrapperPlayServerRemoveEntityEffect extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The entity.
 	 */
 	public Entity getEntity(PacketEvent event) {
@@ -77,7 +80,7 @@ public class WrapperPlayServerRemoveEntityEffect extends AbstractPacket {
 
 	/**
 	 * Retrieve the ID of the effect to remove.
-	 * 
+	 *
 	 * @return The current Effect ID
 	 */
 	public byte getEffectId() {
@@ -86,8 +89,9 @@ public class WrapperPlayServerRemoveEntityEffect extends AbstractPacket {
 
 	/**
 	 * Set the ID of the effect to remove.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEffectId(byte value) {
 		handle.getBytes().write(1, value);
@@ -95,7 +99,7 @@ public class WrapperPlayServerRemoveEntityEffect extends AbstractPacket {
 
 	/**
 	 * Retrieve the effect.
-	 * 
+	 *
 	 * @return The current effect
 	 */
 	@SuppressWarnings("deprecation")
@@ -105,8 +109,9 @@ public class WrapperPlayServerRemoveEntityEffect extends AbstractPacket {
 
 	/**
 	 * Set the effect id.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	@SuppressWarnings("deprecation")
 	public void setEffect(PotionEffectType value) {

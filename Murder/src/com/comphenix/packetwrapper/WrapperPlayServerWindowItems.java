@@ -38,7 +38,7 @@ public class WrapperPlayServerWindowItems extends AbstractPacket {
 	 * Retrieve the ID of the window which is being updated.
 	 * <p>
 	 * Use 0 for the player inventory.
-	 * 
+	 *
 	 * @return The current Window id
 	 */
 	public byte getWindowId() {
@@ -49,8 +49,9 @@ public class WrapperPlayServerWindowItems extends AbstractPacket {
 	 * Set the ID of the window which is being updated.
 	 * <p>
 	 * Use 0 for the player inventory.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setWindowId(byte value) {
 		handle.getIntegers().write(0, (int) value);
@@ -58,7 +59,7 @@ public class WrapperPlayServerWindowItems extends AbstractPacket {
 
 	/**
 	 * Retrieve the items in the inventory indexed by slot index.
-	 * 
+	 *
 	 * @return The items that will fill the inventory.
 	 */
 	public ItemStack[] getItems() {
@@ -67,8 +68,9 @@ public class WrapperPlayServerWindowItems extends AbstractPacket {
 
 	/**
 	 * Set the items in the inventory indexed by slot index.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setItems(ItemStack[] value) {
 		handle.getItemArrayModifier().write(0, value);

@@ -17,7 +17,7 @@ public class WrapperPlayServerAbilities extends AbstractPacket {
 
 	/**
 	 * Retrieve whether or not the current player is in creative mode.
-	 * 
+	 *
 	 * @return Creative mode.
 	 */
 	public boolean isCreativeMode() {
@@ -26,8 +26,9 @@ public class WrapperPlayServerAbilities extends AbstractPacket {
 
 	/**
 	 * Set whether or not the current player is in creative mode.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setCreativeMode(boolean value) {
 		handle.getSpecificModifier(boolean.class).write(0, value);
@@ -35,7 +36,7 @@ public class WrapperPlayServerAbilities extends AbstractPacket {
 
 	/**
 	 * Retrieve whether or not the current player is flying.
-	 * 
+	 *
 	 * @return Creative mode.
 	 */
 	public boolean isFlying() {
@@ -44,8 +45,9 @@ public class WrapperPlayServerAbilities extends AbstractPacket {
 
 	/**
 	 * Set whether or not the current player is flying.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setFlying(boolean value) {
 		handle.getSpecificModifier(boolean.class).write(1, value);
@@ -53,7 +55,7 @@ public class WrapperPlayServerAbilities extends AbstractPacket {
 
 	/**
 	 * Retrieve whether or not the current player is allowed to fly.
-	 * 
+	 *
 	 * @return Creative mode.
 	 */
 	public boolean isFlyingAllowed() {
@@ -62,8 +64,9 @@ public class WrapperPlayServerAbilities extends AbstractPacket {
 
 	/**
 	 * Set whether or not the current player is allowed to fly.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setFlyingAllowed(boolean value) {
 		handle.getSpecificModifier(boolean.class).write(2, value);
@@ -71,7 +74,7 @@ public class WrapperPlayServerAbilities extends AbstractPacket {
 
 	/**
 	 * Retrieve whether or not the current player is in god mode.
-	 * 
+	 *
 	 * @return Creative mode.
 	 */
 	public boolean isGodMode() {
@@ -80,8 +83,9 @@ public class WrapperPlayServerAbilities extends AbstractPacket {
 
 	/**
 	 * Set whether or not the current player is in god mode.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setGodMode(boolean value) {
 		handle.getSpecificModifier(boolean.class).write(3, value);
@@ -89,7 +93,7 @@ public class WrapperPlayServerAbilities extends AbstractPacket {
 
 	/**
 	 * Retrieve the current flying speed.
-	 * 
+	 *
 	 * @return The current Flying speed
 	 */
 	public float getFlyingSpeed() {
@@ -98,8 +102,9 @@ public class WrapperPlayServerAbilities extends AbstractPacket {
 
 	/**
 	 * Set the current flying speed.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setFlyingSpeed(float value) {
 		handle.getFloat().write(0, value);
@@ -107,7 +112,7 @@ public class WrapperPlayServerAbilities extends AbstractPacket {
 
 	/**
 	 * Retrieve the current walking speed.
-	 * 
+	 *
 	 * @return The current walking speed
 	 */
 	public float getWalkingSpeed() {
@@ -116,8 +121,9 @@ public class WrapperPlayServerAbilities extends AbstractPacket {
 
 	/**
 	 * Set the current walking speed.
-	 * 
-	 * @param value - walking value.
+	 *
+	 * @param value
+	 *            - walking value.
 	 */
 	public void setWalkingSpeed(float value) {
 		handle.getFloat().write(1, value);

@@ -20,7 +20,7 @@ public class WrapperLoginClientStart extends AbstractPacket {
 	 * Retrieve the initial game profile.
 	 * <p>
 	 * Note that the UUID is NULL.
-	 * 
+	 *
 	 * @return The current profile.
 	 */
 	public WrappedGameProfile getProfile() {
@@ -29,8 +29,9 @@ public class WrapperLoginClientStart extends AbstractPacket {
 
 	/**
 	 * Set the initial game profile.
-	 * 
-	 * @param value - new profile.
+	 *
+	 * @param value
+	 *            - new profile.
 	 */
 	public void setProfile(WrappedGameProfile value) {
 		handle.getGameProfiles().write(0, value);

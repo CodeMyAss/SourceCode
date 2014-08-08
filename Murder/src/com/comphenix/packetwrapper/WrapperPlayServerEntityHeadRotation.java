@@ -38,7 +38,7 @@ public class WrapperPlayServerEntityHeadRotation extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity ID.
-	 * 
+	 *
 	 * @return The current Entity ID
 	 */
 	public int getEntityId() {
@@ -47,8 +47,9 @@ public class WrapperPlayServerEntityHeadRotation extends AbstractPacket {
 
 	/**
 	 * Set the entity ID.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityId(int value) {
 		handle.getIntegers().write(0, value);
@@ -56,8 +57,9 @@ public class WrapperPlayServerEntityHeadRotation extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity.
-	 * 
-	 * @param world - the current world of the entity.
+	 *
+	 * @param world
+	 *            - the current world of the entity.
 	 * @return The entity.
 	 */
 	public Entity getEntity(World world) {
@@ -66,8 +68,9 @@ public class WrapperPlayServerEntityHeadRotation extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The entity.
 	 */
 	public Entity getEntity(PacketEvent event) {
@@ -76,17 +79,18 @@ public class WrapperPlayServerEntityHeadRotation extends AbstractPacket {
 
 	/**
 	 * Retrieve the yaw of the entity's head.
-	 * 
+	 *
 	 * @return The current yaw.
 	 */
 	public float getHeadYaw() {
-		return (handle.getBytes().read(0) * 360.F) / 256.0F;
+		return handle.getBytes().read(0) * 360.F / 256.0F;
 	}
 
 	/**
 	 * Set the yaw of the entity's head.
-	 * 
-	 * @param value - new yaw.
+	 *
+	 * @param value
+	 *            - new yaw.
 	 */
 	public void setHeadYaw(float value) {
 		handle.getBytes().write(0, (byte) (value * 256.0F / 360.0F));

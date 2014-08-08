@@ -27,7 +27,7 @@ import com.comphenix.protocol.events.PacketEvent;
 
 /**
  * This packet tells that a player goes to bed.
- * 
+ *
  * @author Kristian
  */
 public class WrapperPlayServerBed extends AbstractPacket {
@@ -44,7 +44,7 @@ public class WrapperPlayServerBed extends AbstractPacket {
 
 	/**
 	 * Retrieve player ID.
-	 * 
+	 *
 	 * @return The current Entity ID
 	 */
 	public int getEntityId() {
@@ -53,8 +53,9 @@ public class WrapperPlayServerBed extends AbstractPacket {
 
 	/**
 	 * Set player ID.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityId(int value) {
 		handle.getIntegers().write(0, value);
@@ -62,8 +63,9 @@ public class WrapperPlayServerBed extends AbstractPacket {
 
 	/**
 	 * Retrieve the player's entity object.
-	 * 
-	 * @param world - the word the player has joined.
+	 *
+	 * @param world
+	 *            - the word the player has joined.
 	 * @return The player's entity.
 	 */
 	public Entity getEntity(World world) {
@@ -72,8 +74,9 @@ public class WrapperPlayServerBed extends AbstractPacket {
 
 	/**
 	 * Retrieve the player's entity object.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The player's entity.
 	 */
 	public Entity getEntity(PacketEvent event) {
@@ -82,7 +85,7 @@ public class WrapperPlayServerBed extends AbstractPacket {
 
 	/**
 	 * Retrieve bed headboard X as block coordinate.
-	 * 
+	 *
 	 * @return The current X coordinate
 	 */
 	public int getX() {
@@ -91,8 +94,9 @@ public class WrapperPlayServerBed extends AbstractPacket {
 
 	/**
 	 * Set bed headboard X as block coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(int value) {
 		handle.getIntegers().write(1, value);
@@ -100,7 +104,7 @@ public class WrapperPlayServerBed extends AbstractPacket {
 
 	/**
 	 * Retrieve bed headboard Y as block coordinate.
-	 * 
+	 *
 	 * @return The current Y coordinate
 	 */
 	public byte getY() {
@@ -109,8 +113,9 @@ public class WrapperPlayServerBed extends AbstractPacket {
 
 	/**
 	 * Set bed headboard Y as block coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(byte value) {
 		handle.getIntegers().write(2, (int) value);
@@ -118,7 +123,7 @@ public class WrapperPlayServerBed extends AbstractPacket {
 
 	/**
 	 * Retrieve bed headboard Z as block coordinate.
-	 * 
+	 *
 	 * @return The current Z coordinate
 	 */
 	public int getZ() {
@@ -127,8 +132,9 @@ public class WrapperPlayServerBed extends AbstractPacket {
 
 	/**
 	 * Set bed headboard Z as block coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(int value) {
 		handle.getIntegers().write(3, value);
@@ -136,8 +142,9 @@ public class WrapperPlayServerBed extends AbstractPacket {
 
 	/**
 	 * Retrieve the location of the bed.
-	 * 
-	 * @param event - the parent event.
+	 *
+	 * @param event
+	 *            - the parent event.
 	 * @return The location.
 	 */
 	public Location getLocation(PacketEvent event) {
@@ -146,8 +153,9 @@ public class WrapperPlayServerBed extends AbstractPacket {
 
 	/**
 	 * Set the location of the bed.
-	 * 
-	 * @param loc - the new location.
+	 *
+	 * @param loc
+	 *            - the new location.
 	 */
 	public void setLocation(Location loc) {
 		setX(loc.getBlockX());

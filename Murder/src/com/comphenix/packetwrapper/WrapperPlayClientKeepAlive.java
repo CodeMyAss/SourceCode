@@ -20,7 +20,7 @@ public class WrapperPlayClientKeepAlive extends AbstractPacket {
 
 	/**
 	 * Retrieve the server-generated random ID.
-	 * 
+	 *
 	 * @return The current keep-alive ID
 	 */
 	public int getKeepAliveId() {
@@ -29,8 +29,9 @@ public class WrapperPlayClientKeepAlive extends AbstractPacket {
 
 	/**
 	 * Set the server-generated random ID.
-	 * 
-	 * @param value - new ID.
+	 *
+	 * @param value
+	 *            - new ID.
 	 */
 	public void setKeepAliveId(int value) {
 		handle.getIntegers().write(0, value);

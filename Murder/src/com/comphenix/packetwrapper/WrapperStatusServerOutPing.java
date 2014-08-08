@@ -17,7 +17,7 @@ public class WrapperStatusServerOutPing extends AbstractPacket {
 
 	/**
 	 * Retrieve the random token that should be the same as sent by the client.
-	 * 
+	 *
 	 * @return The current token.
 	 */
 	public long getTime() {
@@ -26,8 +26,9 @@ public class WrapperStatusServerOutPing extends AbstractPacket {
 
 	/**
 	 * Set the random token that should be the same as sent by the client.
-	 * 
-	 * @param value - new token.
+	 *
+	 * @param value
+	 *            - new token.
 	 */
 	public void setToken(long value) {
 		handle.getLongs().write(0, value);

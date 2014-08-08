@@ -17,8 +17,9 @@ public class WrapperLoginServerDisconnect extends AbstractPacket {
 	}
 
 	/**
-	 * Retrieve the message that is displayed to the client when the connection terminates.
-	 * 
+	 * Retrieve the message that is displayed to the client when the connection
+	 * terminates.
+	 *
 	 * @return The current JSON message.
 	 */
 	public WrappedChatComponent getJsonData() {
@@ -26,9 +27,11 @@ public class WrapperLoginServerDisconnect extends AbstractPacket {
 	}
 
 	/**
-	 * Set the message that is displayed to the client when the connection terminates.
-	 * 
-	 * @param value - new message.
+	 * Set the message that is displayed to the client when the connection
+	 * terminates.
+	 *
+	 * @param value
+	 *            - new message.
 	 */
 	public void setJsonData(WrappedChatComponent value) {
 		handle.getChatComponents().write(0, value);

@@ -25,9 +25,9 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 
 /**
- * Sent by the server when an iten stack is collected from the ground. This packet simply
- * initiates the collect item animation, nothing more.
- * 
+ * Sent by the server when an iten stack is collected from the ground. This
+ * packet simply initiates the collect item animation, nothing more.
+ *
  * @author Kristian
  */
 public class WrapperPlayServerCollect extends AbstractPacket {
@@ -44,7 +44,7 @@ public class WrapperPlayServerCollect extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity ID of the item we collected.
-	 * 
+	 *
 	 * @return The current collected entity ID.
 	 */
 	public int getCollectedEntityID() {
@@ -53,8 +53,9 @@ public class WrapperPlayServerCollect extends AbstractPacket {
 
 	/**
 	 * Retrieve the item stack that has been collected.
-	 * 
-	 * @param world - the current world of the item stack.
+	 *
+	 * @param world
+	 *            - the current world of the item stack.
 	 * @return The item stack entity.
 	 */
 	public Entity getCollectedEntity(World world) {
@@ -63,8 +64,9 @@ public class WrapperPlayServerCollect extends AbstractPacket {
 
 	/**
 	 * Retrieve the item stack that has been collected.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The item stack entity.
 	 */
 	public Entity getCollectedEntity(PacketEvent event) {
@@ -73,8 +75,9 @@ public class WrapperPlayServerCollect extends AbstractPacket {
 
 	/**
 	 * Set the entity ID of the item we collected.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setCollectedEntityID(int value) {
 		handle.getIntegers().write(0, value);
@@ -82,7 +85,7 @@ public class WrapperPlayServerCollect extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity ID of the player that collected the item.
-	 * 
+	 *
 	 * @return The current Collector EID
 	 */
 	public int getCollectorEntityID() {
@@ -91,8 +94,9 @@ public class WrapperPlayServerCollect extends AbstractPacket {
 
 	/**
 	 * Set the entity ID of the player that collected the item.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setCollectorEntityID(int value) {
 		handle.getIntegers().write(1, value);
@@ -100,8 +104,9 @@ public class WrapperPlayServerCollect extends AbstractPacket {
 
 	/**
 	 * Retrieve the player that has collected the item.
-	 * 
-	 * @param world - the current world of the player.
+	 *
+	 * @param world
+	 *            - the current world of the player.
 	 * @return The player.
 	 */
 	public Entity getCollectorEntity(World world) {
@@ -110,8 +115,9 @@ public class WrapperPlayServerCollect extends AbstractPacket {
 
 	/**
 	 * Retrieve the player that has collected the item.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The player.
 	 */
 	public Entity getCollectorEntity(PacketEvent event) {

@@ -19,7 +19,7 @@ public class WrapperLoginServerEncryptionBegin extends AbstractPacket {
 
 	/**
 	 * Retrieve the server ID.
-	 * 
+	 *
 	 * @return The current Server id
 	 */
 	public String getServerId() {
@@ -28,8 +28,9 @@ public class WrapperLoginServerEncryptionBegin extends AbstractPacket {
 
 	/**
 	 * Set the server ID.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setServerId(String value) {
 		handle.getStrings().write(0, value);
@@ -37,7 +38,7 @@ public class WrapperLoginServerEncryptionBegin extends AbstractPacket {
 
 	/**
 	 * Retrieve the public key instance.
-	 * 
+	 *
 	 * @return The current Public key length
 	 */
 	public PublicKey getPublicKey() {
@@ -46,8 +47,9 @@ public class WrapperLoginServerEncryptionBegin extends AbstractPacket {
 
 	/**
 	 * Set the public key instance.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setPublicKey(PublicKey value) {
 		handle.getSpecificModifier(PublicKey.class).write(0, value);
@@ -55,7 +57,7 @@ public class WrapperLoginServerEncryptionBegin extends AbstractPacket {
 
 	/**
 	 * Retrieve the verify token.
-	 * 
+	 *
 	 * @return The current Public key
 	 */
 	public byte[] getVerifyToken() {
@@ -64,8 +66,9 @@ public class WrapperLoginServerEncryptionBegin extends AbstractPacket {
 
 	/**
 	 * Set the verify token.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void getVerifyToken(byte[] value) {
 		handle.getByteArrays().write(0, value);

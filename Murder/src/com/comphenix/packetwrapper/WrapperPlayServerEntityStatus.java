@@ -50,7 +50,7 @@ public class WrapperPlayServerEntityStatus extends AbstractPacket {
 
 		/**
 		 * Retrieve an instance of the status enum.
-		 * 
+		 *
 		 * @return Status enum.
 		 */
 		public static Status getInstance() {
@@ -69,7 +69,7 @@ public class WrapperPlayServerEntityStatus extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity ID.
-	 * 
+	 *
 	 * @return The current Entity ID
 	 */
 	public int getEntityId() {
@@ -78,8 +78,9 @@ public class WrapperPlayServerEntityStatus extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity.
-	 * 
-	 * @param world - the current world of the entity.
+	 *
+	 * @param world
+	 *            - the current world of the entity.
 	 * @return The entity.
 	 */
 	public Entity getEntity(World world) {
@@ -88,8 +89,9 @@ public class WrapperPlayServerEntityStatus extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The entity.
 	 */
 	public Entity getEntity(PacketEvent event) {
@@ -98,8 +100,9 @@ public class WrapperPlayServerEntityStatus extends AbstractPacket {
 
 	/**
 	 * Set the entity ID.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityId(int value) {
 		handle.getIntegers().write(0, value);
@@ -107,7 +110,7 @@ public class WrapperPlayServerEntityStatus extends AbstractPacket {
 
 	/**
 	 * Retrieve entity status. See {@link Status}.
-	 * 
+	 *
 	 * @return The current Entity Status
 	 */
 	public int getEntityStatus() {
@@ -116,8 +119,9 @@ public class WrapperPlayServerEntityStatus extends AbstractPacket {
 
 	/**
 	 * Set the entity status. See {@link Status}.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityStatus(int value) {
 		handle.getBytes().write(0, (byte) value);

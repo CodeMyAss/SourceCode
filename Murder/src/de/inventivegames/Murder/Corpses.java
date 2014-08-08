@@ -1,6 +1,8 @@
-package de.inventivegames.Murder;
+package de.inventivegames.murder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -11,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
@@ -20,161 +23,166 @@ import com.comphenix.packetwrapper.WrapperPlayServerBed;
 import com.comphenix.packetwrapper.WrapperPlayServerEntityDestroy;
 import com.comphenix.packetwrapper.WrapperPlayServerEntityTeleport;
 import com.comphenix.packetwrapper.WrapperPlayServerNamedEntitySpawn;
-import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 
-@SuppressWarnings("deprecation")
+import de.inventivegames.utils.CMapUtils;
+
 public class Corpses implements Listener {
-
-	public static HashMap<Integer, String>		fakePlayerList	= new HashMap<Integer, String>();
-	public static HashMap<Location, Integer>	fakePlayerLocs	= new HashMap<Location, Integer>();
-	public static HashMap<Player, Integer>		fakePlayerMap	= new HashMap<Player, Integer>();
-	public static ProtocolManager				manager;
-
+	public static HashMap<Integer, String>		fakePlayerList	= new HashMap();
+	public static HashMap<Location, Integer>	fakePlayerLocs	= new HashMap();
+	public static HashMap<Player, Integer>		fakePlayerMap	= new HashMap();
 	public static boolean						oldSpawns		= false;
+	public static HashMap<Player, Zombie>		zombieMap		= new HashMap();
 
 	public static void spawnCorpse(Location loc, Player p) throws Exception {
-
+		final MurderPlayer mp = MurderPlayer.getPlayer(p);
 		if (!oldSpawns) {
 			try {
 				createFakePlayer(loc, p);
-			} catch (Exception ex) {
+			} catch (final Exception ex) {
 				ex.printStackTrace();
 			}
 		} else {
 			loc.getWorld().setDifficulty(Difficulty.EASY);
 
-			Zombie zombie = loc.getWorld().spawn(loc, Zombie.class);
-			if (Murder.nameTag.get(p) == null) {
+			final Zombie zombie = loc.getWorld().spawn(loc, Zombie.class);
+			if (mp.getNameTag() == null) {
 				zombie.setCustomName("----");
 			} else {
-				zombie.setCustomName(Murder.nameTag.get(p));
+				zombie.setCustomName(mp.getNameTag());
 			}
 			zombie.setCustomNameVisible(true);
 
 			zombie.setCanPickupItems(false);
 
 			zombie.setCanPickupItems(false);
-			zombie.setMaxHealth(999999999D);
-			zombie.setHealth(999999999D);
+			zombie.setMaxHealth(999999999.0D);
+			zombie.setHealth(999999999.0D);
 			zombie.setVillager(false);
+			zombie.setBaby(false);
 			zombie.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 2147000, 255));
 			zombie.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 2147000, 255));
 			zombie.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 2147000, 255));
-			Murder.zombieMap.put(p, zombie);
+			zombie.getEquipment().clear();
+			zombieMap.put(p, zombie);
 		}
 	}
 
-	public static void despawnCorpse(int arena) {
-
+	public static void despawnCorpse(Arena arena) {
 		if (!oldSpawns) {
 			try {
 				removeFakePlayers(arena);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				e.printStackTrace();
 			}
 		} else {
-			for (int i = 0; i < Murder.maxPlayers + 1; i++) {
-				if (Murder.players[arena][i] != null) {
-					Player p = Murder.players[arena][i];
+			for (final Player p : arena.getPlayers()) {
+				final MurderPlayer mp = MurderPlayer.getPlayer(p);
 
-					Zombie zombie = Murder.zombieMap.get(p);
-					if (zombie != null) {
-						zombie.damage(999999999D);
-						for (PotionEffect effect : zombie.getActivePotionEffects()) {
-							zombie.removePotionEffect(effect.getType());
-						}
-						zombie.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 2147000, 255));
-						zombie.damage(999999999D);
-						zombie.setFireTicks(10);
-						zombie.remove();
-						Murder.zombieMap.remove(p);
+				final Zombie zombie = zombieMap.get(p);
+				if (zombie != null) {
+					zombie.damage(999999999.0D);
+					for (final PotionEffect effect : zombie.getActivePotionEffects()) {
+						zombie.removePotionEffect(effect.getType());
 					}
+					zombie.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 2147000, 255));
+					zombie.damage(999999999.0D);
+					zombie.setFireTicks(10);
+					zombie.remove();
+					zombieMap.remove(p);
+
 				}
 			}
 		}
 	}
 
-	public static void createFakePlayer(Location loc, Player p) throws Exception {
-		String name = Murder.nameTag.get(p);
+	private final static String	SKIN_URL	= "http://api.tuxcraft.eu/murderskin/%%var%%";
 
+	public static void createFakePlayer(Location loc, Player p) throws Exception {
+		final MurderPlayer mp = MurderPlayer.getPlayer(p);
+		String name = mp.getNameTag();
 		if (name == null) {
 			name = "----";
 		}
-
 		if (name.length() > 16) {
 			name = name.substring(0, 16);
 		}
+		final WrapperPlayServerNamedEntitySpawn spawned = new WrapperPlayServerNamedEntitySpawn();
 
-		WrapperPlayServerNamedEntitySpawn spawned = new WrapperPlayServerNamedEntitySpawn();
+		final int eID = new Random().nextInt();
 
-		int eID = new Random().nextInt();
-
-		String uuid = "" + UUID.randomUUID();
+		final String uuid = UUID.randomUUID().toString();
 
 		spawned.setEntityID(eID);
 		spawned.setPosition(loc.toVector());
 		spawned.setPlayerName(name);
 		spawned.setPlayerUUID(uuid);
 
-		spawned.setYaw(0);
-		spawned.setPitch(0);
+		// Murder.mod.setURL(SKIN_URL.replace("%%var%%", name.substring(0,
+		// 2).replace("§", "").replace(" ", "")) + "b");
+		Murder.mod/*
+				 * .withURL(SKIN_URL.replace("%%var%%", name.substring(0,
+				 * 2).replace("§", "").replace(" ", "")) + "b")
+				 */.updateSkin(spawned.getProfile(), Murder.CORPSE_SKIN_NAME, SKIN_URL.replace("%%var%%", name.substring(0, 2).replace("§", "").replace(" ", "")) + "b");
 
-		WrappedDataWatcher watcher = new WrappedDataWatcher();
-		watcher.setObject(0, (byte) 0);
+		spawned.setCurrentItem((short) 0);
+
+		spawned.setYaw(0.0F);
+		spawned.setPitch(0.0F);
+
+		final WrappedDataWatcher watcher = new WrappedDataWatcher();
+		watcher.setObject(0, Byte.valueOf((byte) 0));
 		spawned.setMetadata(watcher);
 
-		int x = loc.getBlockX();
-		int y = loc.getBlockY();
-		int z = loc.getBlockZ();
+		final int x = loc.getBlockX();
+		final int y = loc.getBlockY();
+		final int z = loc.getBlockZ();
 
-		WrapperPlayServerBed bed = new WrapperPlayServerBed();
+		final WrapperPlayServerBed bed = new WrapperPlayServerBed();
 		bed.setEntityId(eID);
 		bed.setLocation(loc);
 
-		WrapperPlayServerEntityTeleport teleport = new WrapperPlayServerEntityTeleport();
+		final WrapperPlayServerEntityTeleport teleport = new WrapperPlayServerEntityTeleport();
 		teleport.setEntityID(eID);
-		teleport.setX(x + 0.5);
-		teleport.setY(y + 0.34);
-		teleport.setZ(z + 0.5);
-		teleport.setPitch(0);
-		teleport.setYaw(0);
-
-		for (Player receiver : Bukkit.getServer().getOnlinePlayers()) {
+		teleport.setX(x + 0.5D);
+		teleport.setY(y + 0.34D);
+		teleport.setZ(z + 0.5D);
+		teleport.setPitch(0.0F);
+		teleport.setYaw(0.0F);
+		for (final Player receiver : Bukkit.getServer().getOnlinePlayers()) {
 			spawned.sendPacket(receiver);
 			bed.sendPacket(receiver);
 			teleport.sendPacket(receiver);
-
 		}
-
-		fakePlayerLocs.put(new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()), eID);
-		fakePlayerList.put(eID, name);
-		fakePlayerMap.put(p, eID);
+		fakePlayerLocs.put(new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()), Integer.valueOf(eID));
+		fakePlayerList.put(Integer.valueOf(eID), name);
+		fakePlayerMap.put(p, Integer.valueOf(eID));
 	}
 
-	public static void removeFakePlayers(int arena) throws Exception {
-		WrapperPlayServerEntityDestroy destroy = new WrapperPlayServerEntityDestroy();
-		int[] ids = new int[29];
-		for (int i = 0; i < Murder.playersAmount[arena] + 1; i++) {
-			Player p = Murder.players[arena][i];
+	public static void removeFakePlayers(Arena arena) throws Exception {
+		final WrapperPlayServerEntityDestroy destroy = new WrapperPlayServerEntityDestroy();
+		final int[] ids = new int[29];
+		Player p;
+		final List<Player> players = new ArrayList<Player>(arena.getPlayers());
+		for (int i = 0; i < players.size(); i++) {
+			p = players.get(i);
 			if (fakePlayerMap.get(p) != null) {
-				ids[i] = fakePlayerMap.get(p);
-				fakePlayerMap.remove(p);
-
+				ids[i] = fakePlayerMap.get(p).intValue();
 				try {
-					fakePlayerLocs.remove(Murder.utils.getCMapUtils().getKeyByValue(fakePlayerLocs, fakePlayerMap.get(p)));
-				} catch (Exception e) {
+					fakePlayerLocs.remove(new CMapUtils(Murder.utils).getKeyByValue(fakePlayerLocs, fakePlayerMap.get(p)));
+				} catch (final Exception e) {
 					e.printStackTrace();
 				}
 				try {
 					fakePlayerList.remove(fakePlayerMap.get(p));
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					e.printStackTrace();
 				}
+				fakePlayerMap.remove(p);
 			}
 		}
 		destroy.setEntities(ids);
-		for (Player receiver : Bukkit.getOnlinePlayers()) {
+		for (final Player receiver : Bukkit.getOnlinePlayers()) {
 			destroy.sendPacket(receiver);
 		}
 	}
@@ -182,64 +190,56 @@ public class Corpses implements Listener {
 	public static Boolean	timeout	= false;
 
 	@EventHandler
-	public static void onPlayerInteract(final PlayerInteractEvent e) {
-
+	public static void onPlayerInteract(PlayerInteractEvent e) {
 		final Player p = e.getPlayer();
+		final MurderPlayer mp = MurderPlayer.getPlayer(p);
+		if (mp.inGame() && mp.isMurderer() && !mp.inSpectate()) {
 
-		if (Murder.playersInGame.contains(p)) {
-			if ((Murder.isMurderer(p)) && (!(Murder.isSpectator(p)))) {
-				if (!timeout) {
-
-					Location loc = e.getPlayer().getLocation();
-					Location loc1 = new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-
-					if (fakePlayerLocs.containsKey(loc1)) {
-						int eID = fakePlayerLocs.get(loc1);
-						String name = fakePlayerList.get(eID);
-						disguiseMurderer(p, name);
-					}
-
-					Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
-
-						@Override
-						public void run() {
-							timeout = false;
-
-						}
-					}, 5);
+			if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+			if (!timeout) {
+				final Location loc = e.getPlayer().getLocation();
+				final Location loc1 = new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+				if (fakePlayerLocs.containsKey(loc1)) {
+					final int eID = fakePlayerLocs.get(loc1).intValue();
+					final String name = fakePlayerList.get(Integer.valueOf(eID));
+					disguiseMurderer(p, name);
 				}
-
+				Bukkit.getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+					@Override
+					public void run() {
+						Corpses.timeout = false;
+					}
+				}, 5L);
 			}
 		}
 	}
 
 	private static void disguiseMurderer(Player p, String name) {
-		Players.disguiseMurderer(p, name);
+		final MurderPlayer mp = MurderPlayer.getPlayer(p);
+		if (p.getLevel() > 0) {
+			mp.disguiseMurderer(name);
+		} else {
+			p.sendMessage(Murder.prefix + "§2" + Messages.getMessage("notEnoughLoot"));
+		}
 	}
 
 	public static Boolean	timeout1	= false;
 
 	@EventHandler
 	public void onMove(PlayerMoveEvent e) {
-		Player p = e.getPlayer();
-		Location loc = e.getPlayer().getLocation();
-		Location loc1 = new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-		if (Murder.playersInGame.contains(p)) {
-			if ((Murder.isMurderer(p)) && (!(Murder.isSpectator(p)))) {
-				if ((fakePlayerLocs.containsKey(loc1)) && (!timeout1)) {
-					e.getPlayer().sendMessage(Murder.prefix + "§2" + Messages.getMessage("disguiseNotification"));
-					timeout1 = true;
-					Murder.instance.getServer().getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
-
-						@Override
-						public void run() {
-							timeout1 = false;
-
-						}
-					}, 10);
+		final Player p = e.getPlayer();
+		final MurderPlayer mp = MurderPlayer.getPlayer(p);
+		final Location loc = e.getPlayer().getLocation();
+		final Location loc1 = new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+		if (mp.inGame() && mp.isMurderer() && !mp.inSpectate() && fakePlayerLocs.containsKey(loc1) && !timeout1) {
+			e.getPlayer().sendMessage(Murder.prefix + "§2" + Messages.getMessage("disguiseNotification"));
+			timeout1 = true;
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+				@Override
+				public void run() {
+					Corpses.timeout1 = false;
 				}
-			}
+			}, 10L);
 		}
 	}
-
 }

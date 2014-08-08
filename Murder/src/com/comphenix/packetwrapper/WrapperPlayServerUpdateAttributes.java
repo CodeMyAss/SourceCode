@@ -24,7 +24,7 @@ public class WrapperPlayServerUpdateAttributes extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity's ID.
-	 * 
+	 *
 	 * @return The current Entity ID
 	 */
 	public int getEntityId() {
@@ -33,8 +33,9 @@ public class WrapperPlayServerUpdateAttributes extends AbstractPacket {
 
 	/**
 	 * Set the entity's ID.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityId(int value) {
 		handle.getIntegers().write(0, value);
@@ -42,8 +43,9 @@ public class WrapperPlayServerUpdateAttributes extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity.
-	 * 
-	 * @param world - the current world of the entity.
+	 *
+	 * @param world
+	 *            - the current world of the entity.
 	 * @return The entity.
 	 */
 	public Entity getEntity(World world) {
@@ -52,8 +54,9 @@ public class WrapperPlayServerUpdateAttributes extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The entity.
 	 */
 	public Entity getEntity(PacketEvent event) {
@@ -62,7 +65,7 @@ public class WrapperPlayServerUpdateAttributes extends AbstractPacket {
 
 	/**
 	 * Retrieve the collection of attributes associated with the entity.
-	 * 
+	 *
 	 * @return The current attributes.
 	 */
 	public List<WrappedAttribute> getAttributes() {
@@ -71,8 +74,9 @@ public class WrapperPlayServerUpdateAttributes extends AbstractPacket {
 
 	/**
 	 * Set the new or updated attributes associated with the entity.
-	 * 
-	 * @param value - new/updated attributes.
+	 *
+	 * @param value
+	 *            - new/updated attributes.
 	 */
 	public void setAttributes(List<WrappedAttribute> value) {
 		handle.getAttributeCollectionModifier().write(0, value);

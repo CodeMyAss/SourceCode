@@ -39,7 +39,7 @@ public class WrapperPlayClientUseEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity ID the player is interacting with.
-	 * 
+	 *
 	 * @return The current Target
 	 */
 	public int getTargetID() {
@@ -48,8 +48,9 @@ public class WrapperPlayClientUseEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity the player is interacting with.
-	 * 
-	 * @param event - the world this event occured in.
+	 *
+	 * @param event
+	 *            - the world this event occured in.
 	 * @return The target entity.
 	 */
 	public Entity getTarget(World world) {
@@ -58,8 +59,9 @@ public class WrapperPlayClientUseEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity the player is interacting with.
-	 * 
-	 * @param event - the current packet event.
+	 *
+	 * @param event
+	 *            - the current packet event.
 	 * @return The target entity.
 	 */
 	public Entity getTarget(PacketEvent event) {
@@ -68,8 +70,9 @@ public class WrapperPlayClientUseEntity extends AbstractPacket {
 
 	/**
 	 * Set the entity ID the player is interacting with.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setTargetID(int value) {
 		handle.getIntegers().write(0, value);
@@ -77,7 +80,7 @@ public class WrapperPlayClientUseEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve the use action.
-	 * 
+	 *
 	 * @return The action.
 	 */
 	public EntityUseAction getMouse() {
@@ -86,8 +89,9 @@ public class WrapperPlayClientUseEntity extends AbstractPacket {
 
 	/**
 	 * Set the use action.
-	 * 
-	 * @param value - new action.
+	 *
+	 * @param value
+	 *            - new action.
 	 */
 	public void setMouse(EntityUseAction value) {
 		handle.getEntityUseActions().write(0, value);

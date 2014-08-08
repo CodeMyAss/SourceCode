@@ -30,7 +30,7 @@ public class WrapperPlayClientArmAnimation extends AbstractPacket {
 
 	/**
 	 * Represents the different animations sent by notchian clients.
-	 * 
+	 *
 	 * @author Kristian
 	 */
 	public static class Animations extends IntEnum {
@@ -50,7 +50,7 @@ public class WrapperPlayClientArmAnimation extends AbstractPacket {
 
 		/**
 		 * Retrieve an instance of the Animation enum.
-		 * 
+		 *
 		 * @return Animation enum.
 		 */
 		public static Animations getInstance() {
@@ -69,7 +69,7 @@ public class WrapperPlayClientArmAnimation extends AbstractPacket {
 
 	/**
 	 * Retrieve the player ID.
-	 * 
+	 *
 	 * @return The current EID
 	 */
 	public int getEntityID() {
@@ -78,8 +78,9 @@ public class WrapperPlayClientArmAnimation extends AbstractPacket {
 
 	/**
 	 * Set the player ID.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityID(int value) {
 		handle.getIntegers().write(0, value);
@@ -87,8 +88,9 @@ public class WrapperPlayClientArmAnimation extends AbstractPacket {
 
 	/**
 	 * Retrieve the player's entity object.
-	 * 
-	 * @param world - the word the player has joined.
+	 *
+	 * @param world
+	 *            - the word the player has joined.
 	 * @return The player's entity.
 	 */
 	public Entity getEntity(World world) {
@@ -97,8 +99,9 @@ public class WrapperPlayClientArmAnimation extends AbstractPacket {
 
 	/**
 	 * Retrieve the player's entity object.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The player's entity.
 	 */
 	public Entity getEntity(PacketEvent event) {
@@ -107,7 +110,7 @@ public class WrapperPlayClientArmAnimation extends AbstractPacket {
 
 	/**
 	 * Retrieve animation ID.
-	 * 
+	 *
 	 * @return The current Animation
 	 */
 	public int getAnimation() {
@@ -116,8 +119,9 @@ public class WrapperPlayClientArmAnimation extends AbstractPacket {
 
 	/**
 	 * Set animation ID.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setAnimation(int value) {
 		handle.getIntegers().write(1, value);

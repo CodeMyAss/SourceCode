@@ -51,7 +51,7 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 
 		/**
 		 * Retrieve an instance of the direction enum.
-		 * 
+		 *
 		 * @return Direction enum.
 		 */
 		public static BlockFaceDirection getInstance() {
@@ -61,7 +61,7 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 
 	/**
 	 * Retrieve block X Coordinate.
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public int getX() {
@@ -70,8 +70,9 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 
 	/**
 	 * Set block X Coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(int value) {
 		handle.getIntegers().write(0, value);
@@ -79,7 +80,7 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 
 	/**
 	 * Retrieve block Y Coordinate.
-	 * 
+	 *
 	 * @return The current Y
 	 */
 	public int getY() {
@@ -88,8 +89,9 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 
 	/**
 	 * Set block Y Coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(short value) {
 		handle.getIntegers().write(1, (int) value);
@@ -97,7 +99,7 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 
 	/**
 	 * Retrieve block Z Coordinate.
-	 * 
+	 *
 	 * @return The current Z
 	 */
 	public int getZ() {
@@ -106,8 +108,9 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 
 	/**
 	 * Set block Z Coordinate.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(int value) {
 		handle.getIntegers().write(2, value);
@@ -115,7 +118,7 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 
 	/**
 	 * Retrieve the block id this action is set for.
-	 * 
+	 *
 	 * @return The current Block ID
 	 */
 	@SuppressWarnings("deprecation")
@@ -125,8 +128,9 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 
 	/**
 	 * Set the block id this action is set for.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	@SuppressWarnings("deprecation")
 	public void setBlockId(short value) {
@@ -135,7 +139,7 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 
 	/**
 	 * Retrieve the block type for the block.
-	 * 
+	 *
 	 * @return The current Block Type
 	 */
 	public Material getBlockType() {
@@ -144,8 +148,9 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 
 	/**
 	 * Set the block type for the block.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setBlockType(Material value) {
 		handle.getBlocks().write(0, value);
@@ -153,7 +158,7 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 
 	/**
 	 * Retrieve varies depending on block.
-	 * 
+	 *
 	 * @return The current Byte 1
 	 */
 	public byte getByte1() {
@@ -162,8 +167,9 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 
 	/**
 	 * Set varies depending on block.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setByte1(byte value) {
 		handle.getIntegers().write(3, (int) value);
@@ -171,7 +177,7 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 
 	/**
 	 * Retrieve varies depending on block.
-	 * 
+	 *
 	 * @return The current Byte 2
 	 */
 	public byte getByte2() {
@@ -180,8 +186,9 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 
 	/**
 	 * Set varies depending on block.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setByte2(byte value) {
 		handle.getIntegers().write(4, (int) value);
@@ -202,7 +209,7 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 	public class NoteBlockData {
 		/**
 		 * Get the instrument type.
-		 * 
+		 *
 		 * @return Instrument type.
 		 */
 		@SuppressWarnings("deprecation")
@@ -212,8 +219,9 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 
 		/**
 		 * Set the instrument type.
-		 * 
-		 * @param value - new instrument type.
+		 *
+		 * @param value
+		 *            - new instrument type.
 		 */
 		@SuppressWarnings("deprecation")
 		public void setInstrument(Instrument value) {
@@ -223,8 +231,9 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 		/**
 		 * Retrieve the pitch of the note block.
 		 * <p>
-		 * This is between 0-24 inclusive, where 0 is the lowest and 24 is the highest.
-		 * 
+		 * This is between 0-24 inclusive, where 0 is the lowest and 24 is the
+		 * highest.
+		 *
 		 * @return The pitch of the note block.
 		 */
 		public byte getPitch() {
@@ -234,9 +243,11 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 		/**
 		 * Set the pitch of the note block.
 		 * <p>
-		 * This is between 0-24 inclusive, where 0 is the lowest and 24 is the highest.
-		 * 
-		 * @param value - the new note block pitch.
+		 * This is between 0-24 inclusive, where 0 is the lowest and 24 is the
+		 * highest.
+		 *
+		 * @param value
+		 *            - the new note block pitch.
 		 */
 		public void setPitch(byte value) {
 			setByte2(value);
@@ -248,7 +259,7 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 		 * Get the state the piston changes to.
 		 * <p>
 		 * Zero is pushing, one is pulling.
-		 * 
+		 *
 		 * @return Piston state.
 		 */
 		public byte getState() {
@@ -259,7 +270,7 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 		 * Set the state the piston changes to.
 		 * <p>
 		 * Zero is pushing, one is pulling.
-		 * 
+		 *
 		 * @return Piston state.
 		 */
 		public void setState(byte value) {
@@ -270,7 +281,7 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 		 * Get the block face direction the piston is pushing.
 		 * <p>
 		 * See {@link BlockFaceDirection} for more information.
-		 * 
+		 *
 		 * @return The direction.
 		 */
 		public int getDirection() {
@@ -281,7 +292,7 @@ public class WrapperPlayServerBlockAction extends AbstractPacket {
 		 * Set the block face direction the piston is pushing.
 		 * <p>
 		 * See {@link BlockFaceDirection} for more information.
-		 * 
+		 *
 		 * @return The direction.
 		 */
 		public void setDirection(int value) {

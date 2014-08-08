@@ -19,8 +19,9 @@ public class WrapperHandshakeClientSetProtocol extends AbstractPacket {
 	/**
 	 * Retrieve the new protocol version.
 	 * <p>
-	 * This is 4 as of 1.7.2. Note to be confused with the old protocol versions.
-	 * 
+	 * This is 4 as of 1.7.2. Note to be confused with the old protocol
+	 * versions.
+	 *
 	 * @return The current Protocol Version
 	 */
 	public int getProtocolVersion() {
@@ -31,8 +32,9 @@ public class WrapperHandshakeClientSetProtocol extends AbstractPacket {
 	 * Set the new protocol version.
 	 * <p>
 	 * This is 4 as of 1.7.2.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setProtocolVersion(int value) {
 		handle.getIntegers().write(0, value);
@@ -40,7 +42,7 @@ public class WrapperHandshakeClientSetProtocol extends AbstractPacket {
 
 	/**
 	 * Retrieve the server hostname or IP.
-	 * 
+	 *
 	 * @return The current server hostname.
 	 */
 	public String getServerHostname() {
@@ -49,8 +51,9 @@ public class WrapperHandshakeClientSetProtocol extends AbstractPacket {
 
 	/**
 	 * Set the server hostname.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setServerHostname(String value) {
 		handle.getStrings().write(0, value);
@@ -58,7 +61,7 @@ public class WrapperHandshakeClientSetProtocol extends AbstractPacket {
 
 	/**
 	 * Retrieve the TCP port number, typically 25565.
-	 * 
+	 *
 	 * @return The current server port
 	 */
 	public short getServerPort() {
@@ -67,8 +70,9 @@ public class WrapperHandshakeClientSetProtocol extends AbstractPacket {
 
 	/**
 	 * Set the TCP port number.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setServerPort(short value) {
 		handle.getIntegers().write(1, (int) value);
@@ -76,7 +80,7 @@ public class WrapperHandshakeClientSetProtocol extends AbstractPacket {
 
 	/**
 	 * Retrieve the next protocol to use.
-	 * 
+	 *
 	 * @return The next protocol.
 	 */
 	public Protocol getNextProtocol() {
@@ -85,8 +89,9 @@ public class WrapperHandshakeClientSetProtocol extends AbstractPacket {
 
 	/**
 	 * Set the next protocol to use.
-	 * 
-	 * @param value - new protocll.
+	 *
+	 * @param value
+	 *            - new protocll.
 	 */
 	public void setNextProtocol(Protocol value) {
 		handle.getProtocols().write(0, value);

@@ -35,7 +35,7 @@ public class WrapperPlayServerTileEntityData extends AbstractPacket {
 
 	/**
 	 * Retrieve the x coordinate of the block associated with this tile entity.
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public int getX() {
@@ -44,8 +44,9 @@ public class WrapperPlayServerTileEntityData extends AbstractPacket {
 
 	/**
 	 * Set the x coordinate of the block associated with this tile entity.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(int value) {
 		handle.getIntegers().write(0, value);
@@ -53,7 +54,7 @@ public class WrapperPlayServerTileEntityData extends AbstractPacket {
 
 	/**
 	 * Retrieve the y coordinate of the block associated with this tile entity.
-	 * 
+	 *
 	 * @return The current Y
 	 */
 	public short getY() {
@@ -62,8 +63,9 @@ public class WrapperPlayServerTileEntityData extends AbstractPacket {
 
 	/**
 	 * Set the y coordinate of the block associated with this tile entity.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(short value) {
 		handle.getIntegers().write(1, (int) value);
@@ -71,7 +73,7 @@ public class WrapperPlayServerTileEntityData extends AbstractPacket {
 
 	/**
 	 * Retrieve the z coordinate of the block associated with this tile entity.
-	 * 
+	 *
 	 * @return The current Z
 	 */
 	public int getZ() {
@@ -80,8 +82,9 @@ public class WrapperPlayServerTileEntityData extends AbstractPacket {
 
 	/**
 	 * Set the z coordinate of the block associated with this tile entity.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(int value) {
 		handle.getIntegers().write(2, value);
@@ -89,7 +92,7 @@ public class WrapperPlayServerTileEntityData extends AbstractPacket {
 
 	/**
 	 * Retrieve the type of update to perform.
-	 * 
+	 *
 	 * @return The current Action
 	 */
 	public byte getAction() {
@@ -98,8 +101,9 @@ public class WrapperPlayServerTileEntityData extends AbstractPacket {
 
 	/**
 	 * Set the type of update to perform.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setAction(byte value) {
 		handle.getIntegers().write(3, (int) value);
@@ -107,7 +111,7 @@ public class WrapperPlayServerTileEntityData extends AbstractPacket {
 
 	/**
 	 * Retrieve the NBT data of the current tile entity.
-	 * 
+	 *
 	 * @return The current tile entity.
 	 */
 	public NbtBase<?> getNbtData() {
@@ -116,8 +120,9 @@ public class WrapperPlayServerTileEntityData extends AbstractPacket {
 
 	/**
 	 * Set the NBT data of the current tile entity.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setNbtData(NbtBase<?> value) {
 		handle.getNbtModifier().write(0, value);

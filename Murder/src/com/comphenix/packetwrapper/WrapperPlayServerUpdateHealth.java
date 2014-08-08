@@ -36,7 +36,7 @@ public class WrapperPlayServerUpdateHealth extends AbstractPacket {
 	 * Retrieve the health of the current player.
 	 * <p>
 	 * Value zero or less is dead. 20 is the full HP.
-	 * 
+	 *
 	 * @return The current Health
 	 */
 	public float getHealth() {
@@ -47,8 +47,9 @@ public class WrapperPlayServerUpdateHealth extends AbstractPacket {
 	 * Set the health of the current player.
 	 * <p>
 	 * Value zero or less is dead. 20 is the full HP.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setHealth(float value) {
 		handle.getFloat().write(0, value);
@@ -58,7 +59,7 @@ public class WrapperPlayServerUpdateHealth extends AbstractPacket {
 	 * Retrieve the food level.
 	 * <p>
 	 * Valid range: 0 - 20.
-	 * 
+	 *
 	 * @return The current food level.
 	 */
 	public short getFood() {
@@ -69,8 +70,9 @@ public class WrapperPlayServerUpdateHealth extends AbstractPacket {
 	 * Set the food level.
 	 * <p>
 	 * Valid range: 0 - 20.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setFood(short value) {
 		handle.getIntegers().write(0, (int) value);
@@ -80,7 +82,7 @@ public class WrapperPlayServerUpdateHealth extends AbstractPacket {
 	 * Retrieve the food saturation.
 	 * <p>
 	 * Varies from 0.0 to 5.0 in integer increments.
-	 * 
+	 *
 	 * @return The current Food Saturation
 	 */
 	public float getFoodSaturation() {
@@ -91,8 +93,9 @@ public class WrapperPlayServerUpdateHealth extends AbstractPacket {
 	 * Set the food saturation.
 	 * <p>
 	 * Varies from 0.0 to 5.0 in integer increments.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setFoodSaturation(float value) {
 		handle.getFloat().write(1, value);

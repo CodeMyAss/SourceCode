@@ -33,7 +33,7 @@ public class WrapperPlayServerCloseWindow extends AbstractPacket {
 
 	/**
 	 * Retrieve this is the id of the window that was or should be closed.
-	 * 
+	 *
 	 * @return The current Window id
 	 */
 	public byte getWindowId() {
@@ -42,8 +42,9 @@ public class WrapperPlayServerCloseWindow extends AbstractPacket {
 
 	/**
 	 * Set this is the id of the window that was or should be closed.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setWindowId(byte value) {
 		handle.getIntegers().write(0, (int) value);

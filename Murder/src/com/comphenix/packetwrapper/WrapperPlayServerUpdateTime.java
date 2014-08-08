@@ -36,7 +36,7 @@ public class WrapperPlayServerUpdateTime extends AbstractPacket {
 	 * Retrieve the age of the world in ticks.
 	 * <p>
 	 * This cannot be changed by server commands.
-	 * 
+	 *
 	 * @return The current age of the world
 	 */
 	public long getAgeOfTheWorld() {
@@ -47,8 +47,9 @@ public class WrapperPlayServerUpdateTime extends AbstractPacket {
 	 * Set the age of the world in ticks.
 	 * <p>
 	 * This cannot be changed by server commands.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setAgeOfTheWorld(long value) {
 		handle.getLongs().write(0, value);
@@ -56,7 +57,7 @@ public class WrapperPlayServerUpdateTime extends AbstractPacket {
 
 	/**
 	 * Retrieve the world (or region) time, in ticks.
-	 * 
+	 *
 	 * @return The current Time of Day
 	 */
 	public long getTimeOfDay() {
@@ -65,8 +66,9 @@ public class WrapperPlayServerUpdateTime extends AbstractPacket {
 
 	/**
 	 * Set the world (or region) time, in ticks.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setTimeOfDay(long value) {
 		handle.getLongs().write(1, value);

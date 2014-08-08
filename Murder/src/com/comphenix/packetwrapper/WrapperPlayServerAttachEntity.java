@@ -38,7 +38,7 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve whether or not the entity is leached onto the vehicle.
-	 * 
+	 *
 	 * @return TRUE if it is, FALSE otherwise.
 	 */
 	public boolean getLeached() {
@@ -47,8 +47,9 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
 
 	/**
 	 * Set whether or not the entity is leached onto the vehicle.
-	 * 
-	 * @param value - TRUE if it is leached, FALSE otherwise.
+	 *
+	 * @param value
+	 *            - TRUE if it is leached, FALSE otherwise.
 	 */
 	public void setLeached(boolean value) {
 		handle.getIntegers().write(0, value ? 1 : 0);
@@ -56,7 +57,7 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve the player entity ID being attached.
-	 * 
+	 *
 	 * @return The current Entity ID
 	 */
 	public int getEntityId() {
@@ -65,8 +66,9 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
 
 	/**
 	 * Set the player entity ID being attached.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityId(int value) {
 		handle.getIntegers().write(1, value);
@@ -74,8 +76,9 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity being attached.
-	 * 
-	 * @param world - the current world of the entity.
+	 *
+	 * @param world
+	 *            - the current world of the entity.
 	 * @return The entity.
 	 */
 	public Entity getEntity(World world) {
@@ -84,8 +87,9 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity being attached.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The entity.
 	 */
 	public Entity getEntity(PacketEvent event) {
@@ -94,7 +98,7 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve the vehicle entity ID attached to (-1 for unattaching).
-	 * 
+	 *
 	 * @return The current Vehicle ID
 	 */
 	public int getVehicleId() {
@@ -103,8 +107,9 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
 
 	/**
 	 * Set the vehicle entity ID attached to (-1 for unattaching).
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setVehicleId(int value) {
 		handle.getIntegers().write(2, value);
@@ -112,8 +117,9 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve the vehicle entity attached to (NULL for unattaching).
-	 * 
-	 * @param world - the current world of the entity.
+	 *
+	 * @param world
+	 *            - the current world of the entity.
 	 * @return The vehicle.
 	 */
 	public Entity getVehicle(World world) {
@@ -122,8 +128,9 @@ public class WrapperPlayServerAttachEntity extends AbstractPacket {
 
 	/**
 	 * Retrieve the vehicle entity attached to (NULL for unattaching).
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The vehicle.
 	 */
 	public Entity getVehicle(PacketEvent event) {

@@ -17,7 +17,7 @@ public class WrapperPlayClientHeldItemSlot extends AbstractPacket {
 
 	/**
 	 * Retrieve the slot which the player has selected (0-8).
-	 * 
+	 *
 	 * @return The current Slot
 	 */
 	public short getSlot() {
@@ -26,8 +26,9 @@ public class WrapperPlayClientHeldItemSlot extends AbstractPacket {
 
 	/**
 	 * Set the slot which the player has selected (0-8).
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setSlot(short value) {
 		handle.getIntegers().write(0, (int) value);

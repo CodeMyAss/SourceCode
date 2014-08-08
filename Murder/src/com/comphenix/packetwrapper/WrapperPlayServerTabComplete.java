@@ -30,7 +30,7 @@ public class WrapperPlayServerTabComplete extends AbstractPacket {
 
 	/**
 	 * Retrieve the tab-completed text alternatives.
-	 * 
+	 *
 	 * @return The current Text
 	 */
 	public String[] getText() {
@@ -39,8 +39,9 @@ public class WrapperPlayServerTabComplete extends AbstractPacket {
 
 	/**
 	 * Set the tab-completed text alternatives.
-	 * 
-	 * @param value - new values.
+	 *
+	 * @param value
+	 *            - new values.
 	 */
 	public void setText(String[] value) {
 		handle.getStringArrays().write(0, value);

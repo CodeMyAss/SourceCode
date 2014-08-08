@@ -18,7 +18,7 @@ public class WrapperStatusServerOutServerInfo extends AbstractPacket {
 
 	/**
 	 * Retrieve the server information to display in the multiplayer menu.
-	 * 
+	 *
 	 * @return The current ping information.
 	 */
 	public WrappedServerPing getServerPing() {
@@ -27,8 +27,9 @@ public class WrapperStatusServerOutServerInfo extends AbstractPacket {
 
 	/**
 	 * Set the server information to display in the multiplayer menu.
-	 * 
-	 * @param value - new information.
+	 *
+	 * @param value
+	 *            - new information.
 	 */
 	public void setServerPing(WrappedServerPing value) {
 		handle.getServerPings().write(0, value);

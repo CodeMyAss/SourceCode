@@ -39,7 +39,7 @@ public class WrapperPlayServerExplosion extends AbstractPacket {
 
 	/**
 	 * Retrieve the x coordinate of the center of the explosion.
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public double getX() {
@@ -48,8 +48,9 @@ public class WrapperPlayServerExplosion extends AbstractPacket {
 
 	/**
 	 * Set the x coordinate of the center of the explosion.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(double value) {
 		handle.getDoubles().write(0, value);
@@ -57,7 +58,7 @@ public class WrapperPlayServerExplosion extends AbstractPacket {
 
 	/**
 	 * Retrieve the y coordinate of the center of the explosion.
-	 * 
+	 *
 	 * @return The current Y
 	 */
 	public double getY() {
@@ -66,8 +67,9 @@ public class WrapperPlayServerExplosion extends AbstractPacket {
 
 	/**
 	 * Set the y coordinate of the center of the explosion.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(double value) {
 		handle.getDoubles().write(1, value);
@@ -75,7 +77,7 @@ public class WrapperPlayServerExplosion extends AbstractPacket {
 
 	/**
 	 * Retrieve the z coordinate of the center of the explosion.
-	 * 
+	 *
 	 * @return The current Z
 	 */
 	public double getZ() {
@@ -84,8 +86,9 @@ public class WrapperPlayServerExplosion extends AbstractPacket {
 
 	/**
 	 * Set the z coordinate of the center of the explosion.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(double value) {
 		handle.getDoubles().write(2, value);
@@ -95,7 +98,7 @@ public class WrapperPlayServerExplosion extends AbstractPacket {
 	 * Retrieve the explosion radius.
 	 * <p>
 	 * Note: Currently unused in the client.
-	 * 
+	 *
 	 * @return The current Radius
 	 */
 	public float getRadius() {
@@ -106,16 +109,18 @@ public class WrapperPlayServerExplosion extends AbstractPacket {
 	 * Set the explosion radius.
 	 * <p>
 	 * Note: Currently unused in the client.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setRadius(float value) {
 		handle.getFloat().write(0, value);
 	}
 
 	/**
-	 * Retrieve the absolute coordinates of each affected block in the explosion.
-	 * 
+	 * Retrieve the absolute coordinates of each affected block in the
+	 * explosion.
+	 *
 	 * @return The current records.
 	 */
 	public List<ChunkPosition> getRecords() {
@@ -124,8 +129,9 @@ public class WrapperPlayServerExplosion extends AbstractPacket {
 
 	/**
 	 * Set the absolute coordinates of each affected block in the explosion.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setRecords(List<ChunkPosition> value) {
 		handle.getPositionCollectionModifier().write(0, value);
@@ -133,7 +139,7 @@ public class WrapperPlayServerExplosion extends AbstractPacket {
 
 	/**
 	 * Retrieve x velocity of the player being pushed by the explosion.
-	 * 
+	 *
 	 * @return The current Player Motion X
 	 */
 	public float getPlayerMotionX() {
@@ -142,8 +148,9 @@ public class WrapperPlayServerExplosion extends AbstractPacket {
 
 	/**
 	 * Set x velocity of the player being pushed by the explosion.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setPlayerMotionX(float value) {
 		handle.getFloat().write(0, value);
@@ -151,7 +158,7 @@ public class WrapperPlayServerExplosion extends AbstractPacket {
 
 	/**
 	 * Retrieve y velocity of the player being pushed by the explosion.
-	 * 
+	 *
 	 * @return The current Player Motion Y
 	 */
 	public float getPlayerMotionY() {
@@ -160,8 +167,9 @@ public class WrapperPlayServerExplosion extends AbstractPacket {
 
 	/**
 	 * Set y velocity of the player being pushed by the explosion.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setPlayerMotionY(float value) {
 		handle.getFloat().write(1, value);
@@ -169,7 +177,7 @@ public class WrapperPlayServerExplosion extends AbstractPacket {
 
 	/**
 	 * Retrieve z velocity of the player being pushed by the explosion.
-	 * 
+	 *
 	 * @return The current Player Motion Z
 	 */
 	public float getPlayerMotionZ() {
@@ -178,8 +186,9 @@ public class WrapperPlayServerExplosion extends AbstractPacket {
 
 	/**
 	 * Set z velocity of the player being pushed by the explosion.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setPlayerMotionZ(float value) {
 		handle.getFloat().write(2, value);
@@ -187,7 +196,7 @@ public class WrapperPlayServerExplosion extends AbstractPacket {
 
 	/**
 	 * Retrieve velocity of the player being pushed by the explosion.
-	 * 
+	 *
 	 * @return New velocity.
 	 */
 	public Vector getPlayerMotion() {
@@ -196,8 +205,9 @@ public class WrapperPlayServerExplosion extends AbstractPacket {
 
 	/**
 	 * Set the velocity of the player being pushed by the explosion.
-	 * 
-	 * @param motion - new velocity.
+	 *
+	 * @param motion
+	 *            - new velocity.
 	 */
 	public void setPlayerMotion(Vector motion) {
 		setPlayerMotionX((float) motion.getX());

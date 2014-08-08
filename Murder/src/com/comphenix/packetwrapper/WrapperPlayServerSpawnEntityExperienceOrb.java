@@ -38,7 +38,7 @@ public class WrapperPlayServerSpawnEntityExperienceOrb extends AbstractPacket {
 
 	/**
 	 * Retrieve the entity ID of the experience orb.
-	 * 
+	 *
 	 * @return The current Entity ID
 	 */
 	public int getEntityId() {
@@ -47,8 +47,9 @@ public class WrapperPlayServerSpawnEntityExperienceOrb extends AbstractPacket {
 
 	/**
 	 * Retrieve the experience orb entity.
-	 * 
-	 * @param world - the current world of the entity.
+	 *
+	 * @param world
+	 *            - the current world of the entity.
 	 * @return The spawned entity.
 	 */
 	public Entity getEntity(World world) {
@@ -57,8 +58,9 @@ public class WrapperPlayServerSpawnEntityExperienceOrb extends AbstractPacket {
 
 	/**
 	 * Retrieve the experience orb entity.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The spawned entity.
 	 */
 	public Entity getEntity(PacketEvent event) {
@@ -67,8 +69,9 @@ public class WrapperPlayServerSpawnEntityExperienceOrb extends AbstractPacket {
 
 	/**
 	 * Set the entity ID of the experience orb to spawn.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setEntityId(int value) {
 		handle.getIntegers().write(0, value);
@@ -78,7 +81,7 @@ public class WrapperPlayServerSpawnEntityExperienceOrb extends AbstractPacket {
 	 * Retrieve the x position of the object.
 	 * <p>
 	 * Note that the coordinate is rounded off to the nearest 1/32 of a meter.
-	 * 
+	 *
 	 * @return The current X
 	 */
 	public double getX() {
@@ -87,8 +90,9 @@ public class WrapperPlayServerSpawnEntityExperienceOrb extends AbstractPacket {
 
 	/**
 	 * Set the x position of the object.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(double value) {
 		handle.getIntegers().write(1, (int) Math.floor(value * 32.0D));
@@ -98,7 +102,7 @@ public class WrapperPlayServerSpawnEntityExperienceOrb extends AbstractPacket {
 	 * Retrieve the y position of the object.
 	 * <p>
 	 * Note that the coordinate is rounded off to the nearest 1/32 of a meter.
-	 * 
+	 *
 	 * @return The current y
 	 */
 	public double getY() {
@@ -107,8 +111,9 @@ public class WrapperPlayServerSpawnEntityExperienceOrb extends AbstractPacket {
 
 	/**
 	 * Set the y position of the object.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(double value) {
 		handle.getIntegers().write(2, (int) Math.floor(value * 32.0D));
@@ -118,7 +123,7 @@ public class WrapperPlayServerSpawnEntityExperienceOrb extends AbstractPacket {
 	 * Retrieve the z position of the object.
 	 * <p>
 	 * Note that the coordinate is rounded off to the nearest 1/32 of a meter.
-	 * 
+	 *
 	 * @return The current z
 	 */
 	public double getZ() {
@@ -127,8 +132,9 @@ public class WrapperPlayServerSpawnEntityExperienceOrb extends AbstractPacket {
 
 	/**
 	 * Set the z position of the object.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(double value) {
 		handle.getIntegers().write(3, (int) Math.floor(value * 32.0D));
@@ -136,7 +142,7 @@ public class WrapperPlayServerSpawnEntityExperienceOrb extends AbstractPacket {
 
 	/**
 	 * Retrieve the number of experience orbs to spawn.
-	 * 
+	 *
 	 * @return The current count
 	 */
 	public short getCount() {
@@ -145,8 +151,9 @@ public class WrapperPlayServerSpawnEntityExperienceOrb extends AbstractPacket {
 
 	/**
 	 * Set the number of experience orbs to spawn.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setCount(short value) {
 		handle.getIntegers().write(4, (int) value);

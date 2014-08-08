@@ -18,7 +18,7 @@ public class WrapperLoginServerSuccess extends AbstractPacket {
 
 	/**
 	 * Retrieve the UUID and player name of the connected client.
-	 * 
+	 *
 	 * @return The current client profile.
 	 */
 	public WrappedGameProfile getProfile() {
@@ -27,8 +27,9 @@ public class WrapperLoginServerSuccess extends AbstractPacket {
 
 	/**
 	 * Set the UUID and player name of the connected client as a game profile.
-	 * 
-	 * @param value - new profile.
+	 *
+	 * @param value
+	 *            - new profile.
 	 */
 	public void setProfile(WrappedGameProfile value) {
 		handle.getGameProfiles().write(0, value);

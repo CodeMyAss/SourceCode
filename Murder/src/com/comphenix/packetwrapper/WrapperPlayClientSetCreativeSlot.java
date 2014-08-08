@@ -36,7 +36,7 @@ public class WrapperPlayClientSetCreativeSlot extends AbstractPacket {
 
 	/**
 	 * Retrieve the inventory slot index.
-	 * 
+	 *
 	 * @return The current Slot
 	 */
 	public short getSlot() {
@@ -45,8 +45,9 @@ public class WrapperPlayClientSetCreativeSlot extends AbstractPacket {
 
 	/**
 	 * Set the inventory slot index.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setSlot(short value) {
 		handle.getIntegers().write(0, (int) value);
@@ -54,7 +55,7 @@ public class WrapperPlayClientSetCreativeSlot extends AbstractPacket {
 
 	/**
 	 * Retrieve the clicked item stack.
-	 * 
+	 *
 	 * @return The current Clicked item
 	 */
 	public ItemStack getClickedItem() {
@@ -63,8 +64,9 @@ public class WrapperPlayClientSetCreativeSlot extends AbstractPacket {
 
 	/**
 	 * Set the clicked item stack.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setClickedItem(ItemStack value) {
 		handle.getItemModifier().write(0, value);

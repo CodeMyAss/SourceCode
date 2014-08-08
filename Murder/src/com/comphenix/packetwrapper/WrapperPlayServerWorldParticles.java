@@ -16,7 +16,7 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Every particle recognized by the client.
-	 * 
+	 *
 	 * @author Kristian
 	 */
 	public enum ParticleEffect {
@@ -63,14 +63,15 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 		/**
 		 * Generate a fast string lookup of every particle effect.
-		 * 
+		 *
 		 * @return A string lookup.
 		 */
 		private static Map<String, ParticleEffect> generateLookup() {
-			Map<String, ParticleEffect> created = new HashMap<String, ParticleEffect>();
+			final Map<String, ParticleEffect> created = new HashMap<String, ParticleEffect>();
 
-			// Update the thread local copy first - avoid potential concurrency issues
-			for (ParticleEffect effect : values()) {
+			// Update the thread local copy first - avoid potential concurrency
+			// issues
+			for (final ParticleEffect effect : values()) {
 				created.put(effect.getParticleName(), effect);
 			}
 			return created;
@@ -82,8 +83,9 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 		/**
 		 * Retrieve the particle effect from a corresponding name.
-		 * 
-		 * @param name - the particle name.
+		 *
+		 * @param name
+		 *            - the particle name.
 		 * @return The effect, or NULL if not found.
 		 */
 		public static ParticleEffect fromName(String name) {
@@ -92,7 +94,7 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 		/**
 		 * Retrieve the particle name.
-		 * 
+		 *
 		 * @return The particle name.
 		 */
 		public String getParticleName() {
@@ -109,9 +111,11 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 	}
 
 	/**
-	 * Construct a particle packet that reads and modifies a given native packet.
-	 * 
-	 * @param packet - the native packet.
+	 * Construct a particle packet that reads and modifies a given native
+	 * packet.
+	 *
+	 * @param packet
+	 *            - the native packet.
 	 */
 	public WrapperPlayServerWorldParticles(PacketContainer packet) {
 		super(packet, TYPE);
@@ -119,11 +123,15 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Constructs a new particle packet with the given parameters.
-	 * 
-	 * @param effect - the particle effect.
-	 * @param count - the number of particles to spawn.
-	 * @param location - the spawn location.
-	 * @param offset - the random offset that will be applied to each particle.
+	 *
+	 * @param effect
+	 *            - the particle effect.
+	 * @param count
+	 *            - the number of particles to spawn.
+	 * @param location
+	 *            - the spawn location.
+	 * @param offset
+	 *            - the random offset that will be applied to each particle.
 	 */
 	public WrapperPlayServerWorldParticles(ParticleEffect effect, int count, Location location, Vector offset) {
 		this();
@@ -135,7 +143,7 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Retrieve the name of the particle to create. A list can be found here.
-	 * 
+	 *
 	 * @return The current Particle name
 	 */
 	public String getParticleName() {
@@ -144,8 +152,9 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Set the name of the particle to create. A list can be found here.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setParticleName(String value) {
 		handle.getStrings().write(0, value);
@@ -153,7 +162,7 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Retrieve the particle effect.
-	 * 
+	 *
 	 * @return The particle effect, or NULL if not known.
 	 */
 	public ParticleEffect getParticleEffect() {
@@ -162,19 +171,20 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Set the particle effect to use.
-	 * 
-	 * @param effect - the particle effect.
+	 *
+	 * @param effect
+	 *            - the particle effect.
 	 */
 	public void setParticleEffect(ParticleEffect effect) {
-		if (effect == null)
-			throw new IllegalArgumentException("effect cannot be NULL.");
+		if (effect == null) throw new IllegalArgumentException("effect cannot be NULL.");
 		setParticleName(effect.getParticleName());
 	}
 
 	/**
 	 * Retrieve the location of the current particle.
-	 * 
-	 * @param event - the packet event.
+	 *
+	 * @param event
+	 *            - the packet event.
 	 * @return The location.
 	 */
 	public Location getLocation(PacketEvent event) {
@@ -183,8 +193,9 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Retrieve the location of the current particle.
-	 * 
-	 * @param world - the containing world.
+	 *
+	 * @param world
+	 *            - the containing world.
 	 * @return The location.
 	 */
 	public Location getLocation(World world) {
@@ -193,33 +204,35 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Set the location of the particle to send.
-	 * 
-	 * @param loc - the location.
+	 *
+	 * @param loc
+	 *            - the location.
 	 */
 	public void setLocation(Location loc) {
-		if (loc == null)
-			throw new IllegalArgumentException("Location cannot be NULL.");
+		if (loc == null) throw new IllegalArgumentException("Location cannot be NULL.");
 		setX((float) loc.getX());
 		setY((float) loc.getY());
 		setZ((float) loc.getZ());
 	}
 
 	/**
-	 * Set the random offset (multiplied by a random gaussian) to be applied after the particles are created.
-	 * 
-	 * @param vector - the random vector offset.
+	 * Set the random offset (multiplied by a random gaussian) to be applied
+	 * after the particles are created.
+	 *
+	 * @param vector
+	 *            - the random vector offset.
 	 */
 	public void setOffset(Vector vector) {
-		if (vector == null)
-			throw new IllegalArgumentException("Vector cannot be NULL.");
+		if (vector == null) throw new IllegalArgumentException("Vector cannot be NULL.");
 		setOffsetX((float) vector.getX());
 		setOffsetY((float) vector.getY());
 		setOffsetZ((float) vector.getZ());
 	}
 
 	/**
-	 * Retrieve the random offset that will be multiplied by a random gaussian and applied to each created particle.
-	 * 
+	 * Retrieve the random offset that will be multiplied by a random gaussian
+	 * and applied to each created particle.
+	 *
 	 * @return The random offset.
 	 */
 	public Vector getOffset() {
@@ -228,7 +241,7 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Retrieve the x position of the particle.
-	 * 
+	 *
 	 * @return The current position.
 	 */
 	public float getX() {
@@ -237,8 +250,9 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Set the x position of the particle.
-	 * 
-	 * @param value - new position.
+	 *
+	 * @param value
+	 *            - new position.
 	 */
 	public void setX(float value) {
 		handle.getFloat().write(0, value);
@@ -246,7 +260,7 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Retrieve the y position of the particle.
-	 * 
+	 *
 	 * @return The current Y position.
 	 */
 	public float getY() {
@@ -255,8 +269,9 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Set the y position of the particle.
-	 * 
-	 * @param value - new position.
+	 *
+	 * @param value
+	 *            - new position.
 	 */
 	public void setY(float value) {
 		handle.getFloat().write(1, value);
@@ -264,7 +279,7 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Retrieve the z position of the particle.
-	 * 
+	 *
 	 * @return The current Z position.
 	 */
 	public float getZ() {
@@ -273,16 +288,18 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Set the z position of the particle.
-	 * 
-	 * @param value - new position.
+	 *
+	 * @param value
+	 *            - new position.
 	 */
 	public void setZ(float value) {
 		handle.getFloat().write(2, value);
 	}
 
 	/**
-	 * Retrieve the offset added to the X position after being multiplied by random.nextGaussian().
-	 * 
+	 * Retrieve the offset added to the X position after being multiplied by
+	 * random.nextGaussian().
+	 *
 	 * @return The current Offset X
 	 */
 	public float getOffsetX() {
@@ -290,17 +307,20 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 	}
 
 	/**
-	 * Set this the offset added to the X position after being multiplied by random.nextGaussian().
-	 * 
-	 * @param value - new value.
+	 * Set this the offset added to the X position after being multiplied by
+	 * random.nextGaussian().
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setOffsetX(float value) {
 		handle.getFloat().write(3, value);
 	}
 
 	/**
-	 * Retrieve the offset added to the Y position after being multiplied by random.nextGaussian().
-	 * 
+	 * Retrieve the offset added to the Y position after being multiplied by
+	 * random.nextGaussian().
+	 *
 	 * @return The current Offset Y
 	 */
 	public float getOffsetY() {
@@ -308,17 +328,20 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 	}
 
 	/**
-	 * Set the offset added to the Y position after being multiplied by random.nextGaussian().
-	 * 
-	 * @param value - new value.
+	 * Set the offset added to the Y position after being multiplied by
+	 * random.nextGaussian().
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setOffsetY(float value) {
 		handle.getFloat().write(4, value);
 	}
 
 	/**
-	 * Retrieve the offset added to the Z position after being multiplied by random.nextGaussian().
-	 * 
+	 * Retrieve the offset added to the Z position after being multiplied by
+	 * random.nextGaussian().
+	 *
 	 * @return The current Offset Z
 	 */
 	public float getOffsetZ() {
@@ -326,9 +349,11 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 	}
 
 	/**
-	 * Set offset added to the Z position after being multiplied by random.nextGaussian().
-	 * 
-	 * @param value - new value.
+	 * Set offset added to the Z position after being multiplied by
+	 * random.nextGaussian().
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setOffsetZ(float value) {
 		handle.getFloat().write(5, value);
@@ -336,7 +361,7 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Retrieve the speed of each particle.
-	 * 
+	 *
 	 * @return The current particle speed
 	 */
 	public float getParticleSpeed() {
@@ -345,8 +370,9 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Set the speed of each particle.
-	 * 
-	 * @param value - new speed.
+	 *
+	 * @param value
+	 *            - new speed.
 	 */
 	public void setParticleSpeed(float value) {
 		handle.getFloat().write(6, value);
@@ -354,7 +380,7 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Retrieve the number of particles to create.
-	 * 
+	 *
 	 * @return The current number of particles
 	 */
 	public int getNumberOfParticles() {
@@ -363,8 +389,9 @@ public class WrapperPlayServerWorldParticles extends AbstractPacket {
 
 	/**
 	 * Set the number of particles to create.
-	 * 
-	 * @param value - new count.
+	 *
+	 * @param value
+	 *            - new count.
 	 */
 	public void setNumberOfParticles(int value) {
 		handle.getIntegers().write(0, value);

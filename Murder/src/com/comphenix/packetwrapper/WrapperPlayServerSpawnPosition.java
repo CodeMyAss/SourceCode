@@ -36,7 +36,7 @@ public class WrapperPlayServerSpawnPosition extends AbstractPacket {
 
 	/**
 	 * Retrieve the X coordinate of the spawn point.
-	 * 
+	 *
 	 * @return The current x coordinate.
 	 */
 	public int getX() {
@@ -45,8 +45,9 @@ public class WrapperPlayServerSpawnPosition extends AbstractPacket {
 
 	/**
 	 * Set the X coordinate of the spawn point.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setX(int value) {
 		handle.getIntegers().write(0, value);
@@ -54,7 +55,7 @@ public class WrapperPlayServerSpawnPosition extends AbstractPacket {
 
 	/**
 	 * Retrieve the Y coordinate of the spawn point.
-	 * 
+	 *
 	 * @return The current Y
 	 */
 	public int getY() {
@@ -63,8 +64,9 @@ public class WrapperPlayServerSpawnPosition extends AbstractPacket {
 
 	/**
 	 * Set the Y coordinate of the spawn point.
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setY(int value) {
 		handle.getIntegers().write(1, value);
@@ -72,7 +74,7 @@ public class WrapperPlayServerSpawnPosition extends AbstractPacket {
 
 	/**
 	 * Retrieve the Z coordinate of the spawn point.
-	 * 
+	 *
 	 * @return The current Z
 	 */
 	public int getZ() {
@@ -81,8 +83,9 @@ public class WrapperPlayServerSpawnPosition extends AbstractPacket {
 
 	/**
 	 * Set the Z coordinate of the spawn point..
-	 * 
-	 * @param value - new value.
+	 *
+	 * @param value
+	 *            - new value.
 	 */
 	public void setZ(int value) {
 		handle.getIntegers().write(2, value);
@@ -90,8 +93,9 @@ public class WrapperPlayServerSpawnPosition extends AbstractPacket {
 
 	/**
 	 * Set the spawn location using a vector.
-	 * 
-	 * @param point - the new spawn location.
+	 *
+	 * @param point
+	 *            - the new spawn location.
 	 */
 	public void setLocation(Vector point) {
 		setX(point.getBlockX());
@@ -101,7 +105,7 @@ public class WrapperPlayServerSpawnPosition extends AbstractPacket {
 
 	/**
 	 * Retrieve the spawn location as a vector.
-	 * 
+	 *
 	 * @return The spawn location.
 	 */
 	public Vector getLocation() {
