@@ -11,7 +11,7 @@ import de.inventivegames.murder.Arena;
 
 public class GameCancelEvent extends Event {
 	private final Arena			arena;
-	private final List<Player>	players	= new ArrayList();
+	private final List<Player>	players	= new ArrayList<Player>();
 
 	public GameCancelEvent(Arena arena) {
 		this.arena = arena;

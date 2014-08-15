@@ -28,11 +28,11 @@ import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import de.inventivegames.utils.CMapUtils;
 
 public class Corpses implements Listener {
-	public static HashMap<Integer, String>		fakePlayerList	= new HashMap();
-	public static HashMap<Location, Integer>	fakePlayerLocs	= new HashMap();
-	public static HashMap<Player, Integer>		fakePlayerMap	= new HashMap();
+	public static HashMap<Integer, String>		fakePlayerList	= new HashMap<Integer, String>();
+	public static HashMap<Location, Integer>	fakePlayerLocs	= new HashMap<Location, Integer>();
+	public static HashMap<Player, Integer>		fakePlayerMap	= new HashMap<Player, Integer>();
 	public static boolean						oldSpawns		= false;
-	public static HashMap<Player, Zombie>		zombieMap		= new HashMap();
+	public static HashMap<Player, Zombie>		zombieMap		= new HashMap<Player, Zombie>();
 
 	public static void spawnCorpse(Location loc, Player p) throws Exception {
 		final MurderPlayer mp = MurderPlayer.getPlayer(p);
@@ -77,8 +77,6 @@ public class Corpses implements Listener {
 			}
 		} else {
 			for (final Player p : arena.getPlayers()) {
-				final MurderPlayer mp = MurderPlayer.getPlayer(p);
-
 				final Zombie zombie = zombieMap.get(p);
 				if (zombie != null) {
 					zombie.damage(999999999.0D);
@@ -116,6 +114,7 @@ public class Corpses implements Listener {
 		spawned.setEntityID(eID);
 		spawned.setPosition(loc.toVector());
 		spawned.setPlayerName(name);
+
 		spawned.setPlayerUUID(uuid);
 
 		// Murder.mod.setURL(SKIN_URL.replace("%%var%%", name.substring(0,
@@ -167,7 +166,7 @@ public class Corpses implements Listener {
 		for (int i = 0; i < players.size(); i++) {
 			p = players.get(i);
 			if (fakePlayerMap.get(p) != null) {
-				ids[i] = fakePlayerMap.get(p).intValue();
+				ids[i] = fakePlayerMap.get(p);
 				try {
 					fakePlayerLocs.remove(new CMapUtils(Murder.utils).getKeyByValue(fakePlayerLocs, fakePlayerMap.get(p)));
 				} catch (final Exception e) {
@@ -199,8 +198,9 @@ public class Corpses implements Listener {
 			if (!timeout) {
 				final Location loc = e.getPlayer().getLocation();
 				final Location loc1 = new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+
 				if (fakePlayerLocs.containsKey(loc1)) {
-					final int eID = fakePlayerLocs.get(loc1).intValue();
+					final int eID = fakePlayerLocs.get(loc1);
 					final String name = fakePlayerList.get(Integer.valueOf(eID));
 					disguiseMurderer(p, name);
 				}

@@ -108,8 +108,7 @@ public class MetricsLite {
 	private volatile BukkitTask		task			= null;
 
 	public MetricsLite(Plugin plugin) throws IOException {
-		if (plugin == null)
-			throw new IllegalArgumentException("Plugin cannot be null");
+		if (plugin == null) throw new IllegalArgumentException("Plugin cannot be null");
 
 		this.plugin = plugin;
 
@@ -138,18 +137,16 @@ public class MetricsLite {
 	 * repeating task as the plugin and send the initial data to the metrics
 	 * backend, and then after that it will post in increments of PING_INTERVAL
 	 * * 1200 ticks.
-	 * 
+	 *
 	 * @return True if statistics measuring is running, otherwise false.
 	 */
 	public boolean start() {
 		synchronized (optOutLock) {
 			// Did we opt out?
-			if (isOptOut())
-				return false;
+			if (isOptOut()) return false;
 
 			// Is metrics already running?
-			if (task != null)
-				return true;
+			if (task != null) return true;
 
 			// Begin hitting the server with glorious data
 			task = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new Runnable() {
@@ -182,7 +179,7 @@ public class MetricsLite {
 						// false
 						// Each post thereafter will be a ping
 						firstPost = false;
-					} catch (IOException e) {
+					} catch (final IOException e) {
 						if (debug) {
 							Bukkit.getLogger().log(Level.INFO, "[Metrics] " + e.getMessage());
 						}
@@ -196,7 +193,7 @@ public class MetricsLite {
 
 	/**
 	 * Has the server owner denied plugin metrics?
-	 * 
+	 *
 	 * @return true if metrics should be opted out of it
 	 */
 	public boolean isOptOut() {
@@ -204,12 +201,12 @@ public class MetricsLite {
 			try {
 				// Reload the metrics file
 				configuration.load(getConfigFile());
-			} catch (IOException ex) {
+			} catch (final IOException ex) {
 				if (debug) {
 					Bukkit.getLogger().log(Level.INFO, "[Metrics] " + ex.getMessage());
 				}
 				return true;
-			} catch (InvalidConfigurationException ex) {
+			} catch (final InvalidConfigurationException ex) {
 				if (debug) {
 					Bukkit.getLogger().log(Level.INFO, "[Metrics] " + ex.getMessage());
 				}
@@ -222,7 +219,7 @@ public class MetricsLite {
 	/**
 	 * Enables metrics for the server by setting "opt-out" to false in the
 	 * config file and starting the metrics task.
-	 * 
+	 *
 	 * @throws java.io.IOException
 	 */
 	public void enable() throws IOException {
@@ -246,7 +243,7 @@ public class MetricsLite {
 	/**
 	 * Disables metrics for the server by setting "opt-out" to true in the
 	 * config file and canceling the metrics task.
-	 * 
+	 *
 	 * @throws java.io.IOException
 	 */
 	public void disable() throws IOException {
@@ -271,7 +268,7 @@ public class MetricsLite {
 	/**
 	 * Gets the File object of the config file that should be used to store data
 	 * such as the GUID and opt-out status
-	 * 
+	 *
 	 * @return the File object for the config file
 	 */
 	public File getConfigFile() {
@@ -281,7 +278,7 @@ public class MetricsLite {
 		// plugin.getDataFolder() => base/plugins/PluginA/
 		// pluginsFolder => base/plugins/
 		// The base is not necessarily relative to the startup directory.
-		File pluginsFolder = plugin.getDataFolder().getParentFile();
+		final File pluginsFolder = plugin.getDataFolder().getParentFile();
 
 		// return => base/plugins/PluginMetrics/config.yml
 		return new File(new File(pluginsFolder, "PluginMetrics"), "config.yml");
@@ -292,21 +289,23 @@ public class MetricsLite {
 	 */
 	private void postPlugin(boolean isPing) throws IOException {
 		// Server software specific section
-		PluginDescriptionFile description = plugin.getDescription();
-		String pluginName = description.getName();
-		boolean onlineMode = Bukkit.getServer().getOnlineMode(); // TRUE if
-		// online
-		// mode is
-		// enabled
-		String pluginVersion = description.getVersion();
-		String serverVersion = Bukkit.getVersion();
-		int playersOnline = Bukkit.getServer().getOnlinePlayers().length;
+		final PluginDescriptionFile description = plugin.getDescription();
+		final String pluginName = description.getName();
+		final boolean onlineMode = Bukkit.getServer().getOnlineMode(); // TRUE
+																		// if
+																		// online
+																		// mode
+																		// is
+																		// enabled
+		final String pluginVersion = description.getVersion();
+		final String serverVersion = Bukkit.getVersion();
+		final int playersOnline = Bukkit.getServer().getOnlinePlayers().length;
 
 		// END server software specific section -- all code below does not use
 		// any code outside of this class / Java
 
 		// Construct the post data
-		StringBuilder json = new StringBuilder(1024);
+		final StringBuilder json = new StringBuilder(1024);
 		json.append('{');
 
 		// The plugin's description file containg all of the plugin data such as
@@ -317,11 +316,11 @@ public class MetricsLite {
 		appendJSONPair(json, "players_online", Integer.toString(playersOnline));
 
 		// New data as of R6
-		String osname = System.getProperty("os.name");
+		final String osname = System.getProperty("os.name");
 		String osarch = System.getProperty("os.arch");
-		String osversion = System.getProperty("os.version");
-		String java_version = System.getProperty("java.version");
-		int coreCount = Runtime.getRuntime().availableProcessors();
+		final String osversion = System.getProperty("os.version");
+		final String java_version = System.getProperty("java.version");
+		final int coreCount = Runtime.getRuntime().availableProcessors();
 
 		// normalize os arch .. amd64 -> x86_64
 		if (osarch.equals("amd64")) {
@@ -344,7 +343,7 @@ public class MetricsLite {
 		json.append('}');
 
 		// Create the url
-		URL url = new URL(BASE_URL + String.format(REPORT_URL, urlEncode(pluginName)));
+		final URL url = new URL(BASE_URL + String.format(REPORT_URL, urlEncode(pluginName)));
 
 		// Connect to the website
 		URLConnection connection;
@@ -357,8 +356,8 @@ public class MetricsLite {
 			connection = url.openConnection();
 		}
 
-		byte[] uncompressed = json.toString().getBytes();
-		byte[] compressed = gzip(json.toString());
+		final byte[] uncompressed = json.toString().getBytes();
+		final byte[] compressed = gzip(json.toString());
 
 		// Headers
 		connection.addRequestProperty("User-Agent", "MCStats/" + REVISION);
@@ -375,7 +374,7 @@ public class MetricsLite {
 		}
 
 		// Write the data
-		OutputStream os = connection.getOutputStream();
+		final OutputStream os = connection.getOutputStream();
 		os.write(compressed);
 		os.flush();
 
@@ -400,24 +399,24 @@ public class MetricsLite {
 
 	/**
 	 * GZip compress a string of bytes
-	 * 
+	 *
 	 * @param input
 	 * @return
 	 */
 	public static byte[] gzip(String input) {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		GZIPOutputStream gzos = null;
 
 		try {
 			gzos = new GZIPOutputStream(baos);
 			gzos.write(input.getBytes("UTF-8"));
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		} finally {
 			if (gzos != null) {
 				try {
 					gzos.close();
-				} catch (IOException ignore) {
+				} catch (final IOException ignore) {
 				}
 			}
 		}
@@ -428,21 +427,21 @@ public class MetricsLite {
 	/**
 	 * Check if mineshafter is present. If it is, we need to bypass it to send
 	 * POST requests
-	 * 
+	 *
 	 * @return true if mineshafter is installed on the server
 	 */
 	private boolean isMineshafterPresent() {
 		try {
 			Class.forName("mineshafter.MineServer");
 			return true;
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			return false;
 		}
 	}
 
 	/**
 	 * Appends a json encoded key/value pair to the given string builder.
-	 * 
+	 *
 	 * @param json
 	 * @param key
 	 * @param value
@@ -456,7 +455,7 @@ public class MetricsLite {
 				Double.parseDouble(value);
 				isValueNumeric = true;
 			}
-		} catch (NumberFormatException e) {
+		} catch (final NumberFormatException e) {
 			isValueNumeric = false;
 		}
 
@@ -476,43 +475,43 @@ public class MetricsLite {
 
 	/**
 	 * Escape a string to create a valid JSON string
-	 * 
+	 *
 	 * @param text
 	 * @return
 	 */
 	private static String escapeJSON(String text) {
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 
 		builder.append('"');
 		for (int index = 0; index < text.length(); index++) {
-			char chr = text.charAt(index);
+			final char chr = text.charAt(index);
 
 			switch (chr) {
-			case '"':
-			case '\\':
-				builder.append('\\');
-				builder.append(chr);
-				break;
-			case '\b':
-				builder.append("\\b");
-				break;
-			case '\t':
-				builder.append("\\t");
-				break;
-			case '\n':
-				builder.append("\\n");
-				break;
-			case '\r':
-				builder.append("\\r");
-				break;
-			default:
-				if (chr < ' ') {
-					String t = "000" + Integer.toHexString(chr);
-					builder.append("\\u" + t.substring(t.length() - 4));
-				} else {
+				case '"':
+				case '\\':
+					builder.append('\\');
 					builder.append(chr);
-				}
-				break;
+					break;
+				case '\b':
+					builder.append("\\b");
+					break;
+				case '\t':
+					builder.append("\\t");
+					break;
+				case '\n':
+					builder.append("\\n");
+					break;
+				case '\r':
+					builder.append("\\r");
+					break;
+				default:
+					if (chr < ' ') {
+						final String t = "000" + Integer.toHexString(chr);
+						builder.append("\\u" + t.substring(t.length() - 4));
+					} else {
+						builder.append(chr);
+					}
+					break;
 			}
 		}
 		builder.append('"');
@@ -522,7 +521,7 @@ public class MetricsLite {
 
 	/**
 	 * Encode text as UTF-8
-	 * 
+	 *
 	 * @param text
 	 *            the text to encode
 	 * @return the encoded text, as UTF-8

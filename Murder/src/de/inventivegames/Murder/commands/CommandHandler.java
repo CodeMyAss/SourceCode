@@ -43,6 +43,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter, Listener {
 		commands.put("arenainfo", new ArenaInfo());
 		commands.put("playerinfo", new PlayerInfo());
 		commands.put("report", new ReportCommand());
+		commands.put("force", new Force());
 	}
 
 	public ArrayList<String> getCommandList() {

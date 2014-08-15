@@ -10,10 +10,13 @@ public class ResourcePack {
 			@Override
 			public void run() {
 				try {
-					p.sendMessage(Murder.prefix + "§6Downloading Custom Resources...");
+					p.sendMessage(Murder.prefix + "§6" + Messages.getMessage("rpMessage1"));
 					p.setResourcePack("https://dl.dropboxusercontent.com/s/i1u2a3dsbxjm2hv/MurderResourcePack%20256x%20%28V2.2%29.zip?dl=1");
-					p.sendMessage("§6If the ResourcePack isn't downloading,");
-					mp.sendRawMessage("{\"text\":\"\",\"extra\":[{\"text\":\"make sure you have \",\"color\":\"gold\"},{\"translate\":\"options.serverTextures\",\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§7Options/Video Settings/Server Textures\"}},{\"text\":\" enabled.\",\"color\":\"gold\"}]}");
+					p.sendMessage("§6" + Messages.getMessage("rpMessage2"));
+					try {
+						mp.sendRawMessage(String.format("{\"text\":\"\",\"extra\":[{\"text\":\"%s \",\"color\":\"gold\"},{\"translate\":\"options.serverTextures\",\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"§7%s\"}},{\"text\":\" %s.\",\"color\":\"gold\"}]}", new Object[] { Messages.getMessage("rpMessage3").split(";")[0], Messages.getMessage("rpMessage3").split(";")[1], Messages.getMessage("rpMessage3").split(";")[2] }));
+					} catch (final Exception e) {
+					}
 					return;
 				} catch (final Exception e) {
 					e.printStackTrace();

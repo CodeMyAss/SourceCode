@@ -33,6 +33,7 @@ public class ChatManager implements Listener {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private String replaceNick(String s) {
 		for (final String name : Murder.nameTags) {
 			final String raw = name.trim().replaceAll("(&([a-fk-or0-9]))", "");

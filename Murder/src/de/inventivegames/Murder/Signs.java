@@ -202,7 +202,12 @@ public class Signs implements Listener {
 									return;
 								}
 							}
-							if (!arena.inGame()) {
+							if (!p.hasPermission((Permissions.JOIN.perm() + "." + arena.getID()).trim())) {
+								Messages.getFormattedMessage("noJoinPermission", new Object[] { "" + arena.getID() });
+								e.setCancelled(true);
+								return;
+							}
+							if (arena.getStatus() != ArenaStatus.INGAME) {
 								if (p.getItemInHand().getType() == Material.AIR) {
 									Bukkit.getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 										@Override
@@ -218,14 +223,14 @@ public class Signs implements Listener {
 												}
 											}, 10);
 
-											Bukkit.getScheduler().scheduleSyncRepeatingTask(Murder.instance, new Runnable() {
+											Bukkit.getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
 												@Override
 												public void run() {
 													sign.setLine(3, arena.getStatus().toString());
 													sign.update();
 												}
-											}, 0, 20 * 10);
+											}, 20 * 10);
 
 											return;
 										}

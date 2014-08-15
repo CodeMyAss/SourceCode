@@ -14,7 +14,7 @@ public class WorldListener implements Listener {
 	@EventHandler
 	public void onBlockChange(BlockPhysicsEvent e) {
 		if (ArenaManager.getByWorld(e.getBlock().getWorld()) != null) {
-//			ArenaManager.getByWorld(e.getBlock().getWorld()).worldLogger.onPhysics(e);
+			// ArenaManager.getByWorld(e.getBlock().getWorld()).worldLogger.onPhysics(e);
 		}
 		;
 	}

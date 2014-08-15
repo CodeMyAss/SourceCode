@@ -12,7 +12,7 @@ import de.inventivegames.murder.Arena;
 public class GameEndEvent extends Event {
 	private final Arena			arena;
 	private final String		winner;
-	private final List<Player>	players	= new ArrayList();
+	private final List<Player>	players	= new ArrayList<Player>();
 
 	public GameEndEvent(Arena arena, List<Player> players, String winner) {
 		this.arena = arena;

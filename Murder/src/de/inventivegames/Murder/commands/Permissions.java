@@ -88,6 +88,12 @@ public enum Permissions {
 			return Murder.permBase + "admin.playerinfo";
 		}
 	},
+	FORCE {
+		@Override
+		public String perm() {
+			return Murder.permBase + "admin.force";
+		}
+	},
 	TUTORIAL {
 		@Override
 		public String perm() {

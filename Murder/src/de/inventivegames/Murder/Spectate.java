@@ -26,7 +26,7 @@ import de.inventivegames.murder.threads.PixelImgTask;
 
 public class Spectate implements Listener {
 	private final String					INV_TITLE	= "§7Teleporter";
-	public static HashMap<Player, String[]>	faces		= new HashMap();
+	public static HashMap<Player, String[]>	faces		= new HashMap<Player, String[]>();
 
 	@EventHandler
 	public void onCompassUse(PlayerInteractEvent e) {
@@ -42,6 +42,7 @@ public class Spectate implements Listener {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
 		final Player p = (Player) e.getWhoClicked();
@@ -91,7 +92,7 @@ public class Spectate implements Listener {
 	private Inventory createInv(Player p) {
 		final MurderPlayer mp = MurderPlayer.getPlayer(p);
 		final Arena arena = mp.getArena();
-		final int amount = arena.getPlayerAmount();
+		final int amount = arena.getAlivePlayerAmount();
 		final Inventory inv = Murder.instance.getServer().createInventory(p, amount <= 9 ? 9 : amount <= 18 ? 18 : amount <= 27 ? 27 : 36, INV_TITLE);
 		int slot = 0;
 		for (int i = 0; i < amount; i++) {

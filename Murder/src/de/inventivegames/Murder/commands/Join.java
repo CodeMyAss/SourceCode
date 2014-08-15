@@ -42,6 +42,10 @@ public class Join implements CommandInterface {
 
 			return true;
 		}
+		if (!p.hasPermission(Permissions.JOIN.perm() + "." + id)) {
+			Messages.getFormattedMessage("noJoinPermission", new Object[] { "" + ArenaManager.getByID(id).getID() });
+			return true;
+		}
 		mp.joinArena(ArenaManager.getByID(id));
 		return true;
 	}

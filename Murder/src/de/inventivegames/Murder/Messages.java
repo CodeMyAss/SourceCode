@@ -7,49 +7,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public enum Messages {
 
-	ARENAINGAME(""),
-	ARENAFULL(""),
-	PLAYERINGAME(""),
-	PLAYERNOTINGAME(""),
-	NOTENOUGHPLAYERS(""),
-	LOBBYSPAWNNOTEXISTING(""),
-	JOINARENA(""),
-	LEAVEARENA(""),
-	LOBBYCOUNTDOWN(""),
-	GAMECOUNTDOWN(""),
-	BYSTANDER(""),
-	BYSTANDERWEAPON(""),
-	MURDERER(""),
-	SPECTATOR(""),
-	KNIFE(""),
-	GUN(""),
-	BULLET(""),
-	LOOT(""),
-	NOPERMISSION(""),
-	WRONGUSAGE(""),
-	UNKNOWNCOMMAND(""),
-	CANTUSECOMMAND(""),
-	CREATEDSIGN(""),
-	ADDEDARENA(""),
-	UNKNOWNSPAWN(""),
-	AVAILABLESPAWNS(""),
-	LOOTCOLLECTED(""),
-	DISGUISED(""),
-	MURDERERWIN1(""),
-	MURDERERWIN2(""),
-	KILLEDMURDERER(""),
-	BYSTANDERWIN1(""),
-	BYSTANDERWIN2(""),
-	KILLEDINNOCENT(""),
-	RELOADNOTIFICATION(""),
-	DISGUISENOTIFICATION(""),
-	NOTENOUGHLOOT(""),
-	SMOKENOTIFICATION("");
-
-	private String	message;
+	ARENAINGAME(""), ARENAFULL(""), PLAYERINGAME(""), PLAYERNOTINGAME(""), NOTENOUGHPLAYERS(""), LOBBYSPAWNNOTEXISTING(""), JOINARENA(""), LEAVEARENA(""), LOBBYCOUNTDOWN(""), GAMECOUNTDOWN(""), BYSTANDER(""), BYSTANDERWEAPON(""), MURDERER(""), SPECTATOR(""), KNIFE(""), GUN(""), BULLET(""), LOOT(""), NOPERMISSION(""), NOJOINPERMISSION(""), WRONGUSAGE(""), UNKNOWNCOMMAND(""), CANTUSECOMMAND(""), CREATEDSIGN(""), ADDEDARENA(""), UNKNOWNSPAWN(""), AVAILABLESPAWNS(""), LOOTCOLLECTED(""), DISGUISED(
+			""), MURDERERWIN1(""), MURDERERWIN2(""), KILLEDMURDERER(""), BYSTANDERWIN1(""), BYSTANDERWIN2(""), KILLEDINNOCENT(""), RELOADNOTIFICATION(""), DISGUISENOTIFICATION(""), NOTENOUGHLOOT(""), SMOKENOTIFICATION("");
 
 	Messages(String s) {
-		message = s;
 	}
 
 	private static File					messageFile	= new File("plugins/Murder/messages.yml");
@@ -67,6 +28,15 @@ public enum Messages {
 			return message.replaceAll("&([a-z0-9])", "§$1");
 		}
 		return "§cInvalid Message! [" + key.toUpperCase() + "]";
+	}
+
+	public static String getFormattedMessage(String key, Object... objects) {
+		try {
+			return String.format(getMessage(key), objects);
+		} catch (final Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	private static void setDefaults() {
@@ -91,6 +61,7 @@ public enum Messages {
 		MessageFile.addDefault("bullet", "§7Bullet");
 		MessageFile.addDefault("loot", "§7Loot");
 		MessageFile.addDefault("noPermission", "§cYou don't have Permission to execute this command!");
+		MessageFile.addDefault("noJoinPermission", "§cYou don't have Permission to join this Arena (#%s)!");
 		MessageFile.addDefault("wrongUsage", "§cWrong usage! Type %1$s for a list of commands!");
 		MessageFile.addDefault("unknownCommand", "§cUnknown Command!");
 		MessageFile.addDefault("cantUseCommand", "§cYou can't use this Command while you're Ingame!");
@@ -114,6 +85,10 @@ public enum Messages {
 		MessageFile.addDefault("disguiseNotification", "§2Right Click to disguise as this Player for 1 Loot");
 		MessageFile.addDefault("notEnoughLoot", "§cYou don't have enough Loot to disguise as this Player!");
 		MessageFile.addDefault("smokeNotification", "§aOther Players can now recognize you as the Murderer.");
+		// ////////////////////////////////////////////////////////////////////////////////////////////////////
+		MessageFile.addDefault("rpMessage1", "Downloading Custom Resources...");
+		MessageFile.addDefault("rpMessage2", "If the ResourcePack isn't downloading,");
+		MessageFile.addDefault("rpMessage3", "make sure you have;Options/Video Settings/Server Textures;enabled.");
 
 		MessageFile.options().copyDefaults(true);
 		try {

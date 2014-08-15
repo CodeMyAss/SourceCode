@@ -15,11 +15,13 @@ import de.inventivegames.murder.event.ArenaRemoveEvent;
 public class ArenaManager {
 
 	private static List<Arena>	arenas	= new ArrayList<Arena>();
-	private static File			arenaFile;
 
 	public static void loadArenas() {
-		Murder.console.sendMessage(Murder.prefix + "§fLoading Arenas...");
+		Murder.console.sendMessage(Murder.debugPrefix + "§fLoading Arenas...");
 		if (!new File("plugins/Murder/Arenas/").exists()) return;
+		if (new File("plugins/Murder/Arenas/").list().length == 0) {
+			Murder.console.sendMessage(Murder.debugPrefix + "§cNo Arenas found!");
+		}
 		for (final String s : new File("plugins/Murder/Arenas/").list()) {
 			final File f = new File("plugins/Murder/Arenas/" + s);
 			if (f.isDirectory()) {
@@ -27,7 +29,7 @@ public class ArenaManager {
 				if (file.exists()) {
 					final YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 					final Arena arena = Arena.fromString(config.getString("Data"));
-					Murder.console.sendMessage(Murder.prefix + "§fLoading Arena #" + s + "...");
+					Murder.console.sendMessage(Murder.debugPrefix + "§fLoading Arena #" + s + "...");
 					arenas.add(arena);
 				}
 			}
@@ -43,7 +45,7 @@ public class ArenaManager {
 	}
 
 	public static void saveArenas() {
-		Murder.console.sendMessage(Murder.prefix + "§fSaving Arenas...");
+		Murder.console.sendMessage(Murder.debugPrefix + "§fSaving Arenas...");
 		for (final Arena arena : arenas) {
 			arena.save();
 		}

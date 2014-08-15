@@ -56,7 +56,6 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		final Player p = e.getPlayer();
-		final MurderPlayer mp = MurderPlayer.getPlayer(p);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
 			@Override
@@ -73,7 +72,14 @@ public class PlayerListener implements Listener {
 		final Player p = e.getPlayer();
 		ResourcePack.resetResourcePack(p);
 		final MurderPlayer mp = MurderPlayer.getPlayer(p);
-		mp.leaveArena(true);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+			@Override
+			public void run() {
+				if (mp.playing()) {
+					mp.leaveArena(true);
+				}
+			}
+		}, 1);
 		Murder.instance.getServer().getPluginManager().callEvent(new PlayerDeathEvent(p, new ArrayList<ItemStack>(), 0, ""));
 	}
 
@@ -100,6 +106,7 @@ public class PlayerListener implements Listener {
 		}
 	}
 
+	@SuppressWarnings({ "deprecation" })
 	@EventHandler
 	public void pickupItem(PlayerPickupItemEvent e) {
 		final Player p = e.getPlayer();
@@ -172,6 +179,7 @@ public class PlayerListener implements Listener {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onDamage(EntityDamageByEntityEvent e) {
 		final Entity ent = e.getEntity();
@@ -179,9 +187,12 @@ public class PlayerListener implements Listener {
 		if (ent instanceof Player) {
 			if (MurderPlayer.getPlayer((Player) e.getEntity()).playing() && e.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
 				if (e.getDamager() instanceof Arrow) {
-					System.out.println("MurderMetadata:" + ((Projectile) e.getDamager()).hasMetadata("Murder"));
+					// System.out.println("MurderMetadata:" + ((Projectile)
+					// e.getDamager()).hasMetadata("Murder"));
 					if (((Projectile) e.getDamager()).hasMetadata("Murder")) {
-						System.out.println("MurderMetadataValue:" + ((Projectile) e.getDamager()).getMetadata("Murder").get(0).value());
+						// System.out.println("MurderMetadataValue:" +
+						// ((Projectile)
+						// e.getDamager()).getMetadata("Murder").get(0).value());
 						if (((Projectile) e.getDamager()).getMetadata("Murder").get(0).value().equals("ITEMS_KNIFE") || ((Projectile) e.getDamager()).getMetadata("Murder").get(0).value().equals("ITEMS_BULLET")) {
 							if (MurderPlayer.getPlayer((Player) ent).inGame()) {
 								((Player) ent).setHealth(2.0D);
@@ -325,6 +336,7 @@ public class PlayerListener implements Listener {
 			if (mpDamaged.inSpectate()) {
 				arrowTeleport(damaged);
 				try {
+					damaged.setAllowFlight(true);
 					damaged.setFlying(true);
 				} catch (final Exception e) {
 					e.printStackTrace();
@@ -344,14 +356,15 @@ public class PlayerListener implements Listener {
 					Bukkit.getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 						@Override
 						public void run() {
+							mpShooter.getArena().despawnKnifes();
 							final Item item = newArrow.getLocation().getWorld().dropItemNaturally(newArrow.getLocation().add(0.0D, 1.0D, 0.0D), Items.Knife());
 							// item.setVelocity(Utils.calculateKnifeItemVelocity(shooter,
 							// item));
 							mpShooter.getArena().addItem(item);
-							if(newArrow != null) {
-							if (newArrow.isOnGround()) {
-								newArrow.remove();
-							}
+							if (newArrow != null) {
+								if (newArrow.isOnGround()) {
+									newArrow.remove();
+								}
 							}
 						}
 					}, 10L);
@@ -465,7 +478,7 @@ public class PlayerListener implements Listener {
 				}
 			}
 		}
-		if(MurderPlayer.getPlayer(e.getPlayer()).inSpectate()) {
+		if (MurderPlayer.getPlayer(e.getPlayer()).inSpectate()) {
 			e.setCancelled(true);
 		}
 	}
@@ -494,6 +507,7 @@ public class PlayerListener implements Listener {
 				final double vY = p.getLocation().getDirection().getY() * 10D;
 				final double vZ = p.getLocation().getDirection().getZ() * 10D;
 				final Arrow arrow;
+				mp.getArena().despawnAllArrows();
 				if (Murder.serverVersion.contains("1.7.2")) {
 					arrow = p.launchProjectile(Arrow.class);
 					arrow.setVelocity(new Vector(vX, vY, vZ));
@@ -529,7 +543,7 @@ public class PlayerListener implements Listener {
 										}
 									}
 
-								}, 5);
+								}, 15);
 							}
 						}
 					}
@@ -567,9 +581,6 @@ public class PlayerListener implements Listener {
 		final Action a = e.getAction();
 		final ItemStack is = p.getInventory().getItemInHand();
 		if (mp.playing() && (a == Action.RIGHT_CLICK_AIR || a == Action.RIGHT_CLICK_BLOCK) && is.getType().equals(Items.SpeedBoost().getType())) {
-			// p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100,
-			// 1, false));
-			// p.setWalkSpeed(0.3F);
 			p.setFoodLevel(20);
 			p.setSprinting(true);
 
@@ -577,10 +588,18 @@ public class PlayerListener implements Listener {
 
 				@Override
 				public void run() {
+					p.setSprinting(false);
 					p.setFoodLevel(6);
-
 				}
 			}, (5 + Murder.rd.nextInt(5)) * 20);
+			Bukkit.getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
+
+				@Override
+				public void run() {
+					p.setSprinting(false);
+					p.setFoodLevel(6);
+				}
+			}, 10 * 20 + 5);
 
 			Bukkit.getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 				@SuppressWarnings("deprecation")
@@ -672,6 +691,7 @@ public class PlayerListener implements Listener {
 								if (!p.getInventory().contains(Items.Knife())) {
 									if (!isKnifeSpawned(arrow)) {
 										if (mp.getArena() != null) {
+											mp.getArena().despawnKnifes();
 											final Item item = arrow.getLocation().getWorld().dropItemNaturally(currLoc.add(0.0D, 0.5D, 0.0D), Items.Knife());
 											item.setVelocity(new Vector(0, 0.25, 0));
 											mp.getArena().droppedKnife = item;
@@ -751,9 +771,9 @@ public class PlayerListener implements Listener {
 						if (projectile.getShooter() != ent) {
 							final Player p = (Player) ent;
 							if (!MurderPlayer.getPlayer(p).inSpectate()) {
-								p.setHealth(1.0D);
-								p.damage(20.0D, projectile.getShooter());
-								p.damage(20.0D, projectile.getShooter());
+								// p.setHealth(1.0D);
+								// p.damage(20.0D, projectile.getShooter());
+								// p.damage(20.0D, projectile.getShooter());
 							}
 						}
 					}

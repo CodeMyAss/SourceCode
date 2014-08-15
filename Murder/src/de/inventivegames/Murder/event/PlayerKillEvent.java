@@ -16,7 +16,7 @@ public class PlayerKillEvent extends Event {
 	private final Player		killer;
 	private final Player		death;
 	private final boolean		alive;
-	private final List<Player>	players	= new ArrayList();
+	private final List<Player>	players	= new ArrayList<Player>();
 
 	public PlayerKillEvent(Arena arena, boolean b, String role, Player killer, Player death, boolean alive) {
 		this.arena = arena;

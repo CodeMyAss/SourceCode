@@ -19,7 +19,7 @@ public class TabCompletionHelper {
 	public static List<String> getPossibleCompletionsForGivenArgs(String[] args, String[] possibilitiesOfCompletion) {
 		final String argumentToFindCompletionFor = args[args.length - 1];
 
-		final List<String> listOfPossibleCompletions = new ArrayList();
+		final List<String> listOfPossibleCompletions = new ArrayList<String>();
 		for (int i = 0; i < possibilitiesOfCompletion.length; i++) {
 			final String[] foundString = possibilitiesOfCompletion;
 			try {

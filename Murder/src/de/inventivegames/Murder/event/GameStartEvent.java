@@ -21,7 +21,7 @@ public class GameStartEvent extends Event {
 	}
 
 	public List<Player> getPlayers() {
-		final List<Player> players = new ArrayList();
+		final List<Player> players = new ArrayList<Player>();
 		for (final Player p : arena.getPlayers()) {
 			players.add(p);
 

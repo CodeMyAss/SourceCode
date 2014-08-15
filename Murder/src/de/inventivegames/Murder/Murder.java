@@ -26,9 +26,11 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import com.comphenix.protocol.metrics.Metrics;
 import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 
+import de.inventivegames.murder.bungeecord.BungeeCordHandler;
 import de.inventivegames.murder.commands.CommandHandler;
 import de.inventivegames.murder.listeners.PlayerListener;
 import de.inventivegames.murder.listeners.WorldListener;
@@ -41,6 +43,7 @@ public class Murder extends JavaPlugin implements Listener {
 
 	public static String				permBase					= "murder.";
 	public static String				prefix						= "§1[§4Murder§1] ";
+	public static String				debugPrefix					= "§1[§4Murder§7|§aDEBUG§1]§r ";
 	public static ConsoleCommandSender	console						= Bukkit.getServer().getConsoleSender();
 	public static Murder				instance;
 	static File							configFile					= new File("plugins/Murder/config.yml");
@@ -56,6 +59,11 @@ public class Murder extends JavaPlugin implements Listener {
 	public static int					smokeTimer					= -1;
 	public static int					lobbyCountdown				= -1;
 	public static int					countdown					= -1;
+
+	// BungeeCordSettings
+	public static boolean				bungeeCord					= false;
+	public static String				bungeeHub					= "lobby";
+	public static int					bungeeArena					= 1;
 
 	public static int					POINTS_PLUS					= 2;																																																																				// MurdererKill
 	public static int					POINTS_MINUS				= 20;																																																																				// KilledInnocent
@@ -74,6 +82,12 @@ public class Murder extends JavaPlugin implements Listener {
 
 	public static ArrayList<Game>		games						= new ArrayList<Game>();
 
+	public static ArrayList<Player>		murdererBlacklist			= new ArrayList<Player>();
+	public static ArrayList<Player>		forcedMurderers				= new ArrayList<Player>();
+
+	public static ArrayList<Player>		weaponBlacklist				= new ArrayList<Player>();
+	public static ArrayList<Player>		forcedWeapons				= new ArrayList<Player>();
+
 	@Override
 	public void onEnable() {
 		instance = this;
@@ -83,9 +97,9 @@ public class Murder extends JavaPlugin implements Listener {
 		console = instance.getServer().getConsoleSender();
 
 		if (instance.getServer().getPluginManager().isPluginEnabled("ProtocolLib")) {
-			console.sendMessage(prefix + "§2Successfully hooked into ProtocolLib!");
+			console.sendMessage(debugPrefix + "§2Successfully hooked into ProtocolLib!");
 		} else {
-			console.sendMessage(prefix + "§cCould not hook into ProtocolLib! Please download it here:§a http://dev.bukkit.org/bukkit-plugins/protocollib/");
+			console.sendMessage(debugPrefix + "§cCould not hook into ProtocolLib! Please download it here:§a http://dev.bukkit.org/bukkit-plugins/protocollib/");
 			console.sendMessage("§cDisabling...");
 			instance.getServer().getPluginManager().disablePlugin(instance);
 			return;
@@ -112,6 +126,7 @@ public class Murder extends JavaPlugin implements Listener {
 		Messages.Manager();
 		Config.Manager();
 		initPlayerConfig();
+		initMetrics();
 
 		minPlayers = instance.getConfig().getInt("MinPlayers");
 		maxPlayers = instance.getConfig().getInt("MaxPlayers");
@@ -119,6 +134,10 @@ public class Murder extends JavaPlugin implements Listener {
 
 		lobbyCountdown = instance.getConfig().getInt("lobbyCountdown");
 		countdown = instance.getConfig().getInt("countdown");
+
+		bungeeCord = instance.getConfig().getBoolean("useBungeeCord");
+		bungeeHub = instance.getConfig().getString("BungeeCordHubName");
+		bungeeArena = instance.getConfig().getInt("BungeeCordArena");
 
 		utils = new IGUtils(instance);
 
@@ -128,6 +147,10 @@ public class Murder extends JavaPlugin implements Listener {
 		// console.sendMessage(prefix + "§cIncompatible Server Version (" +
 		// serverVersion + ")! Using old Corpse spawns...");
 		// }
+		if (bungeeCord) {
+			Bukkit.getServer().getPluginManager().registerEvents(new BungeeCordHandler(), instance);
+		}
+
 		if (instance.getConfig().getBoolean("forceNewCorpses")) {
 			Corpses.oldSpawns = false;
 		}
@@ -137,6 +160,15 @@ public class Murder extends JavaPlugin implements Listener {
 		initProtocolListener();
 
 		mod = new PlayerDisplayModifier(instance, manager);
+	}
+
+	private static void initMetrics() {
+		try {
+			final Metrics metrics = new Metrics(instance);
+			metrics.start();
+		} catch (final IOException e) {
+			// Failed to submit the stats :-(
+		}
 	}
 
 	public static void initPlayerConfig() {
@@ -214,7 +246,9 @@ public class Murder extends JavaPlugin implements Listener {
 
 					// System.out.println("Cancelled " + soundName +
 					// " caused by " + closest);
-					event.setCancelled(true);
+					if (MurderPlayer.getPlayer(closest).inSpectate() && MurderPlayer.getPlayer(event.getPlayer()).inSpectate()) {
+						event.setCancelled(true);
+					}
 				}
 			}
 		});
@@ -270,7 +304,7 @@ public class Murder extends JavaPlugin implements Listener {
 	}
 
 	public static void addName(String name) {
-		if ((name.length() + 2) > 16) return;
+		if (name.length() + 2 > 16) return;
 
 		final int length = nameTags.length;
 		final String[] New = new String[length + 1];

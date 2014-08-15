@@ -16,8 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.comphenix.packetwrapper.WrapperPlayServerEntityHeadRotation;
-import com.comphenix.packetwrapper.WrapperPlayServerEntityTeleport;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 
 import de.inventivegames.murder.event.GameEndEvent;
@@ -35,10 +33,6 @@ public class Game {
 		final Arena arena = ArenaManager.getByID(id);
 		if (arena == null) {
 			p.sendMessage(Murder.prefix + "§c" + Messages.getMessage("arenaNotExisting"));
-			return;
-		}
-		if (!p.hasPermission("murder.player.join." + arena)) {
-			p.sendMessage(Murder.prefix + "§cYou don't have Permission to join Arena #" + arena + "!");
 			return;
 		}
 		if (!(arena.getPlayerAmount() <= Murder.maxPlayers)) {
@@ -63,6 +57,7 @@ public class Game {
 	// ////////////////////////////////////////////////////////////////
 
 	private final Arena	arena;
+	@SuppressWarnings("unused")
 	private boolean		started		= false;
 	// Schedulers
 	private int			delayedStart;
@@ -76,6 +71,7 @@ public class Game {
 	private int			cd1;
 	private int			cd2;
 	private int			cd3;
+	@SuppressWarnings("unused")
 	private int			cd4;
 
 	public Game(Arena arena) {
@@ -94,12 +90,12 @@ public class Game {
 
 	@SuppressWarnings("deprecation")
 	public void onPlayerDeath(PlayerDeathEvent e) {
-		System.out.println("Death");
+		Murder.console.sendMessage(Murder.debugPrefix + "Death");
 		if (e.getEntity() instanceof Player) {
 			final Player p = e.getEntity();
 			final MurderPlayer mp = MurderPlayer.getPlayer(p);
 			if (mp.inGame()) {
-
+				Murder.console.sendMessage(Murder.debugPrefix + "Death1");
 				e.setDeathMessage(null);
 
 				for (double d = 0.0; d < 2.0; d += 0.5) {
@@ -128,13 +124,13 @@ public class Game {
 					}
 				}
 				if (e.getEntity().getKiller() instanceof Player) {
-					mp.setInSpectate();
-					p.sendMessage(Murder.prefix + Messages.getMessage("spectator"));
 
 					final Player killer = e.getEntity().getKiller();
 					final MurderPlayer mpKiller = MurderPlayer.getPlayer(killer);
-
-					System.out.println(mpKiller + " killed " + mp);
+					Murder.console.sendMessage(Murder.debugPrefix + mpKiller + " killed " + mp);
+					Murder.console.sendMessage(Murder.debugPrefix + "Death2");
+					mp.setInSpectate();
+					p.sendMessage(Murder.prefix + Messages.getMessage("spectator"));
 
 					for (final Player online : Murder.instance.getServer().getOnlinePlayers()) {
 						online.hidePlayer(p);
@@ -169,8 +165,8 @@ public class Game {
 							}
 						} catch (final Exception e1) {
 						}
-						System.out.println("BystanderAmount(Death) " + arena.getBystanderAmount());
-						if (arena.getBystanderAmount() == 0) {
+						Murder.console.sendMessage(Murder.debugPrefix + "BystanderAmount(Death) " + arena.getBystanderAmount());
+						if (arena.getBystanderAmount() <= 0) {
 							arena.sendMessage(Murder.prefix + "§c" + Messages.getMessage("murdererWin1"));
 							arena.sendMessage(Murder.prefix + "§2" + Messages.getMessage("murdererWin2").replace("%1$s", mpKiller.getNameTag()).replace("%2$s", killer.getName()));
 
@@ -201,6 +197,7 @@ public class Game {
 							mpKiller.cantPickup(true);
 							mpKiller.setWeaponBystander(false);
 							arena.removeWeaponBystander(mpKiller);
+							mpKiller.setBystander(true);
 
 							final ItemStack nameTag = killer.getInventory().getItem(0);
 
@@ -265,6 +262,7 @@ public class Game {
 					}
 					Murder.instance.getServer().getPluginManager().callEvent(new de.inventivegames.murder.event.PlayerDeathEvent(p, arena, killer));
 				} else if (e.getEntity().getKiller() instanceof Arrow) {
+					arena.despawnKnifes();
 					final Item item = p.getLocation().getWorld().dropItemNaturally(p.getLocation().add(0.0D, 1.0D, 0.0D), Items.Knife());
 					arena.addItem(item);
 				}
@@ -303,6 +301,7 @@ public class Game {
 
 	@SuppressWarnings("deprecation")
 	public void start() {
+		if (arena.getAlivePlayerAmount() < 2) return;
 		if (arena.timer != null) {
 			arena.timer.cancel();
 		}
@@ -315,7 +314,6 @@ public class Game {
 			arena.starting(false);
 			arena.inGame(true);
 			for (final Player p : arena.getPlayers()) {
-				final MurderPlayer mp = MurderPlayer.getPlayer(p);
 				p.getWorld().setDifficulty(Difficulty.PEACEFUL);
 				p.getInventory().clear();
 				p.updateInventory();
@@ -342,7 +340,9 @@ public class Game {
 			}, 20 * (Murder.countdown / 2) + 1);
 		}
 
-		System.out.println("EffectTaskRunning:" + Bukkit.getScheduler().isCurrentlyRunning(cd1));
+		// Murder.console.sendMessage(Murder.debugPrefix + "EffectTaskRunning:"
+		// +
+		// Bukkit.getScheduler().isCurrentlyRunning(cd1));
 		if (!Bukkit.getScheduler().isCurrentlyRunning(cd1)) {
 			cd1 = Bukkit.getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 				@Override
@@ -351,7 +351,9 @@ public class Game {
 					for (final Player p : arena.getPlayers()) {
 						final MurderPlayer mp = MurderPlayer.getPlayer(p);
 						mp.removeEffects();
-						System.out.println("Removing " + mp.player().getName() + " Effects");
+						// Murder.console.sendMessage(Murder.debugPrefix +
+						// "Removing " +
+						// mp.player().getName() + " Effects");
 					}
 
 					startSmoke();
@@ -399,7 +401,7 @@ public class Game {
 
 	public void stop() {
 		if (stopped) return;
-		System.out.println("Stop");
+		Murder.console.sendMessage(Murder.debugPrefix + "Stop");
 		Bukkit.getScheduler().cancelTask(loot);
 		Bukkit.getScheduler().cancelTask(arena.knifeTimer);
 		Bukkit.getScheduler().cancelTask(arena.reloadTimer);
@@ -422,7 +424,7 @@ public class Game {
 		} else {
 			winner = "bystanders";
 		}
-
+		arena.setStatus(ArenaStatus.WAITING);
 		Murder.instance.getServer().getPluginManager().callEvent(new GameEndEvent(arena, players, winner));
 
 		for (final Item item : arena.getItems()) {
@@ -452,8 +454,8 @@ public class Game {
 		}, 1);
 
 		stopped = true;
-		arena.setStatus(ArenaStatus.WAITING);
 
+		arena.setStatus(ArenaStatus.WAITING);
 		Signs.updateSigns(arena.getID());
 
 	}
@@ -540,9 +542,21 @@ public class Game {
 	}
 
 	public void assign() {
+		Murder.console.sendMessage(Murder.debugPrefix + "=== Assign (" + arena.getID() + ") ===");
 		final List<Player> temp = new ArrayList<Player>();
+		Murder.console.sendMessage(Murder.debugPrefix + "PlayerAmount:" + arena.getPlayerAmount());
 		for (final Player p : arena.getPlayers()) {
-			temp.add(p);
+			if (!arena.getForcedMurderers().contains(p) && !arena.getForcedWeaponBystanders().contains(p)) {
+				if (arena.getPlayerAmount() > 3) {
+					if (!Murder.murdererBlacklist.contains(p) && !Murder.weaponBlacklist.contains(p)) {
+						temp.add(p);
+					} else {
+						Murder.console.sendMessage(Murder.debugPrefix + "Ignoring " + p.getName() + ", Reason: " + (Murder.murdererBlacklist.contains(p) ? "MurdererBlacklist" : Murder.weaponBlacklist.contains(p) ? "WeaponBystanderBlacklist" : "NONE"));
+					}
+				} else {
+					temp.add(p);
+				}
+			}
 		}
 
 		Player p;
@@ -550,29 +564,65 @@ public class Game {
 
 		// /////////
 
-		p = temp.get(Murder.rd.nextInt(temp.size()));
-		mp = MurderPlayer.getPlayer(p);
+		if (arena.getForcedMurderers().isEmpty()) {
+			p = temp.get(Murder.rd.nextInt(temp.size()));
+			mp = MurderPlayer.getPlayer(p);
 
-		mp.setMurderer(true);
-		arena.setMurderer(mp);
+			mp.setMurderer(true);
+			arena.setMurderer(mp);
 
-		p.sendMessage(Murder.prefix + "§c§l" + Messages.getMessage("murderer"));
+			p.sendMessage(Murder.prefix + "§c§l" + Messages.getMessage("murderer"));
+			Murder.console.sendMessage(Murder.debugPrefix + "Murderer: " + p.getName());
+			Murder.murdererBlacklist.add(p);
+			Murder.weaponBlacklist.remove(p);
 
-		temp.remove(p);
+			temp.remove(p);
+		} else {
+			p = arena.getForcedMurderers().get(0);
+			mp = MurderPlayer.getPlayer(p);
+
+			mp.setMurderer(true);
+			arena.setMurderer(mp);
+
+			p.sendMessage(Murder.prefix + "§c§l" + Messages.getMessage("murderer"));
+			Murder.console.sendMessage(Murder.debugPrefix + "Murderer(Forced): " + p.getName());
+			Murder.murdererBlacklist.add(p);
+			Murder.weaponBlacklist.remove(p);
+
+			Murder.forcedMurderers.remove(p);
+			temp.remove(p);
+		}
 
 		// ///////////
 
-		p = temp.get(Murder.rd.nextInt(temp.size()));
-		mp = MurderPlayer.getPlayer(p);
+		if (arena.getForcedWeaponBystanders().isEmpty()) {
+			p = temp.get(Murder.rd.nextInt(temp.size()));
+			mp = MurderPlayer.getPlayer(p);
 
-		mp.setWeaponBystander(true);
-		arena.addWeaponBystander(mp);
+			mp.setWeaponBystander(true);
+			arena.addWeaponBystander(mp);
 
-		// arena.bystanderAmount++;
+			p.sendMessage(Murder.prefix + "§1§l" + Messages.getMessage("bystanderWeapon"));
+			Murder.console.sendMessage(Murder.debugPrefix + "WeaponBystander: " + p.getName());
+			Murder.weaponBlacklist.add(p);
+			Murder.murdererBlacklist.remove(p);
 
-		p.sendMessage(Murder.prefix + "§1§l" + Messages.getMessage("bystanderWeapon"));
+			temp.remove(p);
+		} else {
+			p = arena.getForcedWeaponBystanders().get(0);
+			mp = MurderPlayer.getPlayer(p);
 
-		temp.remove(p);
+			mp.setWeaponBystander(true);
+			arena.addWeaponBystander(mp);
+
+			p.sendMessage(Murder.prefix + "§1§l" + Messages.getMessage("bystanderWeapon"));
+			Murder.console.sendMessage(Murder.debugPrefix + "WeaponBystander(Forced): " + p.getName());
+			Murder.weaponBlacklist.add(p);
+			Murder.murdererBlacklist.remove(p);
+
+			Murder.forcedWeapons.remove(p);
+			temp.remove(p);
+		}
 
 		// //////////////
 
@@ -583,8 +633,50 @@ public class Game {
 			mp.setBystander(true);
 
 			p.sendMessage(Murder.prefix + "§1§l" + Messages.getMessage("bystander"));
+			Murder.console.sendMessage(Murder.debugPrefix + "Bystander(Default): " + p.getName());
+			Murder.murdererBlacklist.remove(p);
+			Murder.weaponBlacklist.remove(p);
+		}
+		final List<Player> murdererBlacklist = arena.getMurdererBlacklist();
+		for (final Player pl : murdererBlacklist) {
+			p = pl;
+			mp = MurderPlayer.getPlayer(p);
+			if (arena.getPlayerAmount() >= 3) {
 
-			// arena.bystanderAmount++;
+				if (!mp.hasRole()) {
+					mp.setBystander(true);
+					p.sendMessage(Murder.prefix + "§1§l" + Messages.getMessage("bystander"));
+					Murder.console.sendMessage(Murder.debugPrefix + "Bystander(MB): " + p.getName());
+					Murder.murdererBlacklist.remove(p);
+				}
+
+			} else if (!mp.hasRole()) {
+				mp.setBystander(true);
+				p.sendMessage(Murder.prefix + "§1§l" + Messages.getMessage("bystander"));
+				Murder.console.sendMessage(Murder.debugPrefix + "Bystander(MB): " + p.getName());
+				Murder.murdererBlacklist.remove(p);
+			}
+
+		}
+		final List<Player> weaponBlacklist = arena.getWeaponBlacklist();
+		for (final Player pl : weaponBlacklist) {
+			p = pl;
+			mp = MurderPlayer.getPlayer(p);
+			// if (!mp.isBystander()) {
+			if (arena.getPlayerAmount() >= 3) {
+				if (!mp.hasRole()) {
+					mp.setBystander(true);
+					p.sendMessage(Murder.prefix + "§1§l" + Messages.getMessage("bystander"));
+					Murder.console.sendMessage(Murder.debugPrefix + "Bystander(WB): " + p.getName());
+					Murder.weaponBlacklist.remove(p);
+				}
+
+			} else if (!mp.hasRole()) {
+				mp.setBystander(true);
+				p.sendMessage(Murder.prefix + "§1§l" + Messages.getMessage("bystander"));
+				Murder.console.sendMessage(Murder.debugPrefix + "Bystander(WB): " + p.getName());
+				Murder.weaponBlacklist.remove(p);
+			}
 		}
 
 		temp.clear();
@@ -592,16 +684,22 @@ public class Game {
 		disguisePlayers();
 
 		Signs.updateSigns(arena.getID());
+		Murder.console.sendMessage(Murder.debugPrefix + "===================");
+	}
 
-		System.out.println("BystanderAmount(Assign) " + arena.getBystanderAmount());
-		System.out.println(arena.getPlayerAmount());
+	public void forceMurderer(Player p) {
+
+	}
+
+	public void forceWeaponBystander(Player p) {
+
 	}
 
 	@SuppressWarnings("deprecation")
 	public void giveItems() {
 		for (final Player p : arena.getPlayers()) {
 			final MurderPlayer mp = MurderPlayer.getPlayer(p);
-			System.out.println(p.getName() + " " + mp.getNameTag() + " " + (mp.isWeaponBystander() ? "WB" : mp.isMurderer() ? "M" : "B"));
+			Murder.console.sendMessage(Murder.debugPrefix + p.getName() + " " + mp.getNameTag() + " " + (mp.isWeaponBystander() ? "WB" : mp.isMurderer() ? "M" : "B"));
 			if (mp.playing()) {
 				if (mp.isMurderer()) {
 					p.getInventory().setItem(4, Items.Knife());
@@ -614,8 +712,8 @@ public class Game {
 					p.getInventory().setItem(0, Items.NameInfo(p));
 					p.getInventory().setItem(8, Items.SpeedBoost());
 				} else {
-					System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-					System.out.println("Error in \"giveItems()\" - Player=" + mp);
+					Murder.console.sendMessage(Murder.debugPrefix + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+					Murder.console.sendMessage(Murder.debugPrefix + "Error in \"giveItems()\" - Player=" + mp);
 				}
 				p.updateInventory();
 				mp.setInGame();
@@ -641,24 +739,26 @@ public class Game {
 		// }
 	}
 
-	private void fixLocation(Player p) {
-		final WrapperPlayServerEntityHeadRotation rot = new WrapperPlayServerEntityHeadRotation();
-		rot.setEntityId(p.getEntityId());
-		rot.setHeadYaw(p.getLocation().getYaw());
-
-		final WrapperPlayServerEntityTeleport teleport = new WrapperPlayServerEntityTeleport();
-		teleport.setEntityID(p.getEntityId());
-		teleport.setPitch(p.getLocation().getPitch());
-		teleport.setX(p.getLocation().getX());
-		teleport.setY(p.getLocation().getY());
-		teleport.setZ(p.getLocation().getZ());
-		teleport.setYaw(p.getLocation().getYaw());
-
-		for (final Player online : arena.getPlayers()) {
-			rot.sendPacket(online);
-			teleport.sendPacket(online);
-		}
-	}
+	// private void fixLocation(Player p) {
+	// final WrapperPlayServerEntityHeadRotation rot = new
+	// WrapperPlayServerEntityHeadRotation();
+	// rot.setEntityId(p.getEntityId());
+	// rot.setHeadYaw(p.getLocation().getYaw());
+	//
+	// final WrapperPlayServerEntityTeleport teleport = new
+	// WrapperPlayServerEntityTeleport();
+	// teleport.setEntityID(p.getEntityId());
+	// teleport.setPitch(p.getLocation().getPitch());
+	// teleport.setX(p.getLocation().getX());
+	// teleport.setY(p.getLocation().getY());
+	// teleport.setZ(p.getLocation().getZ());
+	// teleport.setYaw(p.getLocation().getYaw());
+	//
+	// for (final Player online : arena.getPlayers()) {
+	// rot.sendPacket(online);
+	// teleport.sendPacket(online);
+	// }
+	// }
 
 	public void printScoreboard() {
 		for (final Player p : arena.getPlayers()) {
@@ -677,14 +777,34 @@ public class Game {
 				for (int x = 0; x < 18 - nameTag.length(); x++) {
 					tagSpace = tagSpace + " ";
 				}
-				final String score = "            " + tagColor + playerName + nameSpace + " §7|§r " + nameTag + tagSpace + " §7|§r " + tagColor + collectedLoot;
+				final String score = "            " + tagColor + playerName + nameSpace + " §7|§r " + tagColor + nameTag + tagSpace + " §7|§r " + tagColor + collectedLoot;
 
 				arena.sendMessage(score);
 			}
 		}
 	}
 
-	private final String	SKIN_URL	= "http://api.tuxcraft.eu/murderskin/%%var%%";
+	// public void printScoreboard() {
+	// String lines = "PLAYER----`§7|§r----`NAME----`§7|§r----`LOOT----\n";
+	// for (final Player p : arena.getPlayers()) {
+	// final MurderPlayer mp = MurderPlayer.getPlayer(p);
+	// final String playerName = p.getName();
+	// final String nameTag = mp.getNameTag();
+	// if (nameTag != null && nameTag != "§cNULL") {
+	// final String tagColor = nameTag.substring(0, 2);
+	// final int collectedLoot = p.getLevel();
+	// lines += tagColor + playerName + "`§7|§r`" + nameTag + "`§7|§r`" +
+	// tagColor + collectedLoot +"§r\n";
+	// }
+	// }
+	// lines +="-------`-------`-------`-------";
+	// Murder.console.sendMessage(Murder.debugPrefix + lines);
+	// TabText text = new TabText(lines);
+	// text.setPageHeight(arena.getPlayerAmount());
+	// text.setTabs(17, 17, 3);
+	// text.sortByFields(-2, 1);
+	// arena.sendMessage(text.getPage(0, false));
+	// }
 
 	public void disguisePlayers() {
 		for (final Player p : arena.getPlayers()) {
@@ -737,7 +857,7 @@ public class Game {
 					final World world = loc.getWorld();
 					if (loc != null) {
 						arena.addLoot(world.dropItemNaturally(loc, Items.Loot()));
-						Murder.console.sendMessage(Murder.prefix + "§7Spawning Loot in Arena " + arena.getID() + " at " + loc);
+						Murder.console.sendMessage(Murder.debugPrefix + "§7Spawning Loot in Arena " + arena.getID() + " at " + loc);
 						Number++;
 					}
 					randomTime = Murder.rd.nextInt(55) + 15;

@@ -147,9 +147,7 @@ public class MurderPlayer {
 		p.setWalkSpeed(0.2F);
 		p.setFoodLevel(20);
 		p.updateInventory();
-		for (final PotionEffect effect : p.getActivePotionEffects()) {
-			p.removePotionEffect(effect.getType());
-		}
+		removeEffects();
 		setInLobby();
 		p.getInventory().setHeldItemSlot(0);
 
@@ -209,9 +207,9 @@ public class MurderPlayer {
 			p.setExp(prevExp >= 0 ? prevExp : 0);
 			prevExp = -1F;
 			if (prevHealth <= 20) {
-				if (prevHealth >= 0) {
+				if (prevHealth > 0) {
 					p.setHealth(prevHealth);
-				} else if (prevHealth != -1) {
+				} else if (prevHealth != -1.0D) {
 					p.setHealth(0);
 				}
 			} else {
@@ -269,13 +267,15 @@ public class MurderPlayer {
 			pl.removePotionEffect(effect.getType());
 			effects.add(effect);
 		}
+
+		for (final PotionEffect effect : effects) {
+			pl.addPotionEffect(effect);
+		}
+		effects.clear();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
 			@Override
 			public void run() {
-				for (final PotionEffect effect : effects) {
-					pl.addPotionEffect(new PotionEffect(effect.getType(), 2, 1));
-				}
 				Bukkit.getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
 					@Override
@@ -288,7 +288,19 @@ public class MurderPlayer {
 
 					}
 				}, 2);
+				Bukkit.getScheduler().scheduleSyncDelayedTask(Murder.instance, new Runnable() {
 
+					@Override
+					public void run() {
+						for (final PotionEffectType type : PotionEffectType.values()) {
+							if (type != null) {
+								if (type != PotionEffectType.POISON && type != PotionEffectType.HARM && type != PotionEffectType.WITHER && type != PotionEffectType.HUNGER && type != PotionEffectType.WEAKNESS && type != PotionEffectType.CONFUSION && type != PotionEffectType.ABSORPTION) {
+									pl.addPotionEffect(new PotionEffect(type, 2, 2));
+								}
+							}
+						}
+					}
+				}, 20);
 			}
 		}, 2);
 
@@ -302,6 +314,10 @@ public class MurderPlayer {
 
 	public Arena getArena() {
 		return arena;
+	}
+
+	public boolean hasRole() {
+		return weapon || bystander || murderer;
 	}
 
 	public boolean playing() {

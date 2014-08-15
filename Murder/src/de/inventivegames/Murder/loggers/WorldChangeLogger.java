@@ -13,11 +13,9 @@ import de.inventivegames.murder.MurderPlayer;
 
 public class WorldChangeLogger {
 
-	private final Arena					arena;
 	private final ArrayList<BlockState>	states	= new ArrayList<BlockState>();
 
 	public WorldChangeLogger(Arena arena) {
-		this.arena = arena;
 	}
 
 	public void onInteract(PlayerInteractEvent e) {
@@ -31,14 +29,14 @@ public class WorldChangeLogger {
 		}
 	}
 
-//	public void onPhysics(BlockPhysicsEvent e) {
-//		final Block b = e.getBlock();
-//		if (!e.isCancelled()) {
-//			if (ArenaManager.getByWorld(b.getWorld()) != null) {
-//				logModifiedBlock(b);
-//			}
-//		}
-//	}
+	// public void onPhysics(BlockPhysicsEvent e) {
+	// final Block b = e.getBlock();
+	// if (!e.isCancelled()) {
+	// if (ArenaManager.getByWorld(b.getWorld()) != null) {
+	// logModifiedBlock(b);
+	// }
+	// }
+	// }
 
 	public void logModifiedBlock(Block b) {
 		if (!states.contains(b.getState())) {
